@@ -4,190 +4,217 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Open House — STL Dragon Boat Club · May 16, 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@700;900&family=Noto+Sans:wght@300;400;600&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
 <style>
-:root {
-  --red: #B01020;
-  --gold: #8B6800;
-  --gold-bg: #FDF3C0;
-  --ink: #111318;
-  --paper: #FFFFFF;
-  --water: #003A70;
-  --water-bg: #E8F0FA;
-  --muted: #444;
-  --light: #F7F7F7;
-  --border: #CCCCCC;
-  --fs-sm: 13px;
-  --fs-md: 16px;
-  --fs-lg: 48px;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: #e8e8e8; }
-body {
-  font-family: 'Noto Sans', sans-serif;
-  font-size: var(--fs-md);
-  color: var(--ink);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* back nav — dark pill floated above poster */
-.back-nav {
-  position: fixed;
-  top: 16px; left: 20px;
-  z-index: 100;
-}
-.back-link {
-  display: inline-flex;
+/* ── HERO (open house specific) ── */
+.oh-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(245,240,232,0.85);
-  text-decoration: none;
-  background: rgba(11,15,22,0.75);
-  backdrop-filter: blur(8px);
-  padding: 8px 14px;
-  border-radius: 4px;
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: color 0.15s, border-color 0.15s;
-}
-.back-link:hover { color: #FFD84D; border-color: rgba(255,213,77,0.5); }
-
-/* A4-ish poster card */
-.poster {
-  max-width: 700px;
-  margin: 32px auto;
-  background: var(--paper);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-  border: 1px solid #bbb;
-}
-
-@media print {
-  html, body { background: #fff; }
-  .poster { margin: 0; box-shadow: none; border: none; max-width: 100%; }
-  .no-print { display: none !important; }
-}
-
-/* ── HERO BANNER ── */
-.hero-banner {
-  background: var(--water);
-  color: #fff;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0A3560 0%, #06264A 60%, #041830 100%);
+  padding: 60px 20px 90px;
   text-align: center;
-  padding: 40px 24px 32px;
 }
-.dragon { font-size: 64px; display: block; margin-bottom: 8px; }
-.open-label {
+.oh-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    135deg, transparent, transparent 40px,
+    rgba(255,255,255,0.025) 40px, rgba(255,255,255,0.025) 80px
+  );
+}
+.oh-hero-inner { position: relative; z-index: 2; max-width: 760px; }
+
+.open-badge {
   display: inline-block;
   background: var(--red);
   color: #fff;
-  font-size: var(--fs-sm);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  padding: 5px 16px;
+  padding: 6px 18px;
   border-radius: 2px;
-  margin-bottom: 16px;
-}
-.chinese {
-  font-family: 'Noto Serif SC', serif;
-  font-size: var(--fs-lg);
-  letter-spacing: 0.25em;
-  color: #FFD84D;
-  display: block;
-  margin-bottom: 6px;
-}
-.main-title {
-  font-family: 'Noto Serif Display', serif;
-  font-weight: 900;
-  font-size: var(--fs-lg);
-  line-height: 1;
-  color: #fff;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.main-title span { color: #FFD84D; }
-.sub-title {
-  font-family: 'Noto Serif Display', serif;
-  font-size: var(--fs-md);
-  font-weight: 700;
-  color: #C8DFF5;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   margin-bottom: 20px;
 }
+
+.oh-chinese {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(26px, 5vw, 44px);
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  opacity: 0.85;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.oh-title {
+  font-family: 'Noto Serif Display', serif;
+  font-weight: 900;
+  font-size: clamp(40px, 10vw, 90px);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--paper);
+  margin-bottom: 8px;
+}
+.oh-title .free { color: var(--gold); display: block; }
+
+.oh-sub {
+  font-size: clamp(13px, 2vw, 16px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mist);
+  opacity: 0.75;
+  margin-bottom: 32px;
+}
+
+/* date pill */
 .date-pill {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  background: rgba(255,255,255,0.12);
-  border: 1.5px solid #FFD84D;
+  gap: 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid var(--gold);
   border-radius: 60px;
-  padding: 10px 26px;
-  margin-bottom: 16px;
+  padding: 12px 32px;
+  margin-bottom: 28px;
 }
 .date-num {
   font-family: 'Noto Serif Display', serif;
-  font-size: var(--fs-lg);
+  font-size: clamp(44px, 9vw, 72px);
   font-weight: 900;
-  color: #FFD84D;
+  color: var(--gold);
   line-height: 1;
 }
-.date-info .dow { font-size: var(--fs-sm); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; }
-.date-info .month { font-size: var(--fs-md); font-weight: 700; }
-.free-badge {
-  display: inline-block;
-  background: #FFD84D;
-  color: var(--ink);
-  font-family: 'Noto Serif Display', serif;
-  font-size: var(--fs-lg);
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  padding: 8px 28px;
-  border-radius: 3px;
+.date-info { text-align: left; }
+.date-info .dow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
+.date-info .month { font-size: 16px; font-weight: 600; color: var(--paper); }
+
+.fcfs {
+  font-size: 11px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: 14px;
+  color: var(--gold);
+  font-weight: 700;
+  margin-top: 16px;
+  opacity: 0.85;
 }
-.hero-tagline { font-size: var(--fs-md); line-height: 1.6; color: #C8DFF5; max-width: 460px; margin: 0 auto 6px; }
-.fcfs { font-size: var(--fs-sm); letter-spacing: 0.18em; text-transform: uppercase; color: #FFD84D; font-weight: 700; margin-top: 8px; }
 
 /* ── INFO STRIPS ── */
-.info-strips { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 3px solid var(--red); }
-.strip { padding: 18px 12px; text-align: center; border-right: 1px solid var(--border); }
+.info-strips {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-top: 2px solid rgba(245,197,24,0.3);
+  background: var(--surface2);
+}
+@media (max-width: 560px) { .info-strips { grid-template-columns: 1fr; } }
+
+.strip {
+  padding: 24px 20px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
 .strip:last-child { border-right: none; }
-.strip .si { font-size: var(--fs-md); margin-bottom: 6px; }
-.strip .sl { font-size: var(--fs-sm); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; font-weight: 700; }
-.strip .sv { font-size: var(--fs-md); font-weight: 600; line-height: 1.6; color: var(--ink); }
-.strip a { color: var(--water); text-decoration: underline; font-weight: 600; }
-
-/* ── DIVIDER ── */
-.sec-divider { height: 2px; background: linear-gradient(90deg, var(--water), var(--red)); }
-
-/* ── REGISTER CARD ── */
-.reg-card { padding: 28px 28px 24px; }
-.reg-card h3 {
-  font-family: 'Noto Serif Display', serif;
-  font-size: var(--fs-md);
+@media (max-width: 560px) {
+  .strip { border-right: none; border-bottom: 1px solid var(--border); }
+  .strip:last-child { border-bottom: none; }
+}
+.strip .s-icon { font-size: 28px; margin-bottom: 10px; }
+.strip .s-label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
   font-weight: 700;
-  color: var(--water);
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+.strip .s-val {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--paper);
+}
+.strip .s-val a { color: #7EC8F5; text-decoration: underline; }
+.strip .s-val .note { color: var(--gold); font-weight: 700; margin-top: 4px; display: block; }
+
+/* ── CONTENT SECTIONS ── */
+.content-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* register card */
+.register-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 40px 0 0;
+}
+.register-card-header {
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.register-card-header h2 {
+  font-size: clamp(18px, 3vw, 22px);
   margin-bottom: 6px;
 }
-.reg-card .sub { font-size: var(--fs-sm); color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
-
-.waiver-note {
-  background: var(--gold-bg);
-  border: 1px solid #D4AA00;
-  border-radius: 5px;
-  padding: 12px 14px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+.register-card-header p {
+  font-size: 14px;
+  color: rgba(245,240,232,0.65);
+  line-height: 1.6;
 }
-.waiver-note .wi { font-size: var(--fs-md); flex-shrink: 0; }
-.waiver-note p { font-size: var(--fs-sm); line-height: 1.6; color: #5a4000; }
-.waiver-note a { color: var(--water); font-weight: 700; }
+.register-card-body { padding: 22px 28px 28px; }
+
+/* safety + waiver row */
+.pre-reg-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+@media (max-width: 520px) { .pre-reg-cards { grid-template-columns: 1fr; } }
+
+.pre-card {
+  border-radius: 7px;
+  padding: 16px 18px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.pre-card-waiver {
+  background: rgba(245,197,24,0.08);
+  border: 1px solid rgba(245,197,24,0.35);
+}
+.pre-card-waiver:hover { background: rgba(245,197,24,0.14); border-color: var(--gold); }
+.pre-card-safety {
+  background: rgba(26,107,191,0.1);
+  border: 1px solid rgba(26,107,191,0.4);
+}
+.pre-card-safety:hover { background: rgba(26,107,191,0.2); border-color: var(--water-light); }
+
+.pre-card .pc-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.pre-card .pc-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.pre-card-waiver .pc-label { color: var(--gold); }
+.pre-card-safety .pc-label { color: #7EC8F5; }
+.pre-card .pc-text { font-size: 13px; line-height: 1.55; color: rgba(245,240,232,0.85); }
+.pre-card .pc-text a { color: var(--gold); font-weight: 600; text-decoration: none; }
+.pre-card-safety .pc-text a { color: #7EC8F5; }
 
 .btn-register {
   display: block;
@@ -196,64 +223,71 @@ body {
   background: var(--red);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-family: 'Noto Sans', sans-serif;
   font-weight: 700;
-  font-size: var(--fs-md);
+  font-size: 15px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
-.btn-register:hover { background: #8B0010; }
-.form-url { margin-top: 12px; text-align: center; font-size: var(--fs-sm); color: var(--muted); }
-.form-url a { color: var(--water); word-break: break-all; }
+.btn-register:hover {
+  background: #B01020;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(217,31,58,0.35);
+}
+
+.form-url {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(245,240,232,0.45);
+}
+.form-url a { color: rgba(245,240,232,0.55); }
 
 /* ── CONTACT ── */
-.contact-strip {
-  background: var(--water-bg);
-  border-top: 1px solid var(--border);
-  padding: 18px 28px;
+.contact-card {
+  background: rgba(26,107,191,0.1);
+  border: 1px solid rgba(26,107,191,0.35);
+  border-radius: 10px;
+  padding: 22px 28px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 20px;
+  margin: 20px 0 40px;
 }
-.contact-strip .ci { font-size: var(--fs-md); flex-shrink: 0; }
-.contact-strip .ct { flex: 1; min-width: 180px; }
-.contact-strip .ct h4 { font-size: var(--fs-sm); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 4px; }
-.contact-strip .ct a { color: var(--water); text-decoration: none; font-size: var(--fs-md); font-weight: 600; }
-.contact-strip .ct .extra { font-size: var(--fs-sm); color: var(--muted); margin-top: 3px; }
-.contact-links { display: flex; flex-direction: column; gap: 6px; }
-.contact-links a { font-size: var(--fs-sm); color: var(--water); text-decoration: none; }
-
-/* ── FOOTER ── */
-.poster-foot {
-  background: var(--light);
-  border-top: 1px solid var(--border);
-  text-align: center;
-  padding: 14px 20px;
+.contact-card .c-icon { font-size: 26px; flex-shrink: 0; }
+.contact-card .c-main { flex: 1; min-width: 200px; }
+.contact-card .c-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--water-light);
+  font-weight: 700;
+  margin-bottom: 5px;
 }
-.poster-foot p { font-size: var(--fs-sm); letter-spacing: 0.06em; text-transform: uppercase; color: #888; line-height: 1.8; }
-
-/* print button */
-.print-btn {
-  display: block;
-  margin: 20px auto 12px;
-  padding: 10px 28px;
-  background: var(--water);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-family: 'Noto Sans', sans-serif;
-  font-size: var(--fs-md);
+.contact-card .c-email {
+  color: var(--paper);
+  text-decoration: none;
   font-weight: 600;
-  cursor: pointer;
-  letter-spacing: 0.08em;
+  font-size: 15px;
 }
-.print-btn:hover { background: #002a54; }
+.contact-card .c-email:hover { color: var(--gold); }
+.contact-card .c-sub { font-size: 12px; color: rgba(245,240,232,0.5); margin-top: 3px; }
+.contact-links { display: flex; flex-direction: column; gap: 8px; }
+.contact-links a {
+  font-size: 13px;
+  color: rgba(245,240,232,0.85);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.contact-links a:hover { color: var(--gold); }
 </style>
 </head>
 <body>
@@ -262,100 +296,121 @@ body {
   <a href="../announcements.html" class="back-link">← All Posts</a>
 </nav>
 
-<div class="no-print" style="text-align:center; padding-top: 24px;">
-  <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
-</div>
+<!-- HERO -->
+<div class="oh-hero">
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
 
-<div class="poster">
+  <div class="oh-hero-inner">
+    <span class="dragon-emoji">🐉</span>
+    <div class="open-badge">Open House · 开放日</div>
+    <span class="oh-chinese">免费体验龙舟</span>
+    <div class="oh-title">
+      <span class="free">FREE</span>
+      TRIAL
+    </div>
+    <div class="oh-sub">Dragon Boat Open House · 龙舟体验日</div>
 
-  <!-- HERO -->
-  <div class="hero-banner">
-    <span class="dragon">🐉</span>
-    <div class="open-label">Open House · 开放日</div>
-    <span class="chinese">免费体验龙舟</span>
-    <div class="main-title"><span>FREE</span> TRIAL</div>
-    <div class="sub-title">Dragon Boat Open House</div>
     <div class="date-pill">
-      <div class="date-num">5 / 16</div>
+      <div class="date-num">5/16</div>
       <div class="date-info">
         <div class="dow">Saturday · 星期六</div>
         <div class="month">May 2026</div>
       </div>
     </div>
-    <div class="free-badge">🆓 100% FREE</div>
-    <p class="hero-tagline">Open to <strong>all members of the public</strong> — no experience needed!<br>Try dragon boat paddling when seats are available.</p>
+
+    <p class="tagline">Open to <strong>all members of the public</strong> — no experience needed!<br>Try dragon boat paddling when seats are available.</p>
     <p class="fcfs">⚡ First Come, First Served · 先到先得，名额有限</p>
   </div>
 
-  <!-- INFO STRIPS -->
-  <div class="info-strips">
-    <div class="strip">
-      <div class="si">🕣</div>
-      <div class="sl">Time · 时间</div>
-      <div class="sv">8:30 AM – 11:30 AM</div>
-    </div>
-    <div class="strip">
-      <div class="si">📍</div>
-      <div class="sl">Location · 地点</div>
-      <div class="sv">
-        <a href="https://www.google.com/maps/search/?api=1&query=Simpson+Lake+Blue+Heron+Shelter+St+Louis+MO" target="_blank">
-          Simpson Lake<br>Blue Heron Shelter
-        </a>
-      </div>
-    </div>
-    <div class="strip">
-      <div class="si">🎒</div>
-      <div class="sl">Bring · 携带</div>
-      <div class="sv" style="line-height:1.6; text-align:left; padding-left:8px;">
-        👕 Wicking shirt<br>
-        👟 Water shoes<br>
-        💧 Water &amp; 🧴 Sunscreen<br>
-        🕶️ Sunglasses &amp; hat<br>
-        <span style="color:var(--gold); font-weight:700;">🦺 PFD &amp; paddles provided</span>
-      </div>
+  <svg class="wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#111318"/>
+  </svg>
+</div>
+
+<!-- INFO STRIPS -->
+<div class="info-strips">
+  <div class="strip">
+    <div class="s-icon">🕣</div>
+    <div class="s-label">Time · 时间</div>
+    <div class="s-val">8:30 AM – 11:30 AM</div>
+  </div>
+  <div class="strip">
+    <div class="s-icon">📍</div>
+    <div class="s-label">Location · 地点</div>
+    <div class="s-val">
+      <a href="https://www.google.com/maps/search/?api=1&query=Simpson+Lake+Blue+Heron+Shelter+St+Louis+MO" target="_blank">
+        Simpson Lake<br>Blue Heron Shelter
+      </a>
     </div>
   </div>
-
-  <div class="sec-divider"></div>
-
-  <!-- REGISTER -->
-  <div class="reg-card">
-    <h3>📝 Sign Up for Free Trial · 免费体验登记</h3>
-    <p class="sub">Reserve your spot — seats fill up fast! Walk-ins also welcome when available.</p>
-
-    <div class="waiver-note">
-      <span class="wi">⚠️</span>
-      <p><strong>Waiver required before boarding.</strong> All participants must complete a liability waiver. Sign online at <a href="https://forms.gle/WrG4zwLNZ4AgkDPA8" target="_blank">bit.ly/4m2Jldm</a> — or scan our QR code on-site. · 上船前须签署免责声明。</p>
+  <div class="strip">
+    <div class="s-icon">🎒</div>
+    <div class="s-label">Bring · 携带</div>
+    <div class="s-val">
+      👕 Wicking shirt<br>
+      👟 Water shoes<br>
+      💧 Water &amp; 🧴 Sunscreen<br>
+      🕶️ Sunglasses &amp; hat<br>
+      <span class="note">🦺 PFD &amp; paddles provided</span>
     </div>
+  </div>
+</div>
 
-    <a href="https://forms.gle/jiJ2ftby57VLWS1w6" target="_blank" class="btn-register">
-      🐉 Register Now · 立即登记报名
-    </a>
-    <p class="form-url">Or open directly: <a href="https://forms.gle/jiJ2ftby57VLWS1w6" target="_blank">forms.gle/jiJ2ftby57VLWS1w6</a></p>
+<!-- REGISTER -->
+<div class="content-wrap">
+  <div class="register-card">
+    <div class="register-card-header">
+      <h2>📝 Sign Up for Free Trial · 免费体验登记</h2>
+      <p>Reserve your spot — seats fill up fast! Walk-ins also welcome when seats are available.</p>
+    </div>
+    <div class="register-card-body">
+
+      <!-- Waiver + Safety side by side -->
+      <div class="pre-reg-cards">
+        <div class="pre-card pre-card-waiver">
+          <span class="pc-icon">⚠️</span>
+          <div>
+            <div class="pc-label">Required · 必须完成</div>
+            <div class="pc-text">All participants must sign a <strong>liability waiver</strong> before boarding. Sign at <a href="https://forms.gle/WrG4zwLNZ4AgkDPA8" target="_blank">forms.gle/WrG4zwLNZ4AgkDPA8</a> or scan the QR code on-site. · 上船前须签署免责声明。</div>
+          </div>
+        </div>
+        <a class="pre-card pre-card-safety" href="safety.html">
+          <span class="pc-icon">🦺</span>
+          <div>
+            <div class="pc-label">Before You Come · 训练前必读</div>
+            <div class="pc-text">Review our <a href="safety.html">Safety Guidelines</a> — what to wear, PFD rules, and what to do in an emergency. · 查看安全指南，了解着装要求与应急处理。</div>
+          </div>
+        </a>
+      </div>
+
+      <a href="https://forms.gle/jiJ2ftby57VLWS1w6" target="_blank" class="btn-register">
+        🐉 Register Now · 立即登记报名
+      </a>
+      <p class="form-url">Direct link: <a href="https://forms.gle/jiJ2ftby57VLWS1w6" target="_blank">forms.gle/jiJ2ftby57VLWS1w6</a></p>
+    </div>
   </div>
 
   <!-- CONTACT -->
-  <div class="contact-strip">
-    <div class="ci">📧</div>
-    <div class="ct">
-      <h4>Contact Us · 联系我们</h4>
-      <a href="mailto:stldragonboatclub@stlcls.org">stldragonboatclub@stlcls.org</a>
-      <div class="extra">Questions? Email us anytime · 欢迎随时联系</div>
+  <div class="contact-card">
+    <span class="c-icon">📧</span>
+    <div class="c-main">
+      <div class="c-label">Contact Us · 联系我们</div>
+      <a href="mailto:stldragonboatclub@stlcls.org" class="c-email">stldragonboatclub@stlcls.org</a>
+      <div class="c-sub">Questions? Email us anytime · 欢迎随时联系</div>
     </div>
     <div class="contact-links">
       <a href="https://www.stlcls.org/school/page/dragonboat" target="_blank">🌐 stlcls.org/dragonboat</a>
       <a href="https://www.facebook.com/groups/9592205354148705" target="_blank">👥 Facebook Group</a>
     </div>
   </div>
-
-  <!-- FOOTER -->
-  <div class="poster-foot">
-    <p>St. Louis Dragon Boat Foundation · 501(c)(3) Nonprofit<br>
-    Simpson Lake, Blue Heron Shelter · St. Louis, MO · May 16, 2026<br>
-    Seats are limited and first come, first served. Walk-ins welcome when available.</p>
-  </div>
-
 </div>
+
+<footer>
+  © 2026 St. Louis Dragon Boat Club · 501(c)(3) Nonprofit · Simpson Lake, Blue Heron Shelter · St. Louis, MO
+</footer>
 
 </body>
 </html>
