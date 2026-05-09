@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open House — STL Dragon Boat Club · May 16, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@700;900&family=Noto+Sans:wght@300;400;600&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #B01020;
+  --gold: #8B6800;
+  --gold-bg: #FDF3C0;
+  --ink: #111318;
+  --paper: #FFFFFF;
+  --water: #003A70;
+  --water-bg: #E8F0FA;
+  --muted: #444;
+  --light: #F7F7F7;
+  --border: #CCCCCC;
+  --fs-sm: 13px;
+  --fs-md: 16px;
+  --fs-lg: 48px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #e8e8e8; }
+body {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: var(--fs-md);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* back nav — dark pill floated above poster */
+.back-nav {
+  position: fixed;
+  top: 16px; left: 20px;
+  z-index: 100;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.85);
+  text-decoration: none;
+  background: rgba(11,15,22,0.75);
+  backdrop-filter: blur(8px);
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: color 0.15s, border-color 0.15s;
+}
+.back-link:hover { color: #FFD84D; border-color: rgba(255,213,77,0.5); }
+
+/* A4-ish poster card */
+.poster {
+  max-width: 700px;
+  margin: 32px auto;
+  background: var(--paper);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  border: 1px solid #bbb;
+}
+
+@media print {
+  html, body { background: #fff; }
+  .poster { margin: 0; box-shadow: none; border: none; max-width: 100%; }
+  .no-print { display: none !important; }
+}
+
+/* ── HERO BANNER ── */
+.hero-banner {
+  background: var(--water);
+  color: #fff;
+  text-align: center;
+  padding: 40px 24px 32px;
+}
+.dragon { font-size: 64px; display: block; margin-bottom: 8px; }
+.open-label {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+.chinese {
+  font-family: 'Noto Serif SC', serif;
+  font-size: var(--fs-lg);
+  letter-spacing: 0.25em;
+  color: #FFD84D;
+  display: block;
+  margin-bottom: 6px;
+}
+.main-title {
+  font-family: 'Noto Serif Display', serif;
+  font-weight: 900;
+  font-size: var(--fs-lg);
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.main-title span { color: #FFD84D; }
+.sub-title {
+  font-family: 'Noto Serif Display', serif;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: #C8DFF5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid #FFD84D;
+  border-radius: 60px;
+  padding: 10px 26px;
+  margin-bottom: 16px;
+}
+.date-num {
+  font-family: 'Noto Serif Display', serif;
+  font-size: var(--fs-lg);
+  font-weight: 900;
+  color: #FFD84D;
+  line-height: 1;
+}
+.date-info .dow { font-size: var(--fs-sm); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; }
+.date-info .month { font-size: var(--fs-md); font-weight: 700; }
+.free-badge {
+  display: inline-block;
+  background: #FFD84D;
+  color: var(--ink);
+  font-family: 'Noto Serif Display', serif;
+  font-size: var(--fs-lg);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  padding: 8px 28px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.hero-tagline { font-size: var(--fs-md); line-height: 1.6; color: #C8DFF5; max-width: 460px; margin: 0 auto 6px; }
+.fcfs { font-size: var(--fs-sm); letter-spacing: 0.18em; text-transform: uppercase; color: #FFD84D; font-weight: 700; margin-top: 8px; }
+
+/* ── INFO STRIPS ── */
+.info-strips { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 3px solid var(--red); }
+.strip { padding: 18px 12px; text-align: center; border-right: 1px solid var(--border); }
+.strip:last-child { border-right: none; }
+.strip .si { font-size: var(--fs-md); margin-bottom: 6px; }
+.strip .sl { font-size: var(--fs-sm); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; font-weight: 700; }
+.strip .sv { font-size: var(--fs-md); font-weight: 600; line-height: 1.6; color: var(--ink); }
+.strip a { color: var(--water); text-decoration: underline; font-weight: 600; }
+
+/* ── DIVIDER ── */
+.sec-divider { height: 2px; background: linear-gradient(90deg, var(--water), var(--red)); }
+
+/* ── REGISTER CARD ── */
+.reg-card { padding: 28px 28px 24px; }
+.reg-card h3 {
+  font-family: 'Noto Serif Display', serif;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--water);
+  margin-bottom: 6px;
+}
+.reg-card .sub { font-size: var(--fs-sm); color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+
+.waiver-note {
+  background: var(--gold-bg);
+  border: 1px solid #D4AA00;
+  border-radius: 5px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.waiver-note .wi { font-size: var(--fs-md); flex-shrink: 0; }
+.waiver-note p { font-size: var(--fs-sm); line-height: 1.6; color: #5a4000; }
+.waiver-note a { color: var(--water); font-weight: 700; }
+
+.btn-register {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs-md);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-register:hover { background: #8B0010; }
+.form-url { margin-top: 12px; text-align: center; font-size: var(--fs-sm); color: var(--muted); }
+.form-url a { color: var(--water); word-break: break-all; }
+
+/* ── CONTACT ── */
+.contact-strip {
+  background: var(--water-bg);
+  border-top: 1px solid var(--border);
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.contact-strip .ci { font-size: var(--fs-md); flex-shrink: 0; }
+.contact-strip .ct { flex: 1; min-width: 180px; }
+.contact-strip .ct h4 { font-size: var(--fs-sm); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 4px; }
+.contact-strip .ct a { color: var(--water); text-decoration: none; font-size: var(--fs-md); font-weight: 600; }
+.contact-strip .ct .extra { font-size: var(--fs-sm); color: var(--muted); margin-top: 3px; }
+.contact-links { display: flex; flex-direction: column; gap: 6px; }
+.contact-links a { font-size: var(--fs-sm); color: var(--water); text-decoration: none; }
+
+/* ── FOOTER ── */
+.poster-foot {
+  background: var(--light);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 14px 20px;
+}
+.poster-foot p { font-size: var(--fs-sm); letter-spacing: 0.06em; text-transform: uppercase; color: #888; line-height: 1.8; }
+
+/* print button */
+.print-btn {
+  display: block;
+  margin: 20px auto 12px;
+  padding: 10px 28px;
+  background: var(--water);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+}
+.print-btn:hover { background: #002a54; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a href="../announcements.html" class="back-link">← All Posts</a>
+</nav>
+
+<div class="no-print" style="text-align:center; padding-top: 24px;">
+  <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+</div>
+
+<div class="poster">
+
+  <!-- HERO -->
+  <div class="hero-banner">
+    <span class="dragon">🐉</span>
+    <div class="open-label">Open House · 开放日</div>
+    <span class="chinese">免费体验龙舟</span>
+    <div class="main-title"><span>FREE</span> TRIAL</div>
+    <div class="sub-title">Dragon Boat Open House</div>
+    <div class="date-pill">
+      <div class="date-num">5 / 16</div>
+      <div class="date-info">
+        <div class="dow">Saturday · 星期六</div>
+        <div class="month">May 2026</div>
+      </div>
+    </div>
+    <div class="free-badge">🆓 100% FREE</div>
+    <p class="hero-tagline">Open to <strong>all members of the public</strong> — no experience needed!<br>Try dragon boat paddling when seats are available.</p>
+    <p class="fcfs">⚡ First Come, First Served · 先到先得，名额有限</p>
+  </div>
+
+  <!-- INFO STRIPS -->
+  <div class="info-strips">
+    <div class="strip">
+      <div class="si">🕣</div>
+      <div class="sl">Time · 时间</div>
+      <div class="sv">8:30 AM – 11:30 AM</div>
+    </div>
+    <div class="strip">
+      <div class="si">📍</div>
+      <div class="sl">Location · 地点</div>
+      <div class="sv">
+        <a href="https://www.google.com/maps/search/?api=1&query=Simpson+Lake+Blue+Heron+Shelter+St+Louis+MO" target="_blank">
+          Simpson Lake<br>Blue Heron Shelter
+        </a>
+      </div>
+    </div>
+    <div class="strip">
+      <div class="si">🎒</div>
+      <div class="sl">Bring · 携带</div>
+      <div class="sv" style="line-height:1.6; text-align:left; padding-left:8px;">
+        👕 Wicking shirt<br>
+        👟 Water shoes<br>
+        💧 Water &amp; 🧴 Sunscreen<br>
+        🕶️ Sunglasses &amp; hat<br>
+        <span style="color:var(--gold); font-weight:700;">🦺 PFD &amp; paddles provided</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-divider"></div>
+
+  <!-- REGISTER -->
+  <div class="reg-card">
+    <h3>📝 Sign Up for Free Trial · 免费体验登记</h3>
+    <p class="sub">Reserve your spot — seats fill up fast! Walk-ins also welcome when available.</p>
+
+    <div class="waiver-note">
+      <span class="wi">⚠️</span>
+      <p><strong>Waiver required before boarding.</strong> All participants must complete a liability waiver. Sign online at <a href="https://bit.ly/4m2Jldm" target="_blank">bit.ly/4m2Jldm</a> — or scan our QR code on-site. · 上船前须签署免责声明。</p>
+    </div>
+
+    <a href="https://forms.gle/jiJ2ftby57VLWS1w6" target="_blank" class="btn-register">
+      🐉 Register Now · 立即登记报名
+    </a>
+    <p class="form-url">Or open directly: <a href="https://forms.gle/jiJ2ftby57VLWS1w6" target="_blank">forms.gle/jiJ2ftby57VLWS1w6</a></p>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact-strip">
+    <div class="ci">📧</div>
+    <div class="ct">
+      <h4>Contact Us · 联系我们</h4>
+      <a href="mailto:stldragonboatclub@stlcls.org">stldragonboatclub@stlcls.org</a>
+      <div class="extra">Questions? Email us anytime · 欢迎随时联系</div>
+    </div>
+    <div class="contact-links">
+      <a href="https://www.stlcls.org/school/page/dragonboat" target="_blank">🌐 stlcls.org/dragonboat</a>
+      <a href="https://www.facebook.com/groups/9592205354148705" target="_blank">👥 Facebook Group</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="poster-foot">
+    <p>St. Louis Dragon Boat Foundation · 501(c)(3) Nonprofit<br>
+    Simpson Lake, Blue Heron Shelter · St. Louis, MO · May 16, 2026<br>
+    Seats are limited and first come, first served. Walk-ins welcome when available.</p>
+  </div>
+
+</div>
+
+</body>
+</html>

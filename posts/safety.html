@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safety Guidelines — STL Dragon Boat Club</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+/* ── PAGE HERO (compact) ── */
+.page-hero {
+  background: linear-gradient(160deg, #0A3560 0%, #06264A 60%, #041830 100%);
+  padding: 100px 20px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    135deg, transparent, transparent 40px,
+    rgba(255,255,255,0.025) 40px, rgba(255,255,255,0.025) 80px
+  );
+}
+.page-hero-inner { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+.page-hero h1 { font-size: clamp(30px, 6vw, 52px); text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 12px; }
+.page-hero p { font-size: 15px; color: var(--mist); opacity: 0.8; line-height: 1.65; }
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 32px auto 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
+}
+.lang-btn {
+  padding: 9px 22px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: rgba(245,240,232,0.5);
+  transition: background 0.15s, color 0.15s;
+}
+.lang-btn.active { background: var(--gold); color: var(--ink); }
+
+/* ── SAFETY SECTIONS ── */
+.safety-sections {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.safety-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.section-header .s-icon { font-size: 24px; flex-shrink: 0; }
+.section-header h2 {
+  font-family: 'Noto Serif Display', serif;
+  font-size: clamp(16px, 3vw, 20px);
+  font-weight: 700;
+  margin: 0;
+  color: var(--gold);
+  line-height: 1.2;
+}
+.section-header h2 .zh {
+  display: block;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  color: rgba(245,197,24,0.6);
+  letter-spacing: 0.1em;
+  margin-top: 3px;
+  font-weight: 400;
+}
+
+/* color-coded top border per section */
+.s-pretraining  { border-top: 3px solid #1A6BBF; }
+.s-personal     { border-top: 3px solid var(--gold); }
+.s-equipment    { border-top: 3px solid #E07B00; }
+.s-paddling     { border-top: 3px solid var(--red); }
+.s-posttraining { border-top: 3px solid #2DA44E; }
+
+.s-pretraining  .section-header h2 { color: #5BA3E8; }
+.s-pretraining  .section-header h2 .zh { color: rgba(91,163,232,0.6); }
+.s-personal     .section-header h2 { color: var(--gold); }
+.s-equipment    .section-header h2 { color: #F0A030; }
+.s-equipment    .section-header h2 .zh { color: rgba(240,160,48,0.6); }
+.s-paddling     .section-header h2 { color: #FF6B81; }
+.s-paddling     .section-header h2 .zh { color: rgba(255,107,129,0.6); }
+.s-posttraining .section-header h2 { color: #4EC97A; }
+.s-posttraining .section-header h2 .zh { color: rgba(78,201,122,0.6); }
+
+/* checklist items */
+.check-list { list-style: none; padding: 8px 0; }
+.check-item {
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.check-item:last-child { border-bottom: none; }
+.check-mark {
+  font-size: 18px;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+/* language display */
+.text-en, .text-zh { line-height: 1.65; }
+.text-en { font-size: 14px; color: rgba(245,240,232,0.88); }
+.text-zh {
+  font-size: 13px;
+  color: rgba(245,240,232,0.55);
+  margin-top: 4px;
+  font-family: 'Noto Sans', sans-serif;
+}
+.text-en strong, .text-zh strong { color: var(--paper); font-weight: 600; }
+
+/* toggle states */
+body.show-en .text-zh { display: none; }
+body.show-zh .text-en { display: none; }
+body.show-zh .text-zh { color: rgba(245,240,232,0.88); font-size: 14px; }
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+.disclaimer-box {
+  background: rgba(217,31,58,0.08);
+  border: 1px solid rgba(217,31,58,0.3);
+  border-radius: 8px;
+  padding: 20px 24px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.disclaimer-box .d-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.disclaimer-box p { font-size: 13px; line-height: 1.7; color: rgba(245,240,232,0.7); }
+.disclaimer-box a { color: var(--gold); }
+</style>
+</head>
+<body class="show-both">
+
+<nav class="back-nav">
+  <a href="../announcements.html" class="back-link">← All Posts</a>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <span class="section-label">STL Dragon Boat Club</span>
+    <h1>Safety Guidelines</h1>
+    <p>Please review these guidelines before every training session.<br>安全是我们共同的责任，每次训练前请仔细阅读。</p>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang(this,'show-both')">中 / EN</button>
+      <button class="lang-btn" onclick="setLang(this,'show-en')">English</button>
+      <button class="lang-btn" onclick="setLang(this,'show-zh')">中文</button>
+    </div>
+  </div>
+</div>
+
+<!-- SAFETY SECTIONS -->
+<div class="safety-sections">
+
+  <!-- 1. Pre-Training -->
+  <div class="safety-section s-pretraining">
+    <div class="section-header">
+      <span class="s-icon">🌤️</span>
+      <h2>Pre-Training Safety Checks
+        <span class="zh">训练前安全检查</span>
+      </h2>
+    </div>
+    <ul class="check-list">
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Weather Conditions</strong> – Check for extreme heat, storms, or high winds before heading out. Training should be canceled or modified if conditions are unsafe.</div>
+          <div class="text-zh"><strong>天气状况</strong> — 出发前请检查是否有高温、暴雨或大风等极端天气。如遇不安全天气，应取消或调整训练计划。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Water Conditions</strong> – Assess the water current, visibility, and any debris that may pose a hazard.</div>
+          <div class="text-zh"><strong>水域状况</strong> — 评估水流速度、能见度以及是否有漂浮物或障碍物可能构成危险。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Emergency Plan</strong> – Review emergency procedures, including nearest medical facilities and emergency contacts. Confirm team members with CPR experience; use the <strong>PulsePoint AED app</strong> to find nearby defibrillators.</div>
+          <div class="text-zh"><strong>紧急预案</strong> — 熟悉应急流程，包括最近的医疗设施和紧急联系人信息。确认队中有无具备 CPR 经验者，建议使用 <strong>PulsePoint AED 应用</strong>查找附近的自动体外除颤器。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>First Aid &amp; Safety Equipment</strong> – Ensure a first aid kit, rescue throw rope, and life jackets are available and in good condition.</div>
+          <div class="text-zh"><strong>急救与安全设备</strong> — 确保现场配备急救包、救援抛绳和状况良好的救生衣。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 2. Personal Safety -->
+  <div class="safety-section s-personal">
+    <div class="section-header">
+      <span class="s-icon">🦺</span>
+      <h2>Personal Safety Requirements
+        <span class="zh">个人安全要求</span>
+      </h2>
+    </div>
+    <ul class="check-list">
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Life Jackets (PFDs)</strong> – All paddlers and team members must wear a properly fitted <strong>U.S. Coast Guard-approved</strong> personal flotation device at all times on the water.</div>
+          <div class="text-zh"><strong>救生衣（PFD）</strong> — 所有划手及队员在水上训练期间必须全程穿戴合身的、通过<strong>美国海岸警卫队认证</strong>的救生衣。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Hydration &amp; Sun Protection</strong> – Bring water, wear sunscreen, sunglasses, and a hat to prevent dehydration and sunburn.</div>
+          <div class="text-zh"><strong>补水与防晒</strong> — 请携带饮用水，使用防晒霜，佩戴太阳镜和帽子，防止脱水与晒伤。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Proper Attire</strong> – Wear moisture-wicking, quick-drying clothes and closed-toe water shoes to prevent slipping.</div>
+          <div class="text-zh"><strong>适当服装</strong> — 建议穿着速干排汗衣物和包裹性强的水上鞋，防止打滑受伤。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Health &amp; Fitness Check</strong> – Participants should be in good health and free from conditions that could be worsened by intense physical activity.</div>
+          <div class="text-zh"><strong>健康状况自检</strong> — 参与者应身体健康，无严重影响剧烈运动的疾病或不适。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 3. Boat & Equipment -->
+  <div class="safety-section s-equipment">
+    <div class="section-header">
+      <span class="s-icon">🐉</span>
+      <h2>Boat &amp; Equipment Safety Checks
+        <span class="zh">龙舟与器材安全检查</span>
+      </h2>
+    </div>
+    <ul class="check-list">
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Boat Inspection</strong> – Check the hull for leaks or damage before launching.</div>
+          <div class="text-zh"><strong>龙舟检查</strong> — 下水前请检查船体是否有渗水或损伤。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Paddle Condition</strong> – Inspect paddles for cracks or splinters that could cause injury.</div>
+          <div class="text-zh"><strong>桨的状况</strong> — 检查桨是否有裂纹或碎片，以免造成划伤。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Seating &amp; Weight Distribution</strong> – Ensure even weight distribution for balance and stability.</div>
+          <div class="text-zh"><strong>座位与配重分布</strong> — 确保船上人员分布均衡，保证稳定性与安全。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 4. Training & Paddling -->
+  <div class="safety-section s-paddling">
+    <div class="section-header">
+      <span class="s-icon">🚣</span>
+      <h2>Training &amp; Paddling Safety
+        <span class="zh">训练与划行安全</span>
+      </h2>
+    </div>
+    <ul class="check-list">
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Coach &amp; Steersperson Role</strong> – Follow all instructions from the coach and steersperson during training.</div>
+          <div class="text-zh"><strong>教练与舵手职责</strong> — 训练中请严格听从教练和舵手的指令。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Proper Paddling Techniques</strong> – Use correct form to prevent strain or injury.</div>
+          <div class="text-zh"><strong>正确划桨姿势</strong> — 使用正确划桨方式，避免拉伤或其他运动伤害。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Buddy System</strong> – Always have a partner assigned for accountability and assistance if needed.</div>
+          <div class="text-zh"><strong>伙伴制度</strong> — 每人应有一位"划船伙伴"，确保安全并在需要时能互相协助。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Capsize &amp; Recovery</strong> – Review and practice what to do if the boat tips over: <strong>stay calm, stay with the boat, and wait for assistance.</strong></div>
+          <div class="text-zh"><strong>翻船应对训练</strong> — 学习并演练翻船时的处理方法，牢记：<strong>保持冷静，紧靠船体，等待救援。</strong></div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>No Horseplay</strong> – Avoid unnecessary movements, standing, or leaning too far over the boat's edge.</div>
+          <div class="text-zh"><strong>严禁打闹</strong> — 禁止站立、剧烈晃动或探身至船边，避免发生意外。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 5. Post-Training -->
+  <div class="safety-section s-posttraining">
+    <div class="section-header">
+      <span class="s-icon">🧘</span>
+      <h2>Post-Training Safety
+        <span class="zh">训练后安全措施</span>
+      </h2>
+    </div>
+    <ul class="check-list">
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Cool Down &amp; Stretch</strong> – Prevent muscle soreness and injury with post-training stretching.</div>
+          <div class="text-zh"><strong>拉伸与放松</strong> — 训练结束后请做好拉伸运动，预防肌肉酸痛与受伤。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Check for Injuries</strong> – Report any pain, blisters, or discomfort to the coach immediately.</div>
+          <div class="text-zh"><strong>检查伤情</strong> — 如有任何疼痛、水泡或不适，请立即报告教练或队医。</div>
+        </div>
+      </li>
+      <li class="check-item">
+        <span class="check-mark">✅</span>
+        <div>
+          <div class="text-en"><strong>Proper Equipment Storage</strong> – Clean and store paddles, PFDs, and the boat properly to maintain safety standards.</div>
+          <div class="text-zh"><strong>器材整理</strong> — 训练后请将桨、救生衣和龙舟清洁并妥善存放，保持设备良好状态。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <div class="disclaimer-box">
+    <span class="d-icon">⚠️</span>
+    <p>These guidelines are for informational purposes. All participants must complete a <a href="https://bit.ly/4m2Jldm" target="_blank">liability waiver</a> before boarding. Contact us at <a href="mailto:stldragonboatclub@stlcls.org">stldragonboatclub@stlcls.org</a> with any questions.<br><br>
+    本指南仅供参考。所有参与者在上船前须签署<a href="https://bit.ly/4m2Jldm" target="_blank">免责声明</a>。如有疑问请联系 <a href="mailto:stldragonboatclub@stlcls.org">stldragonboatclub@stlcls.org</a>。</p>
+  </div>
+</div>
+
+<footer>
+  © 2026 St. Louis Dragon Boat Club · stldragonboatclub@stlcls.org
+</footer>
+
+<script>
+function setLang(btn, cls) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.body.className = cls;
+}
+</script>
+</body>
+</html>
