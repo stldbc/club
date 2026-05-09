@@ -1,0 +1,294 @@
+/* ═══════════════════════════════════════════════════
+   STL Dragon Boat — Shared Design System
+   All pages import this file for consistent styling.
+   ═══════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@700;900&family=Noto+Sans:wght@300;400;600&family=Noto+Serif+SC:wght@700&display=swap');
+
+/* ── TOKENS ── */
+:root {
+  --red:          #D91F3A;
+  --gold:         #F5C518;
+  --gold-dark:    #C9A000;
+  --ink:          #111318;
+  --paper:        #F5F0E8;
+  --water:        #0A3560;
+  --water-light:  #1A6BBF;
+  --mist:         #C8DFF5;
+  --surface:      #1A1E28;
+  --surface2:     #222736;
+  --border:       rgba(255,255,255,0.15);
+  color-scheme: dark;
+}
+
+html { background: #111318; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #111318 !important;
+  color: #F5F0E8 !important;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── TYPOGRAPHY ── */
+h1 {
+  font-family: 'Noto Serif Display', serif;
+  font-weight: 900;
+  font-size: clamp(28px, 6vw, 52px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+}
+h1 .accent {
+  color: var(--gold);
+  display: block;
+  font-size: clamp(52px, 13vw, 120px);
+}
+
+h2 {
+  font-family: 'Noto Serif Display', serif;
+  font-weight: 700;
+  font-size: clamp(24px, 5vw, 44px);
+  line-height: 1.1;
+  margin-bottom: 28px;
+  color: var(--paper);
+}
+
+h3 {
+  font-family: 'Noto Serif Display', serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--paper);
+}
+
+/* ── LAYOUT ── */
+section {
+  padding: 60px 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+@media (max-width: 480px) {
+  section { padding: 44px 16px; }
+}
+
+/* ── UTILITY ── */
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: block;
+  opacity: 0.9;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+  opacity: 0.35;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.mt16 { margin-top: 16px; }
+.mt32 { margin-top: 32px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 28px;
+  border-radius: 4px;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  min-height: 48px;
+}
+.btn:hover        { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+.btn-primary      { background: var(--red);  color: #fff; }
+.btn-gold         { background: var(--gold); color: var(--ink); }
+.btn-ghost        { background: transparent; color: var(--paper); border: 1.5px solid rgba(245,240,232,0.4); }
+.btn-ghost:hover  { border-color: var(--gold); color: var(--gold); }
+
+/* ── HERO (base) ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0A3560 0%, #06264A 60%, #041830 100%);
+  padding: 60px 20px 90px;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 40px,
+    rgba(255,255,255,0.025) 40px,
+    rgba(255,255,255,0.025) 80px
+  );
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 860px;
+}
+
+/* ── RIPPLE ANIMATION ── */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(245,197,24,0.15);
+  animation: expand 6s ease-out infinite;
+  pointer-events: none;
+}
+.ripple:nth-child(1) { width: 300px;  height: 300px;  top: 50%; left: 50%; margin: -150px 0 0 -150px; animation-delay: 0s; }
+.ripple:nth-child(2) { width: 600px;  height: 600px;  top: 50%; left: 50%; margin: -300px 0 0 -300px; animation-delay: 1.5s; }
+.ripple:nth-child(3) { width: 900px;  height: 900px;  top: 50%; left: 50%; margin: -450px 0 0 -450px; animation-delay: 3s; }
+.ripple:nth-child(4) { width: 1200px; height: 1200px; top: 50%; left: 50%; margin: -600px 0 0 -600px; animation-delay: 4.5s; }
+
+@keyframes expand {
+  0%   { transform: scale(0.2); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: scale(1);   opacity: 0; }
+}
+
+/* ── WAVE SVG ── */
+.wave { position: absolute; bottom: -2px; left: 0; width: 100%; }
+
+/* ── DRAGON EMOJI FLOAT ── */
+.dragon-emoji {
+  font-size: clamp(60px, 12vw, 100px);
+  display: block;
+  margin-bottom: 16px;
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+.chinese-subtitle {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(28px, 6vw, 52px);
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  opacity: 0.85;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.tagline {
+  font-size: clamp(13px, 2.2vw, 17px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mist);
+  opacity: 0.75;
+  margin: 20px 0 36px;
+}
+
+.cta-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* ── BACK NAV ── */
+.back-nav {
+  position: fixed;
+  top: 16px;
+  left: 20px;
+  z-index: 100;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.6);
+  text-decoration: none;
+  background: rgba(17,19,24,0.7);
+  backdrop-filter: blur(8px);
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  transition: color 0.15s, border-color 0.15s;
+}
+.back-link:hover { color: var(--gold); border-color: rgba(245,197,24,0.4); }
+
+/* ── ANNOUNCEMENT CARD (used in announcements.html) ── */
+.post-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.post-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px 28px 22px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px 24px;
+  align-items: start;
+  transition: border-color 0.15s, background 0.15s;
+  text-decoration: none;
+  color: inherit;
+}
+.post-card:hover { border-color: rgba(245,197,24,0.45); background: rgba(245,197,24,0.05); }
+
+.post-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.post-type {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+.type-club     { background: rgba(26,107,191,0.3);  color: var(--water-light); border: 1px solid rgba(26,107,191,0.5); }
+.type-openhouse{ background: rgba(245,197,24,0.15); color: var(--gold);         border: 1px solid rgba(245,197,24,0.4); }
+.type-festival { background: rgba(217,31,58,0.2);   color: #FF6B81;             border: 1px solid rgba(217,31,58,0.45); }
+.type-recap    { background: rgba(255,255,255,0.07); color: var(--paper);       border: 1px solid var(--border); }
+
+.post-date { font-size: 12px; color: rgba(245,240,232,0.5); letter-spacing: 0.05em; }
+.post-title { font-family: 'Noto Serif Display', serif; font-size: clamp(18px,3vw,24px); font-weight: 700; line-height: 1.25; margin-bottom: 8px; }
+.post-summary { font-size: 14px; line-height: 1.65; color: rgba(245,240,232,0.72); }
+.post-arrow { color: var(--gold); font-size: 22px; margin-top: 4px; opacity: 0.7; transition: opacity 0.15s, transform 0.15s; }
+.post-card:hover .post-arrow { opacity: 1; transform: translateX(4px); }
+
+/* ── FOOTER ── */
+footer {
+  background: rgba(0,0,0,0.6);
+  text-align: center;
+  padding: 28px 20px;
+  font-size: 12px;
+  color: rgba(245,240,232,0.4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

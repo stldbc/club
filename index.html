@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STL Dragon Boat — Gateway Dragon Boat Festival 2026</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── SITE NAV ── */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 56px;
+  background: rgba(11,15,22,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Noto Serif Display', serif;
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  color: var(--paper);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 4px; }
+.nav-link {
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.65);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+.nav-link:hover { color: var(--gold); background: rgba(245,197,24,0.08); }
+.nav-link.cta   { color: var(--gold); border: 1px solid rgba(245,197,24,0.35); }
+.nav-link.cta:hover { background: rgba(245,197,24,0.12); border-color: var(--gold); }
+@media (max-width: 560px) {
+  .nav-links .nav-link:not(.cta) { display: none; }
+}
+
+/* ── HERO (homepage specific) ── */
+.hero { padding-top: 120px; }
+
+/* ── QUICK LINKS STRIP ── */
+.quick-strip {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.quick-strip-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  divide-x: 1px solid var(--border);
+}
+@media (max-width: 560px) { .quick-strip-inner { grid-template-columns: repeat(2, 1fr); } }
+
+.quick-item {
+  padding: 22px 20px;
+  text-decoration: none;
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-right: 1px solid var(--border);
+  transition: background 0.15s;
+  text-align: center;
+}
+.quick-item:last-child { border-right: none; }
+.quick-item:hover { background: rgba(245,197,24,0.07); }
+.quick-item .qi-icon { font-size: 26px; }
+.quick-item .qi-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.7);
+}
+
+/* ── ABOUT STRIP ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+@media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+
+.about-text p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(245,240,232,0.82);
+  margin-bottom: 16px;
+}
+
+.stat-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.stat {
+  text-align: center;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  flex: 1;
+  min-width: 90px;
+}
+.stat-num {
+  font-family: 'Noto Serif Display', serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.55);
+  margin-top: 6px;
+}
+
+/* ── RECENT POSTS ── */
+.recent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+</style>
+</head>
+<body>
+
+<!-- SITE NAV -->
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">🐉 <span>STL</span> Dragon Boat</a>
+  <div class="nav-links">
+    <a href="announcements.html" class="nav-link">News</a>
+    <a href="posts/season-2026.html" class="nav-link">2026 Club</a>
+    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="nav-link cta" target="_blank">Register →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+
+  <div class="hero-inner">
+    <span class="dragon-emoji">🐉</span>
+    <span class="chinese-subtitle">圣路易龙舟</span>
+    <h1>
+      Gateway Dragon Boat
+      <span class="accent">STL</span>
+    </h1>
+    <p class="tagline">St. Louis Dragon Boat Club &amp; Festival · Est. 2007</p>
+    <div class="cta-group">
+      <a href="posts/season-2026.html" class="btn btn-primary">2026 Club Season →</a>
+      <a href="announcements.html"     class="btn btn-ghost">All Announcements</a>
+    </div>
+  </div>
+
+  <svg class="wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#111318"/>
+  </svg>
+</div>
+
+<!-- QUICK LINKS -->
+<div class="quick-strip">
+  <div class="quick-strip-inner">
+    <a href="posts/season-2026.html" class="quick-item">
+      <span class="qi-icon">🏊</span>
+      <span class="qi-label">Join the Club</span>
+    </a>
+    <a href="announcements.html" class="quick-item">
+      <span class="qi-icon">📢</span>
+      <span class="qi-label">Announcements</span>
+    </a>
+    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="quick-item" target="_blank">
+      <span class="qi-icon">📝</span>
+      <span class="qi-label">Register Now</span>
+    </a>
+    <a href="mailto:stldragonboatclub@stlcls.org" class="quick-item">
+      <span class="qi-icon">✉️</span>
+      <span class="qi-label">Contact Us</span>
+    </a>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section>
+  <div class="about-grid">
+    <div class="about-text">
+      <span class="section-label">Who We Are</span>
+      <h2>St. Louis Dragon Boat</h2>
+      <p>The St. Louis Dragon Boat Club (STLDBC) brings together paddlers of all backgrounds on the water every Saturday. No experience needed — just the spirit to paddle.</p>
+      <p>We also organize the <strong>Gateway Dragon Boat Festival</strong>, now in its <strong>20th year</strong>, taking place August 15, 2026 at Creve Coeur Lake.</p>
+      <a href="posts/season-2026.html" class="btn btn-gold mt16">See 2026 Season Details →</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num">20<sup style="font-size:18px">th</sup></div>
+        <div class="stat-lbl">Annual Festival</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">10</div>
+        <div class="stat-lbl">Training Sessions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1.5k</div>
+        <div class="stat-lbl">Expected Attendees</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RECENT POSTS -->
+<section>
+  <span class="section-label">Latest</span>
+  <h2>Recent Announcements</h2>
+
+  <div class="recent-grid">
+    <a class="post-card" href="posts/season-2026.html">
+      <div>
+        <div class="post-meta">
+          <span class="post-type type-club">Club Info</span>
+          <span class="post-date">May 2026</span>
+        </div>
+        <div class="post-title">2026 Season — Join the Crew</div>
+        <div class="post-summary">10 Saturday sessions starting May 16. Full season $160, drop-in $20. Team A &amp; B available.</div>
+      </div>
+      <div class="post-arrow">→</div>
+    </a>
+  </div>
+
+  <a href="announcements.html" class="btn btn-ghost">View All Announcements →</a>
+</section>
+
+<div class="divider"></div>
+
+<!-- FESTIVAL CALLOUT -->
+<section style="text-align:center; padding-bottom: 80px;">
+  <span class="section-label">Mark Your Calendar</span>
+  <h2>20th Gateway Dragon Boat Festival</h2>
+  <p style="font-size:17px; color:rgba(245,240,232,0.78); max-width:520px; margin: 0 auto 32px; line-height:1.7;">
+    August 15, 2026 · Creve Coeur Lake · Maryland Heights, MO<br>
+    1,500 attendees expected · 6 AM – 4 PM
+  </p>
+  <div class="cta-group">
+    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank">Register Your Team</a>
+    <a href="mailto:stldragonboatclub@stlcls.org" class="btn btn-ghost">Sponsorship Inquiries</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 St. Louis Dragon Boat Club &amp; Gateway Dragon Boat Festival · stldragonboatclub@stlcls.org
+</footer>
+
+</body>
+</html>

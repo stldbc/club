@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STL Dragon Boat Club — 2026 Season</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+/* ── SCHEDULE ── */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 40px;
+}
+@media (max-width: 400px) {
+  .schedule-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+}
+
+.date-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 10px;
+  text-align: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.date-chip:hover   { background: rgba(245,197,24,0.1);  border-color: rgba(245,197,24,0.5); }
+.date-chip.special { border-color: var(--red);  background: rgba(217,31,58,0.15); }
+.date-chip.opener  { border-color: var(--gold); background: rgba(245,197,24,0.12); }
+
+.chip-month {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+  display: block;
+}
+.chip-day {
+  font-family: 'Noto Serif Display', serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  display: block;
+}
+.chip-note {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  display: block;
+  opacity: 0.7;
+}
+.chip-note.red { color: var(--red);  opacity: 1; }
+.chip-note.gld { color: var(--gold); opacity: 1; }
+
+.festival-callout {
+  background: linear-gradient(135deg, var(--red) 0%, #8B0F20 100%);
+  border-radius: 6px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.festival-callout .icon { font-size: 42px; flex-shrink: 0; }
+.festival-callout h3 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+.festival-callout p { font-size: 14px; opacity: 0.85; }
+
+/* ── TEAMS ── */
+.teams-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+@media (max-width: 560px) { .teams-grid { grid-template-columns: 1fr; } }
+
+.team-card {
+  border-radius: 8px;
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.team-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.team-a        { background: rgba(26,107,191,0.2); border: 1px solid rgba(26,107,191,0.45); }
+.team-a::before { background: var(--water-light); }
+.team-b        { background: rgba(217,31,58,0.12); border: 1px solid rgba(217,31,58,0.4); }
+.team-b::before { background: var(--red); }
+
+.team-card h3   { font-size: clamp(20px,4vw,26px); margin-bottom: 10px; }
+.team-card .time { font-size: clamp(16px,3.5vw,20px); font-weight: 600; color: var(--gold); margin-bottom: 6px; }
+.team-card .lang { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7; }
+
+.structure-row {
+  display: flex;
+  gap: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 28px;
+  font-size: 13px;
+}
+.struct-block { flex: 1; padding: 16px 8px; text-align: center; }
+.struct-block .dur { font-size: clamp(18px,4vw,22px); font-weight: 700; font-family: 'Noto Serif Display', serif; color: var(--gold); }
+.struct-block .lbl { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; margin-top: 4px; }
+.struct-block:nth-child(1) { background: var(--surface); }
+.struct-block:nth-child(2) { background: rgba(26,107,191,0.3); }
+.struct-block:nth-child(3) { background: var(--surface); }
+.struct-sep { width: 1px; background: var(--border); }
+
+/* ── FEES ── */
+.fees-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 560px) { .fees-grid { grid-template-columns: 1fr; } }
+
+.fee-card {
+  border-radius: 8px;
+  padding: 28px 22px;
+}
+.fee-full   { background: linear-gradient(145deg, rgba(245,197,24,0.14), rgba(245,197,24,0.03)); border: 1px solid rgba(245,197,24,0.45); }
+.fee-single { background: var(--surface); border: 1px solid var(--border); }
+
+.fee-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+.fee-price {
+  font-family: 'Noto Serif Display', serif;
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.fee-price sup { font-size: 24px; vertical-align: super; }
+.fee-title     { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+.fee-includes  { list-style: none; }
+.fee-includes li { font-size: 13px; opacity: 0.8; padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; }
+.fee-includes li::before { content: '✦'; color: var(--gold); font-size: 9px; margin-top: 3px; flex-shrink: 0; }
+
+/* ── LOCATION ── */
+.location-block { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+.location-text  { flex: 1; min-width: 220px; }
+.location-text p       { font-size: 15px; line-height: 1.7; color: rgba(245,240,232,0.82); margin-bottom: 16px; }
+.location-text address { font-style: normal; font-size: 14px; line-height: 1.8; color: rgba(245,240,232,0.68); }
+.map-placeholder {
+  flex: 1;
+  min-width: 200px;
+  height: 180px;
+  border-radius: 8px;
+  background: rgba(26,107,191,0.18);
+  border: 1px solid rgba(26,107,191,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(245,197,24,0.6);
+  text-decoration: none;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.map-placeholder:hover { background: rgba(26,107,191,0.3); border-color: rgba(245,197,24,0.45); }
+
+/* ── NOTES ── */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+@media (max-width: 400px) { .notes-grid { grid-template-columns: 1fr 1fr; } }
+
+.note-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 16px;
+}
+.note-card .icon { font-size: 28px; margin-bottom: 10px; }
+.note-card h4    { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; color: var(--gold); }
+.note-card p     { font-size: 13px; line-height: 1.6; color: rgba(245,240,232,0.78); }
+
+/* ── CONNECT ── */
+.connect-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.connect-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--paper);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+  min-height: 48px;
+}
+.connect-link:hover { background: rgba(245,197,24,0.1); border-color: rgba(245,197,24,0.45); color: var(--gold); }
+</style>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a href="../announcements.html" class="back-link">← All Posts</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+
+  <div class="hero-inner">
+    <span class="dragon-emoji">🐉</span>
+    <span class="chinese-subtitle">圣路易龙舟俱乐部</span>
+    <h1>
+      St. Louis Dragon Boat Club（STLDBC）
+      <span class="accent">2026</span>
+    </h1>
+    <p class="tagline">Join the crew · Hit the water · Race the dragon</p>
+    <div class="cta-group">
+      <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank">Register Now</a>
+      <a href="https://bit.ly/4m2Jldm"             class="btn btn-gold"    target="_blank">Sign Waiver</a>
+      <a href="https://bit.ly/3XEeAkg"             class="btn btn-ghost"   target="_blank">Safety Briefing</a>
+    </div>
+  </div>
+
+  <svg class="wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#111318"/>
+  </svg>
+</div>
+
+<!-- SCHEDULE -->
+<section>
+  <span class="section-label">Training Calendar</span>
+  <h2>2026 Season Schedule</h2>
+
+  <div class="schedule-grid">
+    <div class="date-chip opener">
+      <span class="chip-month">May</span>
+      <span class="chip-day">16</span>
+      <span class="chip-note gld">Season Opener 🎉</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">May</span>
+      <span class="chip-day">30</span>
+      <span class="chip-note">Saturday</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">June</span>
+      <span class="chip-day">13</span>
+      <span class="chip-note">Saturday</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">June</span>
+      <span class="chip-day">20</span>
+      <span class="chip-note">Saturday</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">June</span>
+      <span class="chip-day">27</span>
+      <span class="chip-note">Saturday</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">July</span>
+      <span class="chip-day">11</span>
+      <span class="chip-note">Saturday</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">July</span>
+      <span class="chip-day">18</span>
+      <span class="chip-note">Saturday</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">July</span>
+      <span class="chip-day">25</span>
+      <span class="chip-note">Saturday</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">Aug</span>
+      <span class="chip-day">8</span>
+      <span class="chip-note">Final Practice</span>
+    </div>
+    <div class="date-chip">
+      <span class="chip-month">Sep</span>
+      <span class="chip-day">12</span>
+      <span class="chip-note">Season Finale</span>
+    </div>
+  </div>
+
+  <div class="festival-callout">
+    <div class="icon">🏆</div>
+    <div>
+      <h3>Dragon Boat Festival Race — August 15</h3>
+      <p>Race day! Entry fee ($50 value) included with Full Season membership. Come represent STLDBC on the water.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAMS -->
+<section>
+  <span class="section-label">Training Teams</span>
+  <h2>Find Your Crew</h2>
+
+  <div class="teams-grid">
+    <div class="team-card team-a">
+      <h3>Team A</h3>
+      <div class="time">8:30 – 10:30 AM</div>
+      <div class="lang">Mandarin/English Instruction</div>
+    </div>
+    <div class="team-card team-b">
+      <h3>Team B</h3>
+      <div class="time">9:30 – 11:30 AM</div>
+      <div class="lang">English Instruction</div>
+    </div>
+  </div>
+
+  <span class="section-label">Each Session Structure</span>
+
+  <div class="structure-row">
+    <div class="struct-block">
+      <div class="dur">30m</div>
+      <div class="lbl">Land Warm-up</div>
+    </div>
+    <div class="struct-sep"></div>
+    <div class="struct-block">
+      <div class="dur">60m</div>
+      <div class="lbl">Water Training</div>
+    </div>
+    <div class="struct-sep"></div>
+    <div class="struct-block">
+      <div class="dur">30m</div>
+      <div class="lbl">Debrief</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEES -->
+<section>
+  <span class="section-label">Membership &amp; Fees</span>
+  <h2>Choose Your Season</h2>
+
+  <div class="fees-grid">
+    <div class="fee-card fee-full">
+      <div class="fee-badge">Best Value</div>
+      <div class="fee-price"><sup>$</sup>160</div>
+      <div class="fee-title">Full Season Membership</div>
+      <ul class="fee-includes">
+        <li>All 10 training sessions</li>
+        <li>Aug 15 Festival Race entry ($50 value)</li>
+        <li>2 Guest Passes included ($40 value)</li>
+        <li>All gear provided on-water</li>
+      </ul>
+    </div>
+    <div class="fee-card fee-single">
+      <div class="fee-price"><sup>$</sup>20</div>
+      <div class="fee-title">Single Session Drop-In</div>
+      <ul class="fee-includes">
+        <li>One practice session</li>
+        <li>Great way to try it out</li>
+        <li>Festival entry not included</li>
+        <li>All gear provided on-water</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- LOCATION -->
+<section>
+  <span class="section-label">Where to Find Us</span>
+  <h2>Location</h2>
+  <div class="location-block">
+    <div class="location-text">
+      <p>All training sessions take place at <strong>Simpson Lake</strong> under the <strong>Blue Heron Shelter</strong>. Look for the club banner and fellow paddlers — you won't miss us!</p>
+      <address>
+        1234 Marshall Rd.<br>
+        St. Louis, MO 63088<br>
+        <br>
+        Every Saturday (see schedule above)
+      </address>
+    </div>
+    <a href="https://www.google.com/maps/search/?api=1&query=1234+Marshall+Rd+St+Louis+MO+63088" target="_blank" class="map-placeholder">
+      <span style="font-size:48px;">🗺️</span>
+      <span style="font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); opacity:0.85;">Open in Google Maps</span>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- IMPORTANT NOTES -->
+<section>
+  <span class="section-label">Good to Know</span>
+  <h2>Before You Paddle</h2>
+  <div class="notes-grid">
+    <div class="note-card">
+      <div class="icon">🦺</div>
+      <h4>Gear Provided</h4>
+      <p>Life jackets (PFDs) and paddles are provided. Personal PFDs must meet USCG safety standards.</p>
+    </div>
+    <div class="note-card">
+      <div class="icon">👕</div>
+      <h4>Club Attire</h4>
+      <p>Please wear your official Dragon Boat Club T-shirt to all training sessions. New members get a free club T-shirt!</p>
+    </div>
+    <div class="note-card">
+      <div class="icon">📋</div>
+      <h4>Waiver Required</h4>
+      <p>All paddlers must complete a liability waiver before boarding. Sign it before your first session.</p>
+    </div>
+    <div class="note-card">
+      <div class="icon">🔰</div>
+      <h4>Safety First</h4>
+      <p>Complete the safety briefing video before your first practice. Link above or on our website.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONNECT -->
+<section>
+  <span class="section-label">Stay Connected</span>
+  <h2>Join the Community</h2>
+
+  <div class="connect-row">
+    <a href="mailto:stldragonboatclub@stlcls.org" class="connect-link">📧 stldragonboatclub@stlcls.org</a>
+    <a href="https://www.stlcls.org/school/page/dragonboat" class="connect-link" target="_blank">🌐 www.stlcls.org/dragonboat</a>
+    <a href="https://www.facebook.com/groups/9592205354148705" class="connect-link" target="_blank">👥 Facebook Group</a>
+  </div>
+
+  <div class="mt32">
+    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank" style="font-size:15px; padding:18px 44px;">Register for 2026 →</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 St. Louis Dragon Boat Club · stldragonboatclub@stlcls.org · All sessions at Simpson Lake, St. Louis, MO
+</footer>
+
+</body>
+</html>

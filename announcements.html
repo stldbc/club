@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Announcements — STL Dragon Boat</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.page-hero {
+  background: linear-gradient(160deg, #0A3560 0%, #06264A 60%, #041830 100%);
+  padding: 80px 20px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    135deg,
+    transparent, transparent 40px,
+    rgba(255,255,255,0.025) 40px,
+    rgba(255,255,255,0.025) 80px
+  );
+}
+.page-hero-inner { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; }
+.page-hero h1 {
+  font-size: clamp(32px, 7vw, 56px);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.page-hero p { font-size: 15px; color: var(--mist); opacity: 0.75; margin-top: 12px; }
+
+.filter-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.filter-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: rgba(245,240,232,0.6);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn:hover,
+.filter-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(245,197,24,0.08); }
+
+/* show/hide by data-type */
+.post-card[data-type] { display: grid; }
+body[data-filter="club"]     .post-card:not([data-type="club"])      { display: none; }
+body[data-filter="openhouse"] .post-card:not([data-type="openhouse"]){ display: none; }
+body[data-filter="festival"]  .post-card:not([data-type="festival"]) { display: none; }
+body[data-filter="recap"]     .post-card:not([data-type="recap"])    { display: none; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a href="index.html" class="back-link">← Home</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <span class="section-label">STL Dragon Boat</span>
+    <h1>Announcements</h1>
+    <p>Updates, events, and news from the club and the 20th Gateway Dragon Boat Festival.</p>
+  </div>
+</div>
+
+<section>
+  <!-- Filter buttons -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter(this, '')">All</button>
+    <button class="filter-btn" onclick="setFilter(this, 'club')">Club Info</button>
+    <button class="filter-btn" onclick="setFilter(this, 'openhouse')">Open House</button>
+    <button class="filter-btn" onclick="setFilter(this, 'festival')">Festival</button>
+    <button class="filter-btn" onclick="setFilter(this, 'recap')">Recap</button>
+  </div>
+
+  <!-- Post list — Claude adds new cards here (newest first) -->
+  <div class="post-grid">
+
+    <a class="post-card" href="posts/season-2026.html" data-type="club">
+      <div>
+        <div class="post-meta">
+          <span class="post-type type-club">Club Info</span>
+          <span class="post-date">May 2026</span>
+        </div>
+        <div class="post-title">2026 Season — Join the Crew</div>
+        <div class="post-summary">10 Saturday training sessions starting May 16 at Simpson Lake. Full season membership includes the Aug 15 Festival race entry. Team A (Mandarin/English) &amp; Team B (English) available.</div>
+      </div>
+      <div class="post-arrow">→</div>
+    </a>
+
+  </div>
+</section>
+
+<footer>
+  © 2026 St. Louis Dragon Boat Club · stldragonboatclub@stlcls.org
+</footer>
+
+<script>
+function setFilter(btn, type) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.body.dataset.filter = type;
+}
+</script>
+</body>
+</html>
