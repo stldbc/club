@@ -64,10 +64,11 @@
   max-width: 960px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   divide-x: 1px solid var(--border);
 }
-@media (max-width: 560px) { .quick-strip-inner { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .quick-strip-inner { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 400px) { .quick-strip-inner { grid-template-columns: repeat(2, 1fr); } }
 
 .quick-item {
   padding: 22px 20px;
@@ -137,6 +138,29 @@
   margin-top: 6px;
 }
 
+/* ── NEXT SESSION BAR ── */
+.next-session-bar {
+  background: rgba(245,197,24,0.09);
+  border-bottom: 1px solid rgba(245,197,24,0.2);
+  padding: 11px 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ns-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+}
+.ns-date { font-weight: 600; font-size: 13px; color: var(--gold); }
+.ns-loc  { font-size: 12px; color: rgba(245,240,232,0.5); }
+
 /* ── RECENT POSTS ── */
 .recent-grid {
   display: grid;
@@ -154,7 +178,7 @@
   <div class="nav-links">
     <a href="announcements.html" class="nav-link">News</a>
     <a href="posts/season-2026.html" class="nav-link">2026 Club</a>
-    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="nav-link cta" target="_blank">Register →</a>
+    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="nav-link cta" target="_blank">Membership Registration →</a>
   </div>
 </nav>
 
@@ -181,6 +205,13 @@
   </svg>
 </div>
 
+<!-- NEXT SESSION BAR -->
+<div class="next-session-bar" id="next-session-bar">
+  <span class="ns-label">Next Training Session</span>
+  <span class="ns-date" id="ns-date">—</span>
+  <span class="ns-loc">· 8:30 AM · Simpson Lake, Blue Heron Shelter</span>
+</div>
+
 <!-- QUICK LINKS -->
 <div class="quick-strip">
   <div class="quick-strip-inner">
@@ -194,7 +225,12 @@
     </a>
     <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="quick-item" target="_blank">
       <span class="qi-icon">📝</span>
-      <span class="qi-label">Register Now</span>
+      <span class="qi-label">Membership Registration</span>
+    </a>
+    <!-- TODO: replace href="#" with Drop-In Google Form URL once created -->
+    <a href="#" class="quick-item" target="_blank">
+      <span class="qi-icon">🚣</span>
+      <span class="qi-label">Drop In ($20)</span>
     </a>
     <a href="mailto:stldragonboatclub@stlcls.org" class="quick-item">
       <span class="qi-icon">✉️</span>
@@ -238,14 +274,15 @@
   <h2>Recent Announcements</h2>
 
   <div class="recent-grid">
-    <a class="post-card" href="posts/open-house-2026-05-16.html">
+    <a class="post-card is-past" href="posts/open-house-2026-05-16.html">
       <div>
         <div class="post-meta">
           <span class="post-type type-openhouse">Open House</span>
+          <span class="badge-past">Past</span>
           <span class="post-date">May 16, 2026</span>
         </div>
         <div class="post-title">Free Trial Open House — May 16</div>
-        <div class="post-summary">Try dragon boat for free at Simpson Lake. 8:30–11:30 AM. Open to all, no experience needed.</div>
+        <div class="post-summary">This event has ended. Regular Saturday training is now underway.</div>
       </div>
       <div class="post-arrow">→</div>
     </a>
@@ -282,6 +319,24 @@
     <a href="posts/season-2026.html" class="btn btn-ghost">Join Our Club Team</a>
   </div>
 </section>
+
+<script>
+(function () {
+  var sessions = [
+    [2026,4,16],[2026,4,30],[2026,5,13],[2026,5,20],[2026,5,27],
+    [2026,6,11],[2026,6,18],[2026,6,25],[2026,7,8],[2026,8,12]
+  ].map(function(s){ return new Date(s[0],s[1],s[2]); });
+  var today = new Date(); today.setHours(0,0,0,0);
+  var next = sessions.find(function(d){ return d >= today; });
+  var bar = document.getElementById('next-session-bar');
+  var el  = document.getElementById('ns-date');
+  if (next && el) {
+    el.textContent = next.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  } else if (bar) {
+    bar.style.display = 'none';
+  }
+})();
+</script>
 
 <footer>
   © 2026 St. Louis Dragon Boat Club (STLDBC) · stldragonboatclub@stlcls.org

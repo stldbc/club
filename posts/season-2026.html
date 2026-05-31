@@ -201,6 +201,35 @@
 .note-card h4    { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; color: var(--gold); }
 .note-card p     { font-size: 13px; line-height: 1.6; color: rgba(245,240,232,0.78); }
 
+/* ── PAST DATE CHIPS ── */
+.date-chip.past {
+  opacity: 0.28;
+  border-color: var(--border) !important;
+  background: var(--surface) !important;
+}
+.date-chip.past .chip-month,
+.date-chip.past .chip-day { color: rgba(245,240,232,0.4); }
+.date-chip.past .chip-note { color: rgba(245,240,232,0.3) !important; opacity: 1; }
+
+/* ── NEXT SESSION CALLOUT ── */
+.next-session-callout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(245,197,24,0.09);
+  border: 1px solid rgba(245,197,24,0.28);
+  border-radius: 6px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.nsc-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.75;
+}
+.nsc-date  { font-size: 15px; font-weight: 600; color: var(--gold); }
+.nsc-time  { font-size: 12px; color: rgba(245,240,232,0.52); }
+
 /* ── CONNECT ── */
 .connect-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
 .connect-link {
@@ -242,9 +271,10 @@
     </h1>
     <p class="tagline">Join the crew · Hit the water · Race the dragon</p>
     <div class="cta-group">
-      <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank">Register Now</a>
-      <a href="https://forms.gle/WrG4zwLNZ4AgkDPA8"             class="btn btn-gold"    target="_blank">Sign Waiver</a>
-      <a href="safety.html"                         class="btn btn-ghost">Safety Guidelines</a>
+      <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank">Membership Registration →</a>
+      <!-- TODO: replace href="#" with Drop-In Google Form URL once created -->
+      <a href="#" class="btn btn-gold" target="_blank">Drop In ($20) →</a>
+      <a href="https://forms.gle/WrG4zwLNZ4AgkDPA8" class="btn btn-ghost"   target="_blank">Sign Waiver</a>
     </div>
   </div>
 
@@ -257,6 +287,13 @@
 <section>
   <span class="section-label">Training Calendar</span>
   <h2>2026 Season Schedule</h2>
+
+  <!-- auto-populated by JS below -->
+  <div class="next-session-callout" id="next-session-callout">
+    <span class="nsc-label">Coming Up</span>
+    <span class="nsc-date" id="nsc-date">—</span>
+    <span class="nsc-time">· Team A 8:30 AM · Team B 9:30 AM · Simpson Lake</span>
+  </div>
 
   <div class="schedule-grid">
     <div class="date-chip opener">
@@ -458,10 +495,42 @@
     <a href="https://www.facebook.com/groups/9592205354148705" class="connect-link" target="_blank">👥 Facebook Group</a>
   </div>
 
-  <div class="mt32">
-    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank" style="font-size:15px; padding:18px 44px;">Register for 2026 →</a>
+  <div class="mt32" style="display:flex; gap:12px; flex-wrap:wrap;">
+    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank" style="font-size:15px; padding:18px 44px;">Membership Registration →</a>
+    <!-- TODO: replace href="#" with Drop-In Google Form URL once created -->
+    <a href="#" class="btn btn-gold" target="_blank" style="font-size:15px; padding:18px 44px;">Drop In ($20) →</a>
   </div>
 </section>
+
+<script>
+(function () {
+  var sessions = [
+    [2026,4,16],[2026,4,30],[2026,5,13],[2026,5,20],[2026,5,27],
+    [2026,6,11],[2026,6,18],[2026,6,25],[2026,7,8],[2026,8,12]
+  ].map(function(s){ return new Date(s[0],s[1],s[2]); });
+  var today = new Date(); today.setHours(0,0,0,0);
+
+  // Mark past date chips
+  var monthMap = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,July:6,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  document.querySelectorAll('.date-chip').forEach(function(chip) {
+    var m = chip.querySelector('.chip-month');
+    var d = chip.querySelector('.chip-day');
+    if (!m || !d) return;
+    var dt = new Date(2026, monthMap[m.textContent.trim()], parseInt(d.textContent));
+    if (dt < today) chip.classList.add('past');
+  });
+
+  // Next session display
+  var next = sessions.find(function(d){ return d >= today; });
+  var el  = document.getElementById('nsc-date');
+  var box = document.getElementById('next-session-callout');
+  if (next && el) {
+    el.textContent = next.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  } else if (box) {
+    box.style.display = 'none';
+  }
+})();
+</script>
 
 <footer>
   © 2026 St. Louis Dragon Boat Club · stldragonboatclub@stlcls.org · All sessions at Simpson Lake, St. Louis, MO
