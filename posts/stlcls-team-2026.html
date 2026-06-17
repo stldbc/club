@@ -6,35 +6,9 @@
 <title>STLCLS Dragon Boat Team — 2026 Recruitment</title>
 <link rel="stylesheet" href="../style.css">
 <style>
-.page-hero {
-  background: linear-gradient(160deg, #8B0F20 0%, #5a0a15 60%, #041830 100%);
-  padding: 80px 20px 60px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.page-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    135deg,
-    transparent, transparent 40px,
-    rgba(255,255,255,0.025) 40px,
-    rgba(255,255,255,0.025) 80px
-  );
-}
-.page-hero-inner { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
-.page-hero h1 {
-  font-size: clamp(28px, 6vw, 48px);
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-}
-.page-hero p { font-size: 15px; color: var(--mist); opacity: 0.8; margin-top: 12px; }
-
 .poster-wrap {
   text-align: center;
-  margin: 40px auto;
+  margin: 48px auto 32px;
   max-width: 480px;
 }
 .poster-wrap img {
@@ -43,97 +17,9 @@
   border: 1px solid var(--border);
   box-shadow: 0 8px 32px rgba(0,0,0,0.5);
 }
-
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 32px;
-}
-@media (max-width: 560px) { .info-grid { grid-template-columns: 1fr; } }
-
-.info-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 22px 20px;
-}
-.info-card .ic-label {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 8px;
-}
-.info-card .ic-val {
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.5;
-  color: var(--paper);
-}
-.info-card .ic-sub {
-  font-size: 12px;
-  color: rgba(245,240,232,0.55);
-  margin-top: 4px;
-}
-
-.cta-banner {
-  background: linear-gradient(135deg, rgba(217,31,58,0.25) 0%, rgba(26,107,191,0.2) 100%);
-  border: 1px solid rgba(217,31,58,0.4);
-  border-radius: 8px;
-  padding: 32px 28px;
+.reg-wrap {
   text-align: center;
-  margin: 40px 0;
-}
-.cta-banner h3 { font-size: clamp(20px,4vw,26px); margin-bottom: 8px; }
-.cta-banner p  { font-size: 14px; color: rgba(245,240,232,0.75); margin-bottom: 24px; line-height: 1.65; }
-.price-badge {
-  display: inline-block;
-  background: var(--gold);
-  color: #111;
-  font-weight: 800;
-  font-size: 28px;
-  padding: 6px 24px;
-  border-radius: 6px;
-  margin-bottom: 12px;
-}
-.price-includes {
-  font-size: 12px;
-  color: rgba(245,240,232,0.6);
-  margin-top: 4px;
-  margin-bottom: 20px;
-  letter-spacing: 0.05em;
-}
-
-.bbq-callout {
-  background: rgba(245,197,24,0.08);
-  border: 1px solid rgba(245,197,24,0.3);
-  border-left: 4px solid var(--gold);
-  border-radius: 0 8px 8px 0;
-  padding: 20px 24px;
-  margin: 32px 0;
-}
-.bbq-callout h3 { font-size: 18px; margin-bottom: 8px; color: var(--gold); }
-.bbq-callout p  { font-size: 14px; color: rgba(245,240,232,0.82); line-height: 1.65; margin: 0; }
-
-.includes-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-.includes-list li {
-  background: rgba(245,240,232,0.08);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  margin: 0 auto 64px;
 }
 </style>
 </head>
@@ -143,113 +29,19 @@
   <a href="../index.html" class="back-link">← Home</a>
 </nav>
 
-<div class="page-hero">
-  <div class="page-hero-inner">
-    <span class="section-label">St. Louis Chinese Language School × Dragon Boat</span>
-    <h1>参战第二十届龙舟节<br>Join the STLCLS Dragon Boat Team!</h1>
-    <p>圣路易中文学校龙舟队公开招募 · Open to all STLCLS families · All skill levels welcome</p>
-  </div>
-</div>
-
 <section>
-  <!-- Poster -->
   <div class="poster-wrap">
-    <img src="../images/stlcls-recruitment-2026.jpg" alt="STLCLS Dragon Boat Team Recruitment Poster — 20th Gateway Dragon Boat Festival">
+    <img src="../images/stlcls-recruitment-2026.jpg" alt="STLCLS Dragon Boat Team Recruitment — 20th Gateway Dragon Boat Festival">
   </div>
-
-  <!-- BBQ Meet-Up Callout -->
-  <div class="bbq-callout">
-    <h3>🍖 Father's Day BBQ × Dragon Boat Meet-Up</h3>
-    <p>
-      <strong>Sunday, June 21, 2026 &nbsp;·&nbsp; 5:00 – 7:00 PM</strong><br>
-      Vago Park – American Legion Pavilion &nbsp;·&nbsp; 2700 Fee Fee Rd, Maryland Heights, MO 63043<br><br>
-      Can't make it to the BBQ? No problem — sign up online below!
-    </p>
-  </div>
-
-  <!-- Info cards -->
-  <div class="info-grid">
-    <div class="info-card">
-      <div class="ic-label">Festival Race Day</div>
-      <div class="ic-val">August 15, 2026 (Sat)</div>
-      <div class="ic-sub">Creve Coeur Lake · Maryland Heights, MO</div>
-    </div>
-    <div class="info-card">
-      <div class="ic-label">Training</div>
-      <div class="ic-val">Saturdays, May – Aug 2026</div>
-      <div class="ic-sub">Simpson Lake · Professional coaching</div>
-    </div>
-    <div class="info-card">
-      <div class="ic-label">Organizers</div>
-      <div class="ic-val">STLDBC × STLCLS</div>
-      <div class="ic-sub">Co-organized by St. Louis Dragon Boat Club &amp; Chinese Language School</div>
-    </div>
-    <div class="info-card">
-      <div class="ic-label">Contact</div>
-      <div class="ic-val"><a href="mailto:stldragonboatclub@stlcls.org" style="color:var(--gold)">stldragonboatclub<br>@stlcls.org</a></div>
-      <div class="ic-sub">Questions welcome</div>
-    </div>
-  </div>
-
-  <!-- CTA / Registration -->
-  <div class="cta-banner">
-    <h3>Ready to Join?</h3>
-    <p>Register online — no need to wait for the BBQ.<br>$50/person · All skill levels welcome · 欢迎所有水平</p>
-    <div class="price-badge">$50 / person</div>
-    <ul class="includes-list">
-      <li>Team Shirt</li>
-      <li>Pro Coaching</li>
-      <li>All Training Sessions</li>
-      <li>Festival Race Entry</li>
-      <li>Community Events</li>
-    </ul>
-    <a href="https://forms.gle/wqRS46ebQic7bxAM6" class="btn btn-primary" target="_blank" rel="noopener" id="reg-btn">
-      Register Online (学校龙舟队报名) →
+  <div class="reg-wrap">
+    <a href="https://forms.gle/wqRS46ebQic7bxAM6" class="btn btn-primary" target="_blank" rel="noopener">
+      Register Online 学校龙舟队报名 →
     </a>
-    <p style="font-size:12px; color:rgba(245,240,232,0.45); margin-top:16px; margin-bottom:0;">
-      Or sign up in person at the Father's Day BBQ on June 21.
-    </p>
   </div>
-
-  <div class="divider"></div>
-
-  <h2>Why Join?</h2>
-  <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:16px; margin-bottom:40px;">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 18px;">
-      <div style="font-size:28px;margin-bottom:8px;">👥</div>
-      <div style="font-weight:700;margin-bottom:4px;">团队荣誉 Team Pride</div>
-      <div style="font-size:13px;color:rgba(245,240,232,0.65);">Represent STLCLS at the 20th Gateway Dragon Boat Festival.</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 18px;">
-      <div style="font-size:28px;margin-bottom:8px;">🏅</div>
-      <div style="font-weight:700;margin-bottom:4px;">专业教练 Pro Coaching</div>
-      <div style="font-size:13px;color:rgba(245,240,232,0.65);">Experienced coaches guide you from your first stroke to race day.</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 18px;">
-      <div style="font-size:28px;margin-bottom:8px;">🤝</div>
-      <div style="font-weight:700;margin-bottom:4px;">社区连接 Community</div>
-      <div style="font-size:13px;color:rgba(245,240,232,0.65);">Meet families from STLCLS and build lasting friendships on the water.</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 18px;">
-      <div style="font-size:28px;margin-bottom:8px;">🎊</div>
-      <div style="font-weight:700;margin-bottom:4px;">文化体验 Culture &amp; Fun</div>
-      <div style="font-size:13px;color:rgba(245,240,232,0.65);">Experience the ancient tradition of dragon boat racing firsthand.</div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <h2>Questions?</h2>
-  <p style="font-size:15px;line-height:1.75;color:rgba(245,240,232,0.78);">
-    Email us at <a href="mailto:stldragonboatclub@stlcls.org" style="color:var(--gold)">stldragonboatclub@stlcls.org</a><br>
-    Facebook: <a href="https://www.facebook.com/StLouisDragonBoatClub" style="color:var(--gold)" target="_blank" rel="noopener">St. Louis Dragon Boat Club</a><br>
-    Or find us at the <strong>Father's Day BBQ on June 21</strong> at Vago Park.
-  </p>
-
 </section>
 
 <footer>
-  © 2026 St. Louis Dragon Boat Club (STLDBC) · Co-organized with STLCLS · stldragonboatclub@stlcls.org
+  © 2026 St. Louis Dragon Boat Club (STLDBC) · stldragonboatclub@stlcls.org
 </footer>
 
 </body>
