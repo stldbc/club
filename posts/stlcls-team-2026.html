@@ -6,6 +6,28 @@
 <title>STLCLS Dragon Boat Team — 2026 Recruitment</title>
 <link rel="stylesheet" href="../style.css">
 <style>
+.page-hero {
+  background: linear-gradient(160deg, #8B0F20 0%, #5a0a15 60%, #041830 100%);
+  padding: 80px 20px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    135deg,
+    transparent, transparent 40px,
+    rgba(255,255,255,0.025) 40px,
+    rgba(255,255,255,0.025) 80px
+  );
+}
+.page-hero-inner { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+.page-hero h1 { font-size: clamp(26px, 6vw, 44px); letter-spacing: -0.01em; line-height: 1.2; }
+.page-hero p  { font-size: 15px; color: var(--mist); opacity: 0.8; margin-top: 10px; }
+
 .poster-wrap {
   text-align: center;
   margin: 48px auto 32px;
@@ -29,6 +51,14 @@
   <a href="../index.html" class="back-link">← Home</a>
 </nav>
 
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <span class="section-label">St. Louis Chinese Language School × Dragon Boat</span>
+    <h1>参战第二十届龙舟节<br>Join the STLCLS Dragon Boat Team!</h1>
+    <p>圣路易中文学校龙舟队公开招募 · Open to all STLCLS families · All skill levels welcome</p>
+  </div>
+</div>
+
 <section>
   <div class="poster-wrap">
     <img src="../images/stlcls-recruitment-2026.jpg" alt="STLCLS Dragon Boat Team Recruitment — 20th Gateway Dragon Boat Festival">
@@ -41,7 +71,7 @@
 </section>
 
 <footer>
-  © 2026 St. Louis Dragon Boat Club (STLDBC) · stldragonboatclub@stlcls.org
+  © 2026 St. Louis Dragon Boat Club (STLDBC) · Co-organized with STLCLS · stldragonboatclub@stlcls.org
 </footer>
 
 </body>
