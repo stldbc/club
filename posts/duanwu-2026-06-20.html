@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>端午节团建 — STL Dragon Boat Club · June 20, 2026</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+/* ── HERO ── */
+.dy-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, #7A0C1A 0%, #5A0810 55%, #2A0408 100%);
+  padding: 60px 20px 90px;
+  text-align: center;
+}
+.dy-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% 100%, rgba(245,197,24,0.08) 0%, transparent 70%),
+    repeating-linear-gradient(
+      45deg, transparent, transparent 30px,
+      rgba(245,197,24,0.03) 30px, rgba(245,197,24,0.03) 60px
+    );
+}
+.dy-hero-inner { position: relative; z-index: 2; max-width: 760px; }
+
+.dy-badge {
+  display: inline-block;
+  background: rgba(245,197,24,0.15);
+  border: 1px solid rgba(245,197,24,0.5);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  padding: 6px 20px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.dy-chinese {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(40px, 10vw, 80px);
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 20px rgba(245,197,24,0.4);
+}
+.dy-chinese-sub {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 3vw, 20px);
+  letter-spacing: 0.25em;
+  color: rgba(245,197,24,0.7);
+  display: block;
+  margin-bottom: 18px;
+}
+
+.dy-en-title {
+  font-family: 'Noto Serif Display', serif;
+  font-weight: 900;
+  font-size: clamp(22px, 5vw, 38px);
+  line-height: 1.2;
+  color: var(--paper);
+  margin-bottom: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* date pill */
+.date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid var(--gold);
+  border-radius: 60px;
+  padding: 12px 32px;
+  margin-bottom: 16px;
+}
+.date-num {
+  font-family: 'Noto Serif Display', serif;
+  font-size: clamp(44px, 9vw, 72px);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+.date-info { text-align: left; }
+.date-info .dow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
+.date-info .month { font-size: 16px; font-weight: 600; color: var(--paper); }
+
+.dy-tagline {
+  font-size: clamp(13px, 2vw, 15px);
+  color: rgba(245,240,232,0.75);
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 12px auto 0;
+}
+
+/* ── INFO STRIPS ── */
+.info-strips {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-top: 2px solid rgba(245,197,24,0.3);
+  background: var(--surface2);
+}
+@media (max-width: 560px) { .info-strips { grid-template-columns: 1fr; } }
+
+.strip {
+  padding: 24px 20px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.strip:last-child { border-right: none; }
+@media (max-width: 560px) {
+  .strip { border-right: none; border-bottom: 1px solid var(--border); }
+  .strip:last-child { border-bottom: none; }
+}
+.strip .s-icon { font-size: 28px; margin-bottom: 10px; }
+.strip .s-label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+.strip .s-val {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--paper);
+}
+.strip .s-val a { color: #7EC8F5; text-decoration: underline; }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* section heading */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 48px 0 20px;
+}
+.sec-head .s-icon { font-size: 26px; }
+.sec-head h2 {
+  font-size: clamp(16px, 3vw, 20px);
+  font-weight: 700;
+  margin: 0;
+}
+.sec-head .s-zh {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  color: rgba(245,197,24,0.75);
+  margin-left: 4px;
+}
+
+/* gift card */
+.gift-card {
+  background: linear-gradient(135deg, rgba(122,12,26,0.25) 0%, rgba(80,8,16,0.15) 100%);
+  border: 1px solid rgba(245,197,24,0.35);
+  border-radius: 10px;
+  padding: 24px 28px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.gift-card .g-icon { font-size: 36px; flex-shrink: 0; margin-top: 2px; }
+.gift-card .g-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.gift-card .g-desc {
+  font-size: 14px;
+  color: rgba(245,240,232,0.8);
+  line-height: 1.65;
+}
+
+/* food grid */
+.food-section { margin-top: 8px; }
+
+.food-category {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.8;
+  margin: 20px 0 12px;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .food-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.food-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 14px 12px;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+.food-item:hover {
+  border-color: rgba(245,197,24,0.4);
+  background: rgba(245,197,24,0.05);
+}
+.food-item .f-icon { font-size: 24px; display: block; margin-bottom: 8px; }
+.food-item .f-zh {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paper);
+  display: block;
+  margin-bottom: 4px;
+}
+.food-item .f-en {
+  font-size: 11px;
+  color: rgba(245,240,232,0.5);
+  line-height: 1.4;
+}
+
+/* notes card */
+.notes-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.note-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+}
+.note-row:last-child { border-bottom: none; }
+.note-row .n-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.note-row .n-text {
+  font-size: 14px;
+  color: rgba(245,240,232,0.85);
+  line-height: 1.65;
+}
+.note-row .n-text strong { color: var(--gold); }
+.note-row .n-text .n-zh {
+  font-family: 'Noto Serif SC', serif;
+  color: rgba(245,197,24,0.75);
+  font-size: 13px;
+  display: block;
+  margin-top: 4px;
+}
+
+/* team schedule */
+.team-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 8px;
+}
+@media (max-width: 480px) { .team-grid { grid-template-columns: 1fr; } }
+
+.team-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  text-align: center;
+}
+.team-card.full { border-color: rgba(245,197,24,0.25); background: rgba(245,197,24,0.04); }
+.team-label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+.team-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--paper);
+  margin-bottom: 6px;
+}
+.team-time {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.team-note {
+  font-size: 11px;
+  color: rgba(245,240,232,0.5);
+  line-height: 1.5;
+}
+.team-full-badge {
+  display: inline-block;
+  background: rgba(245,197,24,0.15);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin-top: 6px;
+}
+
+/* flyer section */
+.flyer-wrap {
+  margin: 40px 0;
+  text-align: center;
+}
+.flyer-wrap img {
+  max-width: 420px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(245,197,24,0.2);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.flyer-caption {
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(245,240,232,0.4);
+  letter-spacing: 0.1em;
+}
+
+/* closing banner */
+.closing-banner {
+  background: linear-gradient(135deg, rgba(122,12,26,0.3) 0%, rgba(80,8,16,0.2) 100%);
+  border: 1px solid rgba(245,197,24,0.25);
+  border-radius: 10px;
+  padding: 32px 28px;
+  text-align: center;
+  margin: 40px 0;
+}
+.closing-banner .cb-zh {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(16px, 4vw, 22px);
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  margin-bottom: 10px;
+  display: block;
+}
+.closing-banner .cb-en {
+  font-size: 14px;
+  color: rgba(245,240,232,0.7);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* contact */
+.contact-card {
+  background: rgba(26,107,191,0.1);
+  border: 1px solid rgba(26,107,191,0.35);
+  border-radius: 10px;
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px 0 40px;
+}
+.contact-card .c-icon { font-size: 26px; flex-shrink: 0; }
+.contact-card .c-main { flex: 1; min-width: 200px; }
+.contact-card .c-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7EC8F5;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.contact-card .c-email {
+  color: var(--paper);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+}
+.contact-card .c-email:hover { color: var(--gold); }
+.contact-card .c-sub { font-size: 12px; color: rgba(245,240,232,0.5); margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a href="../announcements.html" class="back-link">← All Posts</a>
+</nav>
+
+<!-- HERO -->
+<div class="dy-hero">
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+
+  <div class="dy-hero-inner">
+    <div class="dy-badge">Dragon Boat Festival · 端午节</div>
+    <span class="dy-chinese">端午安康</span>
+    <span class="dy-chinese-sub">Happy Dragon Boat Festival</span>
+    <div class="dy-en-title">Training + Team Building<br>团建特别活动</div>
+
+    <div class="date-pill">
+      <div class="date-num">6/20</div>
+      <div class="date-info">
+        <div class="dow">Saturday · 星期六</div>
+        <div class="month">June 2026</div>
+      </div>
+    </div>
+
+    <p class="dy-tagline">
+      本周六训练正好赶上端午节！俱乐部特别策划了训练+团建活动，一起热热闹闹过节！<br>
+      <em>This Saturday training falls right on the Dragon Boat Festival — we've planned a special training + team building event to celebrate together!</em>
+    </p>
+  </div>
+
+  <svg class="wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#111318"/>
+  </svg>
+</div>
+
+<!-- INFO STRIPS -->
+<div class="info-strips">
+  <div class="strip">
+    <div class="s-icon">📍</div>
+    <div class="s-label">Location · 地点</div>
+    <div class="s-val">
+      <a href="https://www.google.com/maps/search/?api=1&query=Simpson+Lake+Blue+Heron+Shelter+St+Louis+MO" target="_blank">Simpson Lake</a>
+    </div>
+  </div>
+  <div class="strip">
+    <div class="s-icon">🕣</div>
+    <div class="s-label">Team A · 训练时间</div>
+    <div class="s-val">8:30 – 10:30 AM</div>
+  </div>
+  <div class="strip">
+    <div class="s-icon">🕤</div>
+    <div class="s-label">Team B · 训练时间</div>
+    <div class="s-val">9:30 – 11:30 AM</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+
+  <!-- Training Schedule -->
+  <div class="sec-head">
+    <span class="s-icon">🚣</span>
+    <h2>Training Schedule <span class="s-zh">训练时段</span></h2>
+  </div>
+  <div class="team-grid">
+    <div class="team-card full">
+      <div class="team-label">Team A</div>
+      <div class="team-name">Team A</div>
+      <div class="team-time">8:30 – 10:30 AM</div>
+      <div class="team-note">Mandarin / English</div>
+      <div class="team-full-badge">⚠️ Full · 已满</div>
+    </div>
+    <div class="team-card">
+      <div class="team-label">Team B</div>
+      <div class="team-name">Team B</div>
+      <div class="team-time">9:30 – 11:30 AM</div>
+      <div class="team-note">English<br>Guest passes &amp; Drop-ins here</div>
+    </div>
+  </div>
+
+  <!-- Exclusive Gift -->
+  <div class="sec-head">
+    <span class="s-icon">🎁</span>
+    <h2>Exclusive Gift for Participants <span class="s-zh">参训专属礼物</span></h2>
+  </div>
+  <div class="gift-card">
+    <div class="g-icon">📿</div>
+    <div>
+      <div class="g-title">端午节纪念手链 · Dragon Boat Festival Commemorative Bracelet</div>
+      <div class="g-desc">
+        每位参加训练的队员将获赠一条端午节纪念手链，祝福平平安安！<br>
+        <em>Every paddler who joins training will receive a Dragon Boat Festival commemorative bracelet — wishing you good luck and good health!</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- Festival Treats -->
+  <div class="sec-head">
+    <span class="s-icon">🍡</span>
+    <h2>Festival Treats <span class="s-zh">节日美食</span></h2>
+  </div>
+  <p style="font-size:14px; color:rgba(245,240,232,0.7); line-height:1.65; margin-bottom:0;">
+    俱乐部特别准备了六款端午节美食，训练结束后一起享用！<br>
+    <em>The club is providing six kinds of Dragon Boat Festival treats for everyone to enjoy after training!</em>
+  </p>
+
+  <div class="food-section">
+    <div class="food-category">粽子 Qingtuan · Glutinous Rice Dumplings</div>
+    <div class="food-grid">
+      <div class="food-item">
+        <span class="f-icon">🍚</span>
+        <span class="f-zh">咸蛋黄肉松</span>
+        <span class="f-en">Salted Egg Yolk &amp; Pork Floss</span>
+      </div>
+      <div class="food-item">
+        <span class="f-icon">🟣</span>
+        <span class="f-zh">椰香紫米</span>
+        <span class="f-en">Coconut &amp; Purple Rice</span>
+      </div>
+      <div class="food-item">
+        <span class="f-icon">🔴</span>
+        <span class="f-zh">经典豆沙</span>
+        <span class="f-en">Classic Red Bean Paste</span>
+      </div>
+    </div>
+
+    <div class="food-category">甜品 Desserts</div>
+    <div class="food-grid">
+      <div class="food-item">
+        <span class="f-icon">🥭</span>
+        <span class="f-zh">杨枝甘露</span>
+        <span class="f-en">Mango Pomelo Sago</span>
+      </div>
+      <div class="food-item">
+        <span class="f-icon">🌿</span>
+        <span class="f-zh">绿豆薏米汤</span>
+        <span class="f-en">Mung Bean &amp; Job's Tears Soup</span>
+      </div>
+      <div class="food-item">
+        <span class="f-icon">🌸</span>
+        <span class="f-zh">桃胶银耳羹</span>
+        <span class="f-en">Peach Gum &amp; Snow Fungus Soup</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Please Note -->
+  <div class="sec-head">
+    <span class="s-icon">📢</span>
+    <h2>Please Note <span class="s-zh">温馨提示</span></h2>
+  </div>
+  <div class="notes-card">
+    <div class="note-row">
+      <div class="n-icon">🎫</div>
+      <div class="n-text">
+        <strong>Each member has 2 Guest Passes this season</strong> — bring a friend or family member to celebrate with us!
+        <span class="n-zh">本赛季每位会员有 2 张 Guest Pass，欢迎邀请亲友同行！</span>
+      </div>
+    </div>
+    <div class="note-row">
+      <div class="n-icon">⚠️</div>
+      <div class="n-text">
+        <strong>Team A is now full.</strong> All Guest Pass and Drop-in participants will be placed in the <strong>Team B session (9:30–11:30 AM).</strong>
+        <span class="n-zh">目前 Team A 已满员。所有 Guest Pass 及 Drop-in 将安排在 Team B 训练时段。</span>
+      </div>
+    </div>
+    <div class="note-row">
+      <div class="n-icon">🥢</div>
+      <div class="n-text">
+        <strong>Bring your own snacks!</strong> Feel free to bring your own festival snacks to share with the team — the more the merrier!
+        <span class="n-zh">欢迎大家也带上自己喜爱的端午节美食，与队友们一起分享节日快乐！</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flyer -->
+  <div class="flyer-wrap">
+    <img src="../images/duanwu-2026-06-20.jpg" alt="端午节团建活动传单 Duanwu Team Building Flyer">
+    <div class="flyer-caption">Official Event Flyer · 活动传单</div>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing-banner">
+    <span class="cb-zh">期待和大家一起过一个热闹有趣的端午节！</span>
+    <div class="cb-en">
+      Looking forward to celebrating with everyone —<br>
+      <strong>see you on the water! 🐉</strong>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="contact-card">
+    <span class="c-icon">📧</span>
+    <div class="c-main">
+      <div class="c-label">Contact Us · 联系我们</div>
+      <a href="mailto:stldragonboatclub@stlcls.org" class="c-email">stldragonboatclub@stlcls.org</a>
+      <div class="c-sub">Questions? Email us anytime · 欢迎随时联系</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 St. Louis Dragon Boat Club · 501(c)(3) Nonprofit · Simpson Lake, St. Louis, MO
+</footer>
+
+</body>
+</html>
