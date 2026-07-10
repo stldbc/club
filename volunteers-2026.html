@@ -1,0 +1,918 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026 龙舟节义工排班</title><style>
+:root{--surface:#fcfcfb;--plane:#f9f9f7;--ink:#0b0b0b;--ink2:#52514e;--mut:#898781;
+--grid:#e1e0d9;--border:rgba(11,11,11,.10);--crit:#d03b3b;--good:#0ca30c;--warnc:#b97700;
+--c-labor:#2a78d6;--c-info:#1baf7a;--c-runner:#eda100;--c-marshall:#008300;
+--c-assist:#4a3aa7;--c-parking:#e34948;--c-kids:#e87ba4;--c-rotc:#eb6834;--c-x:#898781}
+@media(prefers-color-scheme:dark){:root{--surface:#1a1a19;--plane:#0d0d0d;--ink:#fff;
+--ink2:#c3c2b7;--grid:#2c2c2a;--border:rgba(255,255,255,.10);--warnc:#fab219;
+--c-labor:#3987e5;--c-info:#199e70;--c-runner:#c98500;--c-marshall:#008300;
+--c-assist:#9085e9;--c-parking:#e66767;--c-kids:#d55181;--c-rotc:#d95926}}
+*{box-sizing:border-box}body{margin:0;background:var(--plane);color:var(--ink);
+font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:16px 12px 40px}
+.wrap{max-width:840px;margin:0 auto}h1{font-size:20px;margin:0 0 2px}
+h2{font-size:16px;margin:22px 0 8px}.mut{color:var(--mut)}.small{font-size:12.5px}
+.status{font-size:12.5px;color:var(--mut);margin-bottom:10px}
+.status button{font-size:12px;border:1px solid var(--border);background:var(--surface);
+color:var(--ink2);border-radius:999px;padding:1px 10px;margin-left:6px;cursor:pointer}
+.kpis{display:flex;gap:8px;margin:10px 0}
+.kpi{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 12px}
+.kpi .v{font-size:22px;font-weight:700}.kpi .l{font-size:12px;color:var(--ink2)}
+.kpi.good .v{color:var(--good)}.kpi.crit .v{color:var(--crit)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.chip{border:1px solid var(--border);background:var(--surface);color:var(--ink);
+border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip.on{outline:2px solid var(--ink);outline-offset:-1px;font-weight:600}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex:none}
+details.card{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--c-x);
+border-radius:10px;margin:8px 0;overflow:hidden}
+details.card>summary{list-style:none;cursor:pointer;padding:10px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+details.card>summary::-webkit-details-marker{display:none}
+summary .tname{font-weight:600}summary .cnt{margin-left:auto;font-size:12.5px;color:var(--ink2)}
+.cnt.ok{color:var(--good);font-weight:600}.cnt.gap{color:var(--crit);font-weight:600}
+.cardbody{padding:0 12px 12px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.pill{border-radius:999px;padding:2px 10px;font-size:12.5px;border:1px solid var(--border)}
+.pill.cap{background:color-mix(in srgb,var(--warnc) 14%,var(--surface))}
+.warn{color:var(--warnc);font-size:12.5px;font-weight:600}
+ul.tasks{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--grid)}
+ul.tasks li{padding:6px 0;border-bottom:1px solid var(--grid);font-size:13px;color:var(--ink2)}
+.trow{display:flex;gap:8px;align-items:baseline}
+.time{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;font-size:12.5px;flex:0 0 96px}
+.qty{background:color-mix(in srgb,var(--ink) 8%,var(--surface));border-radius:6px;
+padding:0 6px;font-size:11.5px;font-weight:700;flex:none}
+.assg{font-size:12px;color:var(--good);margin-left:104px}
+.duty{cursor:pointer;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.duty.open{-webkit-line-clamp:unset}
+.tl .assg{margin-left:0}.tl .team{font-size:12px;color:var(--ink2);white-space:nowrap;
+display:inline-flex;align-items:center;gap:5px;flex:none}
+footer{margin-top:24px;font-size:12px;color:var(--mut)}
+@media print{body{background:#fff}details.card{break-inside:avoid}}
+</style></head><body><div class="wrap">
+<h1>🐉 2026 Gateway Dragon Boat Festival — 义工排班</h1>
+<div class="mut small">8/15（周六）Creve Coeur Lake Memorial Park · 6:00 AM 开始</div>
+<div class="status" id="status"></div>
+<div class="kpis" id="kpis"></div>
+<div class="chips" id="chips"></div>
+<div id="cards"></div>
+<h2>时间线总览</h2>
+<div id="timeline"></div>
+<footer>数据在共享 Google Sheet 中维护，本页只显示姓名。想报名做义工？联系各组队长或 stldbfoundation@stlcls.org</footer>
+</div>
+<script>
+const DATA_URL = "";
+const SNAPSHOT = {
+ "generated": "2026-07-10 (seed)",
+ "teams": [
+  {
+   "team_code": "LABOR",
+   "team_name": "Labor 体力组 (A)",
+   "captain": "",
+   "target": "2",
+   "source_org": "STLCLS Board",
+   "notes": "搭建/标牌/巡查/补水，全天接力"
+  },
+  {
+   "team_code": "INFO",
+   "team_name": "Info 信息组 (B)",
+   "captain": "",
+   "target": "3",
+   "source_org": "STLCLS Board",
+   "notes": "手环免责/签到台/信息台/演出协调/替补桨手帐篷"
+  },
+  {
+   "team_code": "RUNNER",
+   "team_name": "Runner 传递组 (C)",
+   "captain": "",
+   "target": "2",
+   "source_org": "Festival Committee",
+   "notes": "成绩传递/集队引导"
+  },
+  {
+   "team_code": "MARSHALL",
+   "team_name": "Marshall 码头调度组 (D)",
+   "captain": "",
+   "target": "3",
+   "source_org": "Club",
+   "notes": "码头总管/主副 Lane Marshall"
+  },
+  {
+   "team_code": "ASSIST",
+   "team_name": "Assistance 排队组 (E)",
+   "captain": "",
+   "target": "4",
+   "source_org": "Club",
+   "notes": "Pre-Lane 排队×3 + 救生衣管理"
+  },
+  {
+   "team_code": "PARKING",
+   "team_name": "Parking 停车组 (F)",
+   "captain": "",
+   "target": "2",
+   "source_org": "Festival Committee",
+   "notes": "停车引导×2"
+  },
+  {
+   "team_code": "KIDS",
+   "team_name": "Kids Zone 儿童区",
+   "captain": "",
+   "target": "5",
+   "source_org": "Modern School?",
+   "notes": "主管+4手工桌 ⚠️ 待确认给 Modern School"
+  },
+  {
+   "team_code": "ROTC",
+   "team_name": "ROTC 码头推船组",
+   "captain": "",
+   "target": "13",
+   "source_org": "ROTC",
+   "notes": "Dock Pusher×13，Mark 跟进中"
+  },
+  {
+   "team_code": "POST",
+   "team_name": "Post-Event 赛后收尾",
+   "captain": "",
+   "target": "5",
+   "source_org": "从各组留守",
+   "notes": "4-5 人，不设独立名额"
+  },
+  {
+   "team_code": "PHOTO",
+   "team_name": "Photo/记录",
+   "captain": "",
+   "target": "1",
+   "source_org": "TBD",
+   "notes": "颁奖记录"
+  },
+  {
+   "team_code": "EVWEEK",
+   "team_name": "Event Week 赛前周",
+   "captain": "",
+   "target": "4",
+   "source_org": "⚠️ 2026 无人",
+   "notes": "2025=Signature 人员(MacKenzie/Beth/Hayden/Sharla)，2026 需重新指派"
+  }
+ ],
+ "positions": [
+  {
+   "id": "D01",
+   "phase": "event_day",
+   "team_code": "",
+   "qty": 1,
+   "duty": "Brings 3 coolers and brings to park with ice and bring to Tremayne Shelter, ROTC tent, Kids Zone",
+   "shift_raw": "pre event",
+   "start": "",
+   "end": "",
+   "walkie": "Y",
+   "assignees": "",
+   "notes": ""
+  },
+  {
+   "id": "D02",
+   "phase": "event_day",
+   "team_code": "",
+   "qty": 1,
+   "duty": "Buys 8 cases of water & add to coolers - 1 at Tremayne Shelter, 1 staff tent by loading, 2 ROTC tent, 1 Kids Zone tent) keep 3 cases stored at Tremayne Shelter for later.",
+   "shift_raw": "5:45am-6:45",
+   "start": "05:45",
+   "end": "06:45",
+   "walkie": "",
+   "assignees": "",
+   "notes": ""
+  },
+  {
+   "id": "D03",
+   "phase": "event_day",
+   "team_code": "LABOR",
+   "qty": 1,
+   "duty": "Set up tables, chairs, crafts in Kids Zone. Hang some crafts/balloons from tent pole. Also will check in throughout the day when he is free to help",
+   "shift_raw": "6:30-7:15",
+   "start": "06:30",
+   "end": "07:15",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Labor: A1, A2"
+  },
+  {
+   "id": "D04",
+   "phase": "event_day",
+   "team_code": "INFO",
+   "qty": 1,
+   "duty": "Wristband/Waiver Lead Person and monitors waivers/wristbands throughout the day. Also helps monitor info table",
+   "shift_raw": "7:00 - 1ish",
+   "start": "07:00",
+   "end": "13:00",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Info: B1, B2, B3"
+  },
+  {
+   "id": "D05",
+   "phase": "event_day",
+   "team_code": "INFO",
+   "qty": 2,
+   "duty": "Wristband/Waiver Person",
+   "shift_raw": "7:15 - 8:30",
+   "start": "07:15",
+   "end": "08:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Info: B1, B2, B3"
+  },
+  {
+   "id": "D06",
+   "phase": "event_day",
+   "team_code": "INFO",
+   "qty": 1,
+   "duty": "Tremayne Shelter - VOLUNTEER CHECK IN TABLE until noon aslo in charge of food truck vouchers and monitors info table with ? when available",
+   "shift_raw": "6:30-2ish",
+   "start": "06:30",
+   "end": "14:00",
+   "walkie": "Y",
+   "assignees": "",
+   "notes": "Info: B1, B2, B3"
+  },
+  {
+   "id": "D07",
+   "phase": "event_day",
+   "team_code": "INFO",
+   "qty": 1,
+   "duty": "Tremayne Shelter - VOLUNTEER CHECK IN TABLE Checks out walkie talkies to staff ON PAPER with phone numbers",
+   "shift_raw": "morning",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Info: B1, B2, B3"
+  },
+  {
+   "id": "D08",
+   "phase": "event_day",
+   "team_code": "INFO",
+   "qty": 1,
+   "duty": "Tremayne Shelter - INFO TABLE has maps and donation info and answer questions",
+   "shift_raw": "8:00 - 2:00",
+   "start": "08:00",
+   "end": "14:00",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Info: B1, B2, B3"
+  },
+  {
+   "id": "D09",
+   "phase": "event_day",
+   "team_code": "LABOR",
+   "qty": 1,
+   "duty": "Put up Dragon Boat Selfie Dragon/Signage",
+   "shift_raw": "5:45 - 7:30",
+   "start": "05:45",
+   "end": "07:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Labor: A1, A2"
+  },
+  {
+   "id": "D10",
+   "phase": "event_day",
+   "team_code": "LABOR",
+   "qty": 1,
+   "duty": "Hangs All Sponsor Banners and any others Not Already Hung on Friday",
+   "shift_raw": "6:00 - 7:30",
+   "start": "06:00",
+   "end": "07:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Labor: A1, A2"
+  },
+  {
+   "id": "D11",
+   "phase": "event_day",
+   "team_code": "INFO",
+   "qty": 1,
+   "duty": "Entertainment Coordinator - greets group, makes sure each performing group gathers in one place and is ready to perform and that they perform on time. Takes notes for next year",
+   "shift_raw": "7:30am - 1pm",
+   "start": "07:30",
+   "end": "13:00",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Info: B1, B2, B3"
+  },
+  {
+   "id": "D12",
+   "phase": "event_day",
+   "team_code": "LABOR",
+   "qty": 1,
+   "duty": "Restroom/Trash Can Checkers continuously walk from restroom to down tent line and let park people know if anything needs attention",
+   "shift_raw": "9:00 - 2ish",
+   "start": "09:00",
+   "end": "14:00",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Labor: A1, A2"
+  },
+  {
+   "id": "D13",
+   "phase": "event_day",
+   "team_code": "LABOR",
+   "qty": 1,
+   "duty": "In charge of making sure water is stocked in ROTC cooler, Kids Zone cooler and staff tent. Extra cases of water will be located at Tremayne Shelter.",
+   "shift_raw": "9:00 - 2ish",
+   "start": "09:00",
+   "end": "14:00",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Labor: A1, A2"
+  },
+  {
+   "id": "D14",
+   "phase": "event_day",
+   "team_code": "PARKING",
+   "qty": 1,
+   "duty": "Parking Lot Person (shows drop off zone and handicapped parking, show food trucks where to park; show other vendors where to park)",
+   "shift_raw": "6:30 - 2ish",
+   "start": "06:30",
+   "end": "14:00",
+   "walkie": "Y",
+   "assignees": "",
+   "notes": "Parking: F1, F2"
+  },
+  {
+   "id": "D15",
+   "phase": "event_day",
+   "team_code": "PARKING",
+   "qty": 1,
+   "duty": "Parking Lot Person (shows drop off zone and handicapped parking, show food trucks where to park; show other vendors where to park)",
+   "shift_raw": "7:00 - 12ish",
+   "start": "07:00",
+   "end": "12:00",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Parking: F1, F2"
+  },
+  {
+   "id": "D16",
+   "phase": "event_day",
+   "team_code": "INFO",
+   "qty": 1,
+   "duty": "Volunteer in Extra Paddler Tent – keeps name list of paddlers in tent, directs them to sign waivers at Tremayne Shelter, explains how process works and records which paddlers go out during which race explaining how the process works to hopefully keep people from leaving before 3rd round.",
+   "shift_raw": "7:30 - 1:30/2:00",
+   "start": "07:30",
+   "end": "13:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Info: B1, B2, B3"
+  },
+  {
+   "id": "D17",
+   "phase": "event_day",
+   "team_code": "KIDS",
+   "qty": 1,
+   "duty": "Kids Zone Supervisor & Water Cooler Keeper & Makes Sure someone is always at craft tables & Relieves for RestRoom Break & helps with prizes for carnival games",
+   "shift_raw": "8:30 - 2:30ish",
+   "start": "08:30",
+   "end": "14:30",
+   "walkie": "Y",
+   "assignees": "",
+   "notes": "Give to Modern School?"
+  },
+  {
+   "id": "D18",
+   "phase": "event_day",
+   "team_code": "KIDS",
+   "qty": 2,
+   "duty": "Kids Tent - Craft Table",
+   "shift_raw": "8:30 - 12:30ish",
+   "start": "08:30",
+   "end": "12:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Give to Modern School?"
+  },
+  {
+   "id": "D19",
+   "phase": "event_day",
+   "team_code": "KIDS",
+   "qty": 2,
+   "duty": "Kids Tent - Craft Table",
+   "shift_raw": "8:30 - 1:30ish",
+   "start": "08:30",
+   "end": "13:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Give to Modern School?"
+  },
+  {
+   "id": "D20",
+   "phase": "event_day",
+   "team_code": "RUNNER",
+   "qty": 1,
+   "duty": "Results Runner",
+   "shift_raw": "8:30 - 2ish",
+   "start": "08:30",
+   "end": "14:00",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Runner: C1, C2"
+  },
+  {
+   "id": "D21",
+   "phase": "event_day",
+   "team_code": "RUNNER",
+   "qty": 2,
+   "duty": "Team Gatherer",
+   "shift_raw": "6:30 - 3ish",
+   "start": "06:30",
+   "end": "15:00",
+   "walkie": "Y",
+   "assignees": "",
+   "notes": "Runner: C1, C2"
+  },
+  {
+   "id": "D22",
+   "phase": "event_day",
+   "team_code": "MARSHALL",
+   "qty": 1,
+   "duty": "Head Dock Worker at water (aka Senior VP for Docking Operations)",
+   "shift_raw": "7:40 - 1ish",
+   "start": "07:40",
+   "end": "13:00",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Marshall: D1, D2, D3"
+  },
+  {
+   "id": "D23",
+   "phase": "event_day",
+   "team_code": "MARSHALL",
+   "qty": 1,
+   "duty": "Head Lane Marshall - coordinates loading of boats",
+   "shift_raw": "7:40 - 3:00",
+   "start": "07:40",
+   "end": "15:00",
+   "walkie": "Y",
+   "assignees": "",
+   "notes": "Marshall: D1, D2, D3"
+  },
+  {
+   "id": "D24",
+   "phase": "event_day",
+   "team_code": "MARSHALL",
+   "qty": 1,
+   "duty": "Assistant Lane Marshall - helps coordinate loading of boats when teams come to marshalling area",
+   "shift_raw": "7:40 - 2:30ish",
+   "start": "07:40",
+   "end": "14:30",
+   "walkie": "Y",
+   "assignees": "",
+   "notes": "Marshall: D1, D2, D3"
+  },
+  {
+   "id": "D25",
+   "phase": "event_day",
+   "team_code": "ASSIST",
+   "qty": 3,
+   "duty": "Front Lane Assistant - am shift - \"Pre-Lane\" lining up folks from front to back",
+   "shift_raw": "7:40 - 2:30ish",
+   "start": "07:40",
+   "end": "14:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Assistance: E1, E2, E3, E4"
+  },
+  {
+   "id": "D26",
+   "phase": "event_day",
+   "team_code": "ASSIST",
+   "qty": 1,
+   "duty": "For first round, lifejackets should be in piles by back fencing so teams can get photo & then move to put on lifejackets (this should help photo go a bit more quickly); this will require a volunteer by life jacket area (on lake side) to be sure after first round that paddlers put jackets on correct drying area – this volunteer person should space out life jackets so they don’t get tangled up together & can be grabbed quickly AND can pick up trash in dock boat loading area & spreads life jackets out to dry between rounds.",
+   "shift_raw": "7:40 - 2:30ish",
+   "start": "07:40",
+   "end": "14:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Assistance: E1, E2, E3, E4"
+  },
+  {
+   "id": "D27",
+   "phase": "event_day",
+   "team_code": "ROTC",
+   "qty": 13,
+   "duty": "Dock Pusher Worker",
+   "shift_raw": "7:40 - 2:30ish",
+   "start": "07:40",
+   "end": "14:30",
+   "walkie": "",
+   "assignees": "",
+   "notes": "ROTC"
+  },
+  {
+   "id": "P28",
+   "phase": "post_event",
+   "team_code": "PHOTO",
+   "qty": 1,
+   "duty": "Records Winners During Awards Ceremony",
+   "shift_raw": "During Award Ceremony",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Photo"
+  },
+  {
+   "id": "P29",
+   "phase": "post_event",
+   "team_code": "POST",
+   "qty": 1,
+   "duty": "Wheel Recyling Bins to one location near bandstand just off path",
+   "shift_raw": "Post Event",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Post: 4 -5 people"
+  },
+  {
+   "id": "P30",
+   "phase": "post_event",
+   "team_code": "POST",
+   "qty": 1,
+   "duty": "Take down coro signs and selfie signage (separate sign from stakes) . Make pile in front of Tremayne Shelter",
+   "shift_raw": "Post Event",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Post: 4 -5 people"
+  },
+  {
+   "id": "P31",
+   "phase": "post_event",
+   "team_code": "POST",
+   "qty": 1,
+   "duty": "Contact Jeff Bonney from the county to arrange pick up (Mon or Tues or Wed after event) of our 5 BIG Park Closed Signs.",
+   "shift_raw": "Post Event",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Post: 4 -5 people"
+  },
+  {
+   "id": "P32",
+   "phase": "post_event",
+   "team_code": "POST",
+   "qty": 1,
+   "duty": "Take down banners (2 at Tremayne Shelter, 2 at Kids Zone Tent, severeal by Loading Lanes and 1 on both ends of the path) & bring to Tremayne Shelter.",
+   "shift_raw": "Post Event",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Post: 4 -5 people"
+  },
+  {
+   "id": "P33",
+   "phase": "post_event",
+   "team_code": "POST",
+   "qty": 1,
+   "duty": "Take down all tent/space number signs (will probably need scissors) and bring all to Tremayne Shelter.",
+   "shift_raw": "Post Event",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Post: 4 -5 people"
+  },
+  {
+   "id": "P34",
+   "phase": "post_event",
+   "team_code": "POST",
+   "qty": 1,
+   "duty": "Pack up 6 coolers and Tremayne Shelter Supplies",
+   "shift_raw": "Post Event",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "Post: 4 -5 people"
+  },
+  {
+   "id": "W35",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Meet Tarlton for dumster delivery",
+   "shift_raw": "Tuesday (2024 time was 9am to 11am)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie · Greg 314-337-3466"
+  },
+  {
+   "id": "W36",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Meet Tarlton for pod/fork lift delivery - take forklift and pod keys. Keep one set, will give 2nd set of keys to Chris on Wed (see below)",
+   "shift_raw": "Tuesday (2024 time was 9am to 11am)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie · Tom/driver 314-437-7380"
+  },
+  {
+   "id": "W37",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Meet Jeff (Jeff Bonney) and spray for orange fencing and 14 green banner stake placement for Thurs install. Jeff providing green stakes in",
+   "shift_raw": "Tuesday (2025 time per Jeff will be 8am)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie & Beth & Hayden · Jeff B. 314-323-5348"
+  },
+  {
+   "id": "W38",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Measure and spraypaint for tents (use white paint, Spray 4 corners per last years notes)",
+   "shift_raw": "Tuesday after spraying for orange fencing",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie, Beth, & Hayden (7am to noon are hours for Hayden)"
+  },
+  {
+   "id": "W39",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Supervise STL County tent set up - 3 groups",
+   "shift_raw": "Wednesday (2025 set up time likely at 7am per Jeff)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie · Jeff B. 314-323-5348"
+  },
+  {
+   "id": "W40",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Chris from dragon boat company can find MacKenzie at tent site to get forklift key and pod key.",
+   "shift_raw": "Wednesday (2024 time was 9am)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: Chris & MacKenzie · Chris 865-313-1595"
+  },
+  {
+   "id": "W41",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "MacKenzie picks up STL Rowing Club Jon Boat key and get instructions at the Boathouse. MacKenzie can just hold on to keys in case Dragon Boat Co. ends up needing them.",
+   "shift_raw": "Wednesday (2025 time TBD)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie · Tom Albert 314-614-1365"
+  },
+  {
+   "id": "W42",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Set up and supervise practices at 4:00, 5:00, 6:00, and 7:00 - at least 2 people - Sharla will start Jen and MacKenzie off",
+   "shift_raw": "Wednesday (2025 3:00pm set up to 8:30pm)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: Sharla, MacKenzie, Beth, Hayden (Hayden from 3:45 to 7:15)"
+  },
+  {
+   "id": "W43",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Supervise Premier stage, tent, table and chair set up - also they should put tables and chairs in correct tents. GIVE PERSON IN CHARGE CHECK",
+   "shift_raw": "Thursday (2024 time was 8:00 am - but always early)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie · Kory 314-785-1100"
+  },
+  {
+   "id": "W44",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Supervise STL County organge fence and 14 green posts installation (Jeff from county provides green posts in 2025)",
+   "shift_raw": "Thursday (2025 time per Jeff will be 3:30)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: Beth · Jeff B. 314-323-5348"
+  },
+  {
+   "id": "W45",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Set up and supervise practices 4:00, 5:00, 6:00, and 7:00 - at least 2 people",
+   "shift_raw": "Thursday (2025 3:00pm set up to 8:30pm)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie, Hayden, Sharla (Hayden from 3:45 to 7:15)"
+  },
+  {
+   "id": "W46",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Install 35ish coro/yard signage and most banners, maybe selfie signage too - sponsor banners go up Sat am",
+   "shift_raw": "Friday - THIS JOB TAKES SEVERAL HOURS!",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: Hayden (1pm to 7pm)"
+  },
+  {
+   "id": "W47",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Ask county workers to place garbage cans at site map locations and check",
+   "shift_raw": "Friday - after county brings all cans to park",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie &/or Hayden"
+  },
+  {
+   "id": "W48",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Hang tent numbers from all tents on right side of front pole",
+   "shift_raw": "Friday anytime or can even do on Thurs",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie"
+  },
+  {
+   "id": "W49",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Meet R&R Sanitation for portables placements. GIVE DELIVERY PERSON CHECK",
+   "shift_raw": "Friday (2025 requested between 8am and noon)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie · R&R #636-240-4306"
+  },
+  {
+   "id": "W50",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Always Green Recycling drops off and then SF Intern wheels bins to approx every other tent, by food, between Treymayne and tent #24 and loading area. Only put next to garbage can or people will use for garbage.",
+   "shift_raw": "Friday sometime",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: MacKenzie · cliff@alwaysgreenrecycling.com"
+  },
+  {
+   "id": "W51",
+   "phase": "event_week",
+   "team_code": "EVWEEK",
+   "qty": 1,
+   "duty": "Set up and supervise practices at 3:00 and 4:00 - at least 2 people",
+   "shift_raw": "Friday (2025 2:00 pm to 5:30pm)",
+   "start": "",
+   "end": "",
+   "walkie": "",
+   "assignees": "",
+   "notes": "2025 staff: Noah , MacKenzie, Beth"
+  }
+ ],
+ "roster": []
+};
+const COLORS = {LABOR:1,INFO:1,RUNNER:1,MARSHALL:1,ASSIST:1,PARKING:1,KIDS:1,ROTC:1};
+const cvar = c => `var(--c-${COLORS[c] ? c.toLowerCase() : 'x'})`;
+const esc = s => String(s??"").replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const PHASES = [["event_day","比赛日"],["post_event","赛后收尾"],["event_week","赛前一周 ⚠️ 待认领"]];
+let data = SNAPSHOT, source = "内置快照";
+let filter = localStorage.getItem("vol_team") || "ALL";
+const openSet = new Set(JSON.parse(localStorage.getItem("vol_open") || "[]"));
+
+function counts(t){
+  const members = data.roster.filter(r => r.team_code===t.team_code && r.status!=="退出");
+  return {filled: members.length, target: +t.target||0, members};
+}
+function render(){
+  const teams = data.teams;
+  // KPI（POST 不设独立名额，不计目标）
+  const core = teams.filter(t => t.team_code!=="POST");
+  const target = core.reduce((s,t)=>s+(+t.target||0),0);
+  const filled = data.roster.filter(r=>r.status!=="退出").length;
+  const gap = Math.max(0, target-filled);
+  document.getElementById("kpis").innerHTML =
+    `<div class="kpi"><div class="v">${target}</div><div class="l">目标（下限，多多益善）</div></div>`+
+    `<div class="kpi good"><div class="v">${filled}</div><div class="l">已报名</div></div>`+
+    `<div class="kpi ${gap?"crit":"good"}"><div class="v">${gap||"✓"}</div><div class="l">${gap?"还差 ⚠️":"目标达成"}</div></div>`;
+  // 筛选 chips
+  document.getElementById("chips").innerHTML =
+    `<button class="chip ${filter==="ALL"?"on":""}" data-t="ALL">全部</button>` +
+    teams.map(t=>`<button class="chip ${filter===t.team_code?"on":""}" data-t="${t.team_code}">`+
+      `<span class="dot" style="background:${cvar(t.team_code)}"></span>${esc(t.team_name)}</button>`).join("");
+  document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{
+    filter=b.dataset.t; localStorage.setItem("vol_team",filter); render();});
+  // 组卡片
+  const show = teams.filter(t=>filter==="ALL"||t.team_code===filter);
+  document.getElementById("cards").innerHTML = show.map(t=>{
+    const {filled,target,members}=counts(t);
+    const tasks = data.positions.filter(p=>p.team_code===t.team_code);
+    const capName = t.captain || members.find(m=>m.is_captain==="Y")?.name || "";
+    const cls = t.team_code==="POST" ? "" : (filled>=target?"ok":"gap");
+    const pills = members.length
+      ? members.map(m=>`<span class="pill ${m.is_captain==="Y"?"cap":""}">${m.is_captain==="Y"?"👑 ":""}${esc(m.name)}</span>`).join("")
+      : `<span class="mut small">尚无人报名</span>`;
+    const rows = tasks.map(p=>
+      `<li><div class="trow"><span class="time">${esc(p.shift_raw||"—")}</span>`+
+      (+p.qty>1?`<span class="qty">×${p.qty}</span>`:"")+(p.walkie?"📻":"")+
+      `<span class="duty" onclick="this.classList.toggle('open')">${esc(p.duty)}</span></div>`+
+      (p.assignees?`<div class="assg">👤 ${esc(p.assignees)}</div>`:"")+`</li>`).join("");
+    const open = filter!=="ALL" || openSet.has(t.team_code) ? " open" : "";
+    return `<details class="card" data-t="${t.team_code}" style="border-left-color:${cvar(t.team_code)}"${open}>`+
+      `<summary><span class="dot" style="background:${cvar(t.team_code)}"></span>`+
+      `<span class="tname">${esc(t.team_name)}</span>`+
+      (capName?`<span class="small mut">👑 ${esc(capName)}</span>`:`<span class="warn">队长待定</span>`)+
+      (t.team_code==="POST"?`<span class="cnt">${esc(t.notes)}</span>`
+        :`<span class="cnt ${cls}">${filled}/${target}${filled>=target?" ✓":""}</span>`)+
+      `</summary><div class="cardbody">`+
+      `<div class="mut small">${esc(t.source_org)}${t.notes&&t.team_code!=="POST"?" · "+esc(t.notes):""}</div>`+
+      (t.team_code==="POST"?"":`<div class="pills">${pills}</div>`)+
+      (rows?`<ul class="tasks">${rows}</ul>`:"")+`</div></details>`;
+  }).join("");
+  document.querySelectorAll("details.card").forEach(d=>d.addEventListener("toggle",()=>{
+    if(filter!=="ALL")return;
+    d.open?openSet.add(d.dataset.t):openSet.delete(d.dataset.t);
+    localStorage.setItem("vol_open",JSON.stringify([...openSet]));}));
+  // 时间线（按 phase 分三段，各自折叠；跟随组筛选）
+  document.getElementById("timeline").innerHTML = PHASES.map(([ph,label])=>{
+    let ps = data.positions.filter(p=>p.phase===ph&&(filter==="ALL"||p.team_code===filter));
+    ps.sort((a,b)=>(a.start||"99").localeCompare(b.start||"99"));
+    if(!ps.length) return "";
+    const tmap = Object.fromEntries(data.teams.map(t=>[t.team_code,t.team_name]));
+    const rows = ps.map(p=>
+      `<li><div class="trow"><span class="time">${esc(p.shift_raw||"—")}</span>`+
+      (+p.qty>1?`<span class="qty">×${p.qty}</span>`:"")+
+      `<span class="team"><span class="dot" style="background:${cvar(p.team_code)}"></span>`+
+      `${esc((tmap[p.team_code]||"—").split(" ")[0])}</span></div>`+
+      `<div class="trow"><span class="time"></span><span class="duty" onclick="this.classList.toggle('open')">${esc(p.duty)}</span></div>`+
+      (p.assignees?`<div class="trow"><span class="time"></span><span class="assg tl">👤 ${esc(p.assignees)}</span></div>`:"")+`</li>`).join("");
+    return `<details class="card tl"><summary><span class="tname">${label}</span>`+
+      `<span class="cnt">${ps.length} 项</span></summary>`+
+      `<div class="cardbody"><ul class="tasks">${rows}</ul></div></details>`;
+  }).join("");
+  document.getElementById("status").innerHTML =
+    `数据：${esc(data.generated||"?")} · ${source}`+
+    (DATA_URL?`<button onclick="load(true)">刷新</button>`:"");
+}
+async function load(force){
+  const cached = localStorage.getItem("vol_cache");
+  if(cached && !force){ try{ data=JSON.parse(cached); source="缓存"; render(); }catch(e){} }
+  if(!DATA_URL) { render(); return; }
+  try{
+    const r = await fetch(DATA_URL, {redirect:"follow"});
+    const j = await r.json();
+    if(j && j.teams){ data=j; source="实时"; localStorage.setItem("vol_cache", JSON.stringify(j)); }
+  }catch(e){ source += "（连接失败）"; }
+  render();
+}
+render(); load();
+</script></body></html>
