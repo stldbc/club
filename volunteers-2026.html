@@ -1,6 +1,6 @@
-<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>2026 龙舟节义工排班</title><style>
+<title>2026 Dragon Boat Festival — Volunteer Schedule</title><style>
 :root{--surface:#fcfcfb;--plane:#f9f9f7;--ink:#0b0b0b;--ink2:#52514e;--mut:#898781;
 --grid:#e1e0d9;--border:rgba(11,11,11,.10);--crit:#d03b3b;--good:#0ca30c;--warnc:#b97700;
 --c-labor:#2a78d6;--c-info:#1baf7a;--c-runner:#eda100;--c-marshall:#008300;
@@ -50,15 +50,15 @@ display:inline-flex;align-items:center;gap:5px;flex:none}
 footer{margin-top:24px;font-size:12px;color:var(--mut)}
 @media print{body{background:#fff}details.card{break-inside:avoid}}
 </style></head><body><div class="wrap">
-<h1>🐉 2026 Gateway Dragon Boat Festival — 义工排班</h1>
-<div class="mut small">8/15（周六）Creve Coeur Lake Memorial Park · 6:00 AM 开始</div>
+<h1>🐉 2026 Gateway Dragon Boat Festival — Volunteer Schedule</h1>
+<div class="mut small">Saturday, Aug 15 · Creve Coeur Lake Memorial Park · starts 6:00 AM</div>
 <div class="status" id="status"></div>
 <div class="kpis" id="kpis"></div>
 <div class="chips" id="chips"></div>
 <div id="cards"></div>
-<h2>时间线总览</h2>
+<h2>Timeline Overview</h2>
 <div id="timeline"></div>
-<footer>数据在共享 Google Sheet 中维护，本页只显示姓名。想报名做义工？联系各组队长或 stldbfoundation@stlcls.org</footer>
+<footer>Data is maintained in a shared Google Sheet; only names are shown on this page. Want to volunteer? Contact a team captain or stldbfoundation@stlcls.org</footer>
 </div>
 <script>
 const DATA_URL = "https://script.google.com/macros/s/AKfycbyg-p8R6gvX2Ax28o0n5kY7Oy46gitqDZhjjyjBrpcNXb-qzhFwpoo0xwfyrS_TYirLIg/exec";
@@ -824,8 +824,30 @@ const SNAPSHOT = {
 const COLORS = {LABOR:1,INFO:1,RUNNER:1,MARSHALL:1,ASSIST:1,PARKING:1,KIDS:1,ROTC:1};
 const cvar = c => `var(--c-${COLORS[c] ? c.toLowerCase() : 'x'})`;
 const esc = s => String(s??"").replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-const PHASES = [["event_day","比赛日"],["post_event","赛后收尾"],["event_week","赛前一周 ⚠️ 待认领"]];
-let data = SNAPSHOT, source = "内置快照";
+// English display names by team_code (Sheet data may be bilingual/Chinese)
+const EN_TEAM = {LABOR:"Labor Team (A)",INFO:"Info Team (B)",RUNNER:"Runner Team (C)",
+  MARSHALL:"Dock Marshall Team (D)",ASSIST:"Assistance Team (E)",PARKING:"Parking Team (F)",
+  KIDS:"Kids Zone",ROTC:"ROTC Dock Pushers",POST:"Post-Event Wrap-up",
+  PHOTO:"Photo / Records",EVWEEK:"Event Week (Pre-Festival)"};
+// English fallback for known Chinese notes/source_org strings from the Sheet
+const EN_TXT = {
+  "搭建/标牌/巡查/补水，全天接力":"Setup / signage / patrol / water refills, relay all day",
+  "手环免责/签到台/信息台/演出协调/替补桨手帐篷":"Wristbands & waivers / check-in / info table / performance coordination / sub-paddler tent",
+  "成绩传递/集队引导":"Results runners / team staging guides",
+  "码头总管/主副 Lane Marshall":"Dock chief / lead & assistant lane marshalls",
+  "Pre-Lane 排队×3 + 救生衣管理":"Pre-lane queuing ×3 + life jacket management",
+  "停车引导×2":"Parking guides ×2",
+  "主管+4手工桌 ⚠️ 待确认给 Modern School":"Lead + 4 craft tables ⚠️ pending confirmation with Modern School",
+  "Dock Pusher×13，Mark 跟进中":"Dock pushers ×13, Mark following up",
+  "4-5 人，不设独立名额":"4–5 people, staffed from other teams (no separate quota)",
+  "颁奖记录":"Awards ceremony records",
+  "2025=Signature 人员(MacKenzie/Beth/Hayden/Sharla)，2026 需重新指派":"2025 = Signature staff (MacKenzie/Beth/Hayden/Sharla); 2026 needs reassignment",
+  "从各组留守":"Staffed from other teams",
+  "⚠️ 2026 无人":"⚠️ Unassigned for 2026"};
+const tr = s => EN_TXT[s] ?? s;
+const tname = t => EN_TEAM[t.team_code] || t.team_name;
+const PHASES = [["event_day","Event Day"],["post_event","Post-Event"],["event_week","Event Week ⚠️ unclaimed"]];
+let data = SNAPSHOT, source = "embedded snapshot";
 let filter = localStorage.getItem("vol_team") || "ALL";
 const openSet = new Set(JSON.parse(localStorage.getItem("vol_open") || "[]"));
 
@@ -841,14 +863,14 @@ function render(){
   const filled = data.roster.filter(r=>r.status!=="退出").length;
   const gap = Math.max(0, target-filled);
   document.getElementById("kpis").innerHTML =
-    `<div class="kpi"><div class="v">${target}</div><div class="l">目标（下限，多多益善）</div></div>`+
-    `<div class="kpi good"><div class="v">${filled}</div><div class="l">已报名</div></div>`+
-    `<div class="kpi ${gap?"crit":"good"}"><div class="v">${gap||"✓"}</div><div class="l">${gap?"还差 ⚠️":"目标达成"}</div></div>`;
+    `<div class="kpi"><div class="v">${target}</div><div class="l">Target (minimum — more welcome)</div></div>`+
+    `<div class="kpi good"><div class="v">${filled}</div><div class="l">Signed up</div></div>`+
+    `<div class="kpi ${gap?"crit":"good"}"><div class="v">${gap||"✓"}</div><div class="l">${gap?"Still needed ⚠️":"Target met"}</div></div>`;
   // 筛选 chips
   document.getElementById("chips").innerHTML =
-    `<button class="chip ${filter==="ALL"?"on":""}" data-t="ALL">全部</button>` +
+    `<button class="chip ${filter==="ALL"?"on":""}" data-t="ALL">All</button>` +
     teams.map(t=>`<button class="chip ${filter===t.team_code?"on":""}" data-t="${t.team_code}">`+
-      `<span class="dot" style="background:${cvar(t.team_code)}"></span>${esc(t.team_name)}</button>`).join("");
+      `<span class="dot" style="background:${cvar(t.team_code)}"></span>${esc(tname(t))}</button>`).join("");
   document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{
     filter=b.dataset.t; localStorage.setItem("vol_team",filter); render();});
   // 组卡片
@@ -860,7 +882,7 @@ function render(){
     const cls = t.team_code==="POST" ? "" : (filled>=target?"ok":"gap");
     const pills = members.length
       ? members.map(m=>`<span class="pill ${m.is_captain==="Y"?"cap":""}">${m.is_captain==="Y"?"👑 ":""}${esc(m.name)}</span>`).join("")
-      : `<span class="mut small">尚无人报名</span>`;
+      : `<span class="mut small">No sign-ups yet</span>`;
     const rows = tasks.map(p=>
       `<li><div class="trow"><span class="time">${esc(p.shift_raw||"—")}</span>`+
       (+p.qty>1?`<span class="qty">×${p.qty}</span>`:"")+(p.walkie?"📻":"")+
@@ -869,12 +891,12 @@ function render(){
     const open = filter!=="ALL" || openSet.has(t.team_code) ? " open" : "";
     return `<details class="card" data-t="${t.team_code}" style="border-left-color:${cvar(t.team_code)}"${open}>`+
       `<summary><span class="dot" style="background:${cvar(t.team_code)}"></span>`+
-      `<span class="tname">${esc(t.team_name)}</span>`+
-      (capName?`<span class="small mut">👑 ${esc(capName)}</span>`:`<span class="warn">队长待定</span>`)+
-      (t.team_code==="POST"?`<span class="cnt">${esc(t.notes)}</span>`
+      `<span class="tname">${esc(tname(t))}</span>`+
+      (capName?`<span class="small mut">👑 ${esc(capName)}</span>`:`<span class="warn">Captain TBD</span>`)+
+      (t.team_code==="POST"?`<span class="cnt">${esc(tr(t.notes))}</span>`
         :`<span class="cnt ${cls}">${filled}/${target}${filled>=target?" ✓":""}</span>`)+
       `</summary><div class="cardbody">`+
-      `<div class="mut small">${esc(t.source_org)}${t.notes&&t.team_code!=="POST"?" · "+esc(t.notes):""}</div>`+
+      `<div class="mut small">${esc(tr(t.source_org))}${t.notes&&t.team_code!=="POST"?" · "+esc(tr(t.notes)):""}</div>`+
       (t.team_code==="POST"?"":`<div class="pills">${pills}</div>`)+
       (rows?`<ul class="tasks">${rows}</ul>`:"")+`</div></details>`;
   }).join("");
@@ -887,7 +909,7 @@ function render(){
     let ps = data.positions.filter(p=>p.phase===ph&&(filter==="ALL"||p.team_code===filter));
     ps.sort((a,b)=>(a.start||"99").localeCompare(b.start||"99"));
     if(!ps.length) return "";
-    const tmap = Object.fromEntries(data.teams.map(t=>[t.team_code,t.team_name]));
+    const tmap = Object.fromEntries(data.teams.map(t=>[t.team_code,tname(t)]));
     const rows = ps.map(p=>
       `<li><div class="trow"><span class="time">${esc(p.shift_raw||"—")}</span>`+
       (+p.qty>1?`<span class="qty">×${p.qty}</span>`:"")+
@@ -896,22 +918,22 @@ function render(){
       `<div class="trow"><span class="time"></span><span class="duty" onclick="this.classList.toggle('open')">${esc(p.duty)}</span></div>`+
       (p.assignees?`<div class="trow"><span class="time"></span><span class="assg tl">👤 ${esc(p.assignees)}</span></div>`:"")+`</li>`).join("");
     return `<details class="card tl"><summary><span class="tname">${label}</span>`+
-      `<span class="cnt">${ps.length} 项</span></summary>`+
+      `<span class="cnt">${ps.length} tasks</span></summary>`+
       `<div class="cardbody"><ul class="tasks">${rows}</ul></div></details>`;
   }).join("");
   document.getElementById("status").innerHTML =
-    `数据：${esc(data.generated||"?")} · ${source}`+
-    (DATA_URL?`<button onclick="load(true)">刷新</button>`:"");
+    `Data: ${esc(data.generated||"?")} · ${source}`+
+    (DATA_URL?`<button onclick="load(true)">Refresh</button>`:"");
 }
 async function load(force){
   const cached = localStorage.getItem("vol_cache");
-  if(cached && !force){ try{ data=JSON.parse(cached); source="缓存"; render(); }catch(e){} }
+  if(cached && !force){ try{ data=JSON.parse(cached); source="cached"; render(); }catch(e){} }
   if(!DATA_URL) { render(); return; }
   try{
     const r = await fetch(DATA_URL, {redirect:"follow"});
     const j = await r.json();
-    if(j && j.teams){ data=j; source="实时"; localStorage.setItem("vol_cache", JSON.stringify(j)); }
-  }catch(e){ source += "（连接失败）"; }
+    if(j && j.teams){ data=j; source="live"; localStorage.setItem("vol_cache", JSON.stringify(j)); }
+  }catch(e){ source += " (connection failed)"; }
   render();
 }
 render(); load();
