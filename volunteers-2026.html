@@ -851,16 +851,36 @@ let data = SNAPSHOT, source = "embedded snapshot";
 let filter = localStorage.getItem("vol_team") || "ALL";
 const openSet = new Set(JSON.parse(localStorage.getItem("vol_open") || "[]"));
 
+function extractAssignees(str){
+  // Positions.assignees is free text captains fill directly — not required to match Roster.
+  // Split on common separators; a bare number (e.g. "10") means a headcount with no name given.
+  if(!str) return {names:[], headcount:0};
+  const parts = str.replace(/\([^)]*\)/g,"").split(/[,&\/]|\band\b|、/i).map(s=>s.trim()).filter(Boolean);
+  const names = []; let headcount = 0;
+  parts.forEach(p => /^\d+$/.test(p) ? headcount += +p : names.push(p));
+  return {names, headcount};
+}
 function counts(t){
-  const members = data.roster.filter(r => r.team_code===t.team_code && r.status!=="退出");
-  return {filled: members.length, target: +t.target||0, members};
+  // filled = union of Roster rows + names typed into Positions.assignees for this team (case-insensitive dedupe).
+  const seen = new Map();
+  data.roster.filter(r => r.team_code===t.team_code && r.status!=="退出")
+    .forEach(r => seen.set(r.name.toLowerCase(), {name: r.name, is_captain: r.is_captain}));
+  let headcount = 0;
+  data.positions.filter(p => p.team_code===t.team_code).forEach(p => {
+    const {names, headcount: hc} = extractAssignees(p.assignees);
+    headcount += hc;
+    names.forEach(n => { const k=n.toLowerCase(); if(!seen.has(k)) seen.set(k, {name:n, is_captain:""}); });
+  });
+  const members = [...seen.values()];
+  return {filled: members.length + headcount, target: +t.target||0, members, headcount};
 }
 function render(){
   const teams = data.teams;
   // KPI（POST 不设独立名额，不计目标）
   const core = teams.filter(t => t.team_code!=="POST");
+  const coreCounts = core.map(counts);
   const target = core.reduce((s,t)=>s+(+t.target||0),0);
-  const filled = data.roster.filter(r=>r.status!=="退出").length;
+  const filled = coreCounts.reduce((s,c)=>s+c.filled,0);
   const gap = Math.max(0, target-filled);
   document.getElementById("kpis").innerHTML =
     `<div class="kpi"><div class="v">${target}</div><div class="l">Target (minimum — more welcome)</div></div>`+
@@ -876,12 +896,13 @@ function render(){
   // 组卡片
   const show = teams.filter(t=>filter==="ALL"||t.team_code===filter);
   document.getElementById("cards").innerHTML = show.map(t=>{
-    const {filled,target,members}=counts(t);
+    const {filled,target,members,headcount}=counts(t);
     const tasks = data.positions.filter(p=>p.team_code===t.team_code);
     const capName = t.captain || members.find(m=>m.is_captain==="Y")?.name || "";
     const cls = t.team_code==="POST" ? "" : (filled>=target?"ok":"gap");
-    const pills = members.length
-      ? members.map(m=>`<span class="pill ${m.is_captain==="Y"?"cap":""}">${m.is_captain==="Y"?"👑 ":""}${esc(m.name)}</span>`).join("")
+    const unlisted = headcount ? `<span class="pill mut">+${headcount} unlisted</span>` : "";
+    const pills = members.length || headcount
+      ? members.map(m=>`<span class="pill ${m.is_captain==="Y"?"cap":""}">${m.is_captain==="Y"?"👑 ":""}${esc(m.name)}</span>`).join("") + unlisted
       : `<span class="mut small">No sign-ups yet</span>`;
     const rows = tasks.map(p=>
       `<li><div class="trow"><span class="time">${esc(p.shift_raw||"—")}</span>`+
