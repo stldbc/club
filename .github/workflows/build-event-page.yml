@@ -29,6 +29,7 @@ jobs:
           ARRIVE_TIME: ${{ github.event.client_payload.arrive_time }}
           ON_WATER_TIME: ${{ github.event.client_payload.on_water_time }}
           LOCATION: ${{ github.event.client_payload.location }}
+          TSHIRT_SIZES: ${{ github.event.client_payload.tshirt_sizes }}
           APPS_SCRIPT_URL: ${{ github.event.client_payload.apps_script_url }}
         run: python3 scripts/build_event_page.py
 

@@ -92,7 +92,7 @@ footer a{color:var(--ink2)}
 </div>
 <p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the festival, the
 St. Louis Dragon Boat Club is hosting a free session just for you — <b>30 min warm-up, an hour on the
-water, 15 min recap</b>. Snacks, drinks, and a few festival t-shirts while they last. Open to the first
+water, 15 min recap</b>. Snacks and drinks provided. Open to the first
 <b>20</b> sign-ups.</p>
 <div class="capbar-wrap">
   <div class="caprow"><span>Spots filled</span>
@@ -110,15 +110,9 @@ water, 15 min recap</b>. Snacks, drinks, and a few festival t-shirts while they 
     <div class="field"><label for="phone">Phone <span class="opt">(optional)</span></label>
       <input type="tel" id="phone" name="phone" autocomplete="tel"></div>
   </div>
-  <div class="row2">
-    <div class="field"><label for="team">Boat / sponsor team <span class="opt">(optional)</span></label>
-      <input type="text" id="team" name="team" placeholder="e.g. Bayer, Team Dragon Warriors"></div>
-    <div class="field"><label for="tshirt">T-shirt size</label>
-      <select id="tshirt" name="tshirt">
-        <option value="">No thanks</option>
-        <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
-      </select></div>
-  </div>
+  <div class="field"><label for="team">Boat / sponsor team <span class="opt">(optional)</span></label>
+    <input type="text" id="team" name="team" placeholder="e.g. Bayer, Team Dragon Warriors"></div>
+  
   <div class="field"><label for="notes">Notes <span class="opt">(optional)</span></label>
     <textarea id="notes" name="notes" placeholder="Anything we should know?"></textarea></div>
   <label class="waiver">
@@ -141,7 +135,6 @@ water, 15 min recap</b>. Snacks, drinks, and a few festival t-shirts while they 
 </div>
 <script>
 const DATA_URL = "https://script.google.com/macros/s/AKfycbxuy_x4MZyhvC-zlCaB-uziV-7AYSZa1h5HIodYU9w0hHSKCRid-HPMkmrdN5cIYulubA/exec?event=captain-session-2026-09-20";
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuy_x4MZyhvC-zlCaB-uziV-7AYSZa1h5HIodYU9w0hHSKCRid-HPMkmrdN5cIYulubA/exec";
 const EVENT_ID = "captain-session-2026-09-20";
 const SNAPSHOT = {"generated": "preview", "capacity": 20, "count": 0, "remaining": 20, "full": false};
 
@@ -181,7 +174,7 @@ document.getElementById("signupForm").addEventListener("submit", async (ev) => {
     email: document.getElementById("email").value.trim(),
     phone: document.getElementById("phone").value.trim(),
     team: document.getElementById("team").value.trim(),
-    tshirt: document.getElementById("tshirt").value,
+    tshirt: document.getElementById("tshirt") ? document.getElementById("tshirt").value : "",
     waiver: document.getElementById("waiver").checked,
     notes: document.getElementById("notes").value.trim()
   };

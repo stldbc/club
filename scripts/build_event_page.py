@@ -7,7 +7,8 @@
 `Captain Session 2026/build_page.py` 的手动流程，方便离线预览/调试。
 
 必需环境变量：EVENT_ID, CAPACITY, LABEL, EVENT_DATE, ARRIVE_TIME, ON_WATER_TIME
-可选：LOCATION（默认 Simpson Lake）、APPS_SCRIPT_URL（默认用已部署的那个）、OUT_FILENAME（默认 EVENT_ID + ".html"）
+可选：LOCATION（默认 Simpson Lake）、APPS_SCRIPT_URL（默认用已部署的那个）、OUT_FILENAME（默认 EVENT_ID + ".html"）、
+     TSHIRT_SIZES（逗号分隔，比如 "S,M,L,XL,XXL,3XL,4XL,5XL"；留空/不填 = 这场没有 T 恤，表单不显示这一项）
 """
 import json, os, sys
 
@@ -34,10 +35,24 @@ APPS_SCRIPT_URL = env(
     "https://script.google.com/macros/s/AKfycbxuy_x4MZyhvC-zlCaB-uziV-7AYSZa1h5HIodYU9w0hHSKCRid-HPMkmrdN5cIYulubA/exec",
 )
 OUT_FILENAME = env("OUT_FILENAME") or (EVENT_ID + ".html")
+TSHIRT_SIZES = [s.strip() for s in env("TSHIRT_SIZES", "").split(",") if s.strip()]
 
 DATA_URL = APPS_SCRIPT_URL + "?event=" + EVENT_ID
 OUT = os.path.join(REPO_ROOT, OUT_FILENAME)
 SNAPSHOT = {"generated": "preview", "capacity": CAPACITY, "count": 0, "remaining": CAPACITY, "full": False}
+
+if TSHIRT_SIZES:
+    TSHIRT_FIELD_HTML = (
+        '<div class="field"><label for="tshirt">T-shirt size</label>\n'
+        '    <select id="tshirt" name="tshirt">\n'
+        '      <option value="">No thanks</option>\n      '
+        + "".join(f"<option>{s}</option>" for s in TSHIRT_SIZES)
+        + "\n    </select></div>"
+    )
+    BLURB_SNACKS = "Snacks, drinks, and a few festival t-shirts while they last."
+else:
+    TSHIRT_FIELD_HTML = ""
+    BLURB_SNACKS = "Snacks and drinks provided."
 
 PAGE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -133,7 +148,7 @@ footer a{color:var(--ink2)}
 </div>
 <p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the festival, the
 St. Louis Dragon Boat Club is hosting a free session just for you — <b>30 min warm-up, an hour on the
-water, 15 min recap</b>. Snacks, drinks, and a few festival t-shirts while they last. Open to the first
+water, 15 min recap</b>. __BLURB_SNACKS__ Open to the first
 <b>__CAPACITY__</b> sign-ups.</p>
 <div class="capbar-wrap">
   <div class="caprow"><span>Spots filled</span>
@@ -151,15 +166,9 @@ water, 15 min recap</b>. Snacks, drinks, and a few festival t-shirts while they 
     <div class="field"><label for="phone">Phone <span class="opt">(optional)</span></label>
       <input type="tel" id="phone" name="phone" autocomplete="tel"></div>
   </div>
-  <div class="row2">
-    <div class="field"><label for="team">Boat / sponsor team <span class="opt">(optional)</span></label>
-      <input type="text" id="team" name="team" placeholder="e.g. Bayer, Team Dragon Warriors"></div>
-    <div class="field"><label for="tshirt">T-shirt size</label>
-      <select id="tshirt" name="tshirt">
-        <option value="">No thanks</option>
-        <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
-      </select></div>
-  </div>
+  <div class="field"><label for="team">Boat / sponsor team <span class="opt">(optional)</span></label>
+    <input type="text" id="team" name="team" placeholder="e.g. Bayer, Team Dragon Warriors"></div>
+  __TSHIRT_FIELD__
   <div class="field"><label for="notes">Notes <span class="opt">(optional)</span></label>
     <textarea id="notes" name="notes" placeholder="Anything we should know?"></textarea></div>
   <label class="waiver">
@@ -221,7 +230,7 @@ document.getElementById("signupForm").addEventListener("submit", async (ev) => {
     email: document.getElementById("email").value.trim(),
     phone: document.getElementById("phone").value.trim(),
     team: document.getElementById("team").value.trim(),
-    tshirt: document.getElementById("tshirt").value,
+    tshirt: document.getElementById("tshirt") ? document.getElementById("tshirt").value : "",
     waiver: document.getElementById("waiver").checked,
     notes: document.getElementById("notes").value.trim()
   };
@@ -265,6 +274,8 @@ html = (PAGE
     .replace("__LOCATION__", LOCATION)
     .replace("__WAIVER_URL__", WAIVER_URL)
     .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+    .replace("__TSHIRT_FIELD__", TSHIRT_FIELD_HTML)
+    .replace("__BLURB_SNACKS__", BLURB_SNACKS)
     .replace("__SNAPSHOT__", json.dumps(SNAPSHOT)))
 open(OUT, "w", encoding="utf-8").write(html)
 print("written:", os.path.abspath(OUT))
