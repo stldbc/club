@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Captain Session Sign-Up — Sun Sep 20 2026 00:00:00 GMT-0500 (Central Daylight Time)</title>
+<title>Captain Session Sign-Up — Sun, Sep 20</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -85,8 +85,8 @@ footer a{color:var(--ink2)}
 <p class="eyebrow">Gateway Dragon Boat Festival · Thank-You Session</p>
 <h1>On-water session for our festival captains 🐉</h1>
 <div class="essentials">
-  <div class="ess"><div class="l">Date</div><div class="v">Sun Sep 20 2026 00:00:00 GMT-0500 (Central Daylight Time)</div></div>
-  <div class="ess"><div class="l">Arrive</div><div class="v">Sat Dec 30 1899 09:30:00 GMT-0600 (Central Standard Time)</div></div>
+  <div class="ess"><div class="l">Date</div><div class="v">Sun, Sep 20</div></div>
+  <div class="ess"><div class="l">Arrive</div><div class="v">9:30 AM</div></div>
   <div class="ess"><div class="l">On the water</div><div class="v">10:00 – 11:00 AM</div></div>
   <div class="ess"><div class="l">Location</div><div class="v">Simpson Lake</div></div>
 </div>
@@ -197,7 +197,7 @@ document.getElementById("signupForm").addEventListener("submit", async (ev) => {
     const j = await r.json();
     if (j.ok) {
       document.getElementById("signupForm").reset();
-      msg.textContent = "You're in! See you Sun Sep 20 2026 00:00:00 GMT-0500 (Central Daylight Time) at Sat Dec 30 1899 09:30:00 GMT-0600 (Central Standard Time)."; msg.className = "msg ok show";
+      msg.textContent = "You're in! See you Sun, Sep 20 at 9:30 AM."; msg.className = "msg ok show";
       load();
     } else if (j.error === "full") {
       load();
