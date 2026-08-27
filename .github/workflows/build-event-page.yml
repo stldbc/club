@@ -1,0 +1,45 @@
+name: Build event sign-up page
+
+# Triggered from the Events tab in the Google Sheet (Apps Script "发布页面" button),
+# which POSTs a repository_dispatch with type "build-event-page" and the row's data
+# as client_payload. See Captain Session 2026/apps_script.gs in the main STLDBF workspace.
+on:
+  repository_dispatch:
+    types: [build-event-page]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate page
+        env:
+          EVENT_ID: ${{ github.event.client_payload.event_id }}
+          CAPACITY: ${{ github.event.client_payload.capacity }}
+          LABEL: ${{ github.event.client_payload.label }}
+          EVENT_DATE: ${{ github.event.client_payload.event_date }}
+          ARRIVE_TIME: ${{ github.event.client_payload.arrive_time }}
+          ON_WATER_TIME: ${{ github.event.client_payload.on_water_time }}
+          LOCATION: ${{ github.event.client_payload.location }}
+          APPS_SCRIPT_URL: ${{ github.event.client_payload.apps_script_url }}
+        run: python3 scripts/build_event_page.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "STLDBF Sign-up Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add "*.html"
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-build event page: ${{ github.event.client_payload.event_id }}"
+            git push
+          fi
