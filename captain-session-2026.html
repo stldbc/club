@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Captain Session Sign-Up — Sept 20</title>
+<title>Captain Session Sign-Up — Sat, Sept 20</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -90,7 +90,7 @@ footer a{color:var(--ink2)}
   <div class="ess"><div class="l">On the water</div><div class="v">10:00 – 11:00 AM</div></div>
   <div class="ess"><div class="l">Location</div><div class="v">Simpson Lake</div></div>
 </div>
-<p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the 2026 festival, the
+<p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the festival, the
 St. Louis Dragon Boat Club is hosting a free session just for you — <b>30 min warm-up, an hour on the
 water, 15 min recap</b>. Snacks, drinks, and a few festival t-shirts while they last. Open to the first
 <b>20</b> sign-ups.</p>
@@ -198,7 +198,7 @@ document.getElementById("signupForm").addEventListener("submit", async (ev) => {
     const j = await r.json();
     if (j.ok) {
       document.getElementById("signupForm").reset();
-      msg.textContent = "You're in! See you Sept 20 at 9:30 AM."; msg.className = "msg ok show";
+      msg.textContent = "You're in! See you Sat, Sept 20 at 9:30 AM."; msg.className = "msg ok show";
       load();
     } else if (j.error === "full") {
       load();
