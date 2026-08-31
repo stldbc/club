@@ -20,19 +20,21 @@ jobs:
         with:
           python-version: "3.x"
 
+      # Event fields live under client_payload.data (not top-level) because GitHub's
+      # repository_dispatch endpoint rejects more than 10 top-level client_payload properties.
       - name: Generate page
         env:
           EVENT_ID: ${{ github.event.client_payload.event_id }}
-          CAPACITY: ${{ github.event.client_payload.capacity }}
-          LABEL: ${{ github.event.client_payload.label }}
-          EVENT_DATE: ${{ github.event.client_payload.event_date }}
-          ARRIVE_TIME: ${{ github.event.client_payload.arrive_time }}
-          ON_WATER_TIME: ${{ github.event.client_payload.on_water_time }}
-          LOCATION: ${{ github.event.client_payload.location }}
-          TSHIRT_SIZES: ${{ github.event.client_payload.tshirt_sizes }}
-          NOTES: ${{ github.event.client_payload.notes }}
-          CANCELLED: ${{ github.event.client_payload.cancelled }}
-          CANCEL_NOTE: ${{ github.event.client_payload.cancel_note }}
+          CAPACITY: ${{ github.event.client_payload.data.capacity }}
+          LABEL: ${{ github.event.client_payload.data.label }}
+          EVENT_DATE: ${{ github.event.client_payload.data.event_date }}
+          ARRIVE_TIME: ${{ github.event.client_payload.data.arrive_time }}
+          ON_WATER_TIME: ${{ github.event.client_payload.data.on_water_time }}
+          LOCATION: ${{ github.event.client_payload.data.location }}
+          TSHIRT_SIZES: ${{ github.event.client_payload.data.tshirt_sizes }}
+          NOTES: ${{ github.event.client_payload.data.notes }}
+          CANCELLED: ${{ github.event.client_payload.data.cancelled }}
+          CANCEL_NOTE: ${{ github.event.client_payload.data.cancel_note }}
           APPS_SCRIPT_URL: ${{ github.event.client_payload.apps_script_url }}
         run: python3 scripts/build_event_page.py
 
@@ -50,17 +52,17 @@ jobs:
           fi
 
       - name: Add/update announcements (new pages, or any cancellation)
-        if: steps.pagecheck.outputs.is_new == 'true' || github.event.client_payload.cancelled == 'true'
+        if: steps.pagecheck.outputs.is_new == 'true' || github.event.client_payload.data.cancelled == 'true'
         env:
           EVENT_ID: ${{ github.event.client_payload.event_id }}
-          LABEL: ${{ github.event.client_payload.label }}
-          EVENT_DATE: ${{ github.event.client_payload.event_date }}
-          ARRIVE_TIME: ${{ github.event.client_payload.arrive_time }}
-          ON_WATER_TIME: ${{ github.event.client_payload.on_water_time }}
-          LOCATION: ${{ github.event.client_payload.location }}
-          CAPACITY: ${{ github.event.client_payload.capacity }}
-          CANCELLED: ${{ github.event.client_payload.cancelled }}
-          CANCEL_NOTE: ${{ github.event.client_payload.cancel_note }}
+          LABEL: ${{ github.event.client_payload.data.label }}
+          EVENT_DATE: ${{ github.event.client_payload.data.event_date }}
+          ARRIVE_TIME: ${{ github.event.client_payload.data.arrive_time }}
+          ON_WATER_TIME: ${{ github.event.client_payload.data.on_water_time }}
+          LOCATION: ${{ github.event.client_payload.data.location }}
+          CAPACITY: ${{ github.event.client_payload.data.capacity }}
+          CANCELLED: ${{ github.event.client_payload.data.cancelled }}
+          CANCEL_NOTE: ${{ github.event.client_payload.data.cancel_note }}
         run: python3 scripts/update_announcements.py
 
       - name: Commit and push

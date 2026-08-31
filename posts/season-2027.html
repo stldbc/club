@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STL Dragon Boat Club — 2027 Season</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+.soon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.soon-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 16px;
+}
+.soon-card .icon { font-size: 28px; margin-bottom: 10px; }
+.soon-card h4    { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; color: var(--gold); }
+.soon-card p     { font-size: 13px; line-height: 1.6; color: rgba(245,240,232,0.78); }
+
+.connect-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.connect-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--paper);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+  min-height: 48px;
+}
+.connect-link:hover { background: rgba(245,197,24,0.1); border-color: rgba(245,197,24,0.45); color: var(--gold); }
+</style>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a href="../announcements.html" class="back-link">← All Posts</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+
+  <div class="hero-inner">
+    <span class="dragon-emoji">🐉</span>
+    <span class="chinese-subtitle">圣路易龙舟俱乐部</span>
+    <h1>
+      St. Louis Dragon Boat Club（STLDBC）
+      <span class="accent">2027</span>
+    </h1>
+    <p class="tagline">2027 season planning is underway — details coming soon</p>
+    <div class="cta-group">
+      <a href="../announcements.html" class="btn btn-primary">Watch Announcements →</a>
+      <a href="mailto:stldragonboatclub@stlcls.org" class="btn btn-ghost">Email Us</a>
+    </div>
+  </div>
+
+  <svg class="wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#111318"/>
+  </svg>
+</div>
+
+<!-- STATUS -->
+<section>
+  <span class="section-label">Where Things Stand</span>
+  <h2>2027 Registration Isn't Open Yet</h2>
+  <p style="font-size:15px; line-height:1.75; color:rgba(245,240,232,0.82); max-width:640px; margin-bottom:24px;">
+    The 2026 season has wrapped up, and we're still finalizing training dates, team schedules,
+    and pricing for 2027 — these are usually set early in the year. Membership registration and
+    single-session drop-in sign-up are <strong>closed for now</strong> while we plan the new season.
+  </p>
+
+  <div class="soon-grid">
+    <div class="soon-card">
+      <div class="icon">📅</div>
+      <h4>Training Dates</h4>
+      <p>To be announced once the 2027 schedule is finalized.</p>
+    </div>
+    <div class="soon-card">
+      <div class="icon">📍</div>
+      <h4>Location</h4>
+      <p>Simpson Lake, Blue Heron Shelter — same as previous seasons, pending confirmation.</p>
+    </div>
+    <div class="soon-card">
+      <div class="icon">💵</div>
+      <h4>Pricing</h4>
+      <p>To be announced — check back or watch Announcements for updates.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONNECT -->
+<section>
+  <span class="section-label">Stay Connected</span>
+  <h2>Be the First to Know</h2>
+  <p style="font-size:15px; color:rgba(245,240,232,0.78); margin-bottom:8px;">
+    We'll post 2027 registration and drop-in links on the <a href="../announcements.html" style="color:var(--gold);">Announcements</a> page
+    as soon as they're ready. In the meantime:
+  </p>
+
+  <div class="connect-row">
+    <a href="mailto:stldragonboatclub@stlcls.org" class="connect-link">📧 stldragonboatclub@stlcls.org</a>
+    <a href="https://www.stlcls.org/school/page/dragonboat" class="connect-link" target="_blank">🌐 www.stlcls.org/dragonboat</a>
+    <a href="https://www.facebook.com/groups/9592205354148705" class="connect-link" target="_blank">👥 Facebook Group</a>
+  </div>
+</section>
+
+<footer>
+  © 2027 St. Louis Dragon Boat Club · stldragonboatclub@stlcls.org
+</footer>
+
+</body>
+</html>

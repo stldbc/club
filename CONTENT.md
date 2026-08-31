@@ -15,10 +15,16 @@ website/
 ├── style.css                         ← 全站共用样式（勿轻易改）
 ├── CONTENT.md                        ← 本文件（内容参考）
 └── posts/
-    ├── season-2026.html              ← 2026 赛季详情（主要信息页）
+    ├── season-2026.html              ← 2026 赛季详情（已归档/关闭注册，见下方换季说明）
+    ├── season-2027.html              ← 2027 赛季页（⚠️ 目前是"筹备中"占位页，没有真实日期/价格）
     ├── open-house-2026-05-16.html    ← Open House（已过期，保留存档）
     └── safety.html                   ← 安全指南（双语）
 ```
+
+> **2026-08-30 状态**：9/20 队长体验课临时取消改期 9/12，趁手动关闭了 2026 赛季注册/drop-in
+> （表单不再从网站任何地方可点，`posts/season-2026.html` 顶部加了"已结束"提示条），首页/公告页主推
+> 改成 `posts/season-2027.html`——但这只是一个"筹备中"占位页（没有编日期/地址/价格），
+> 等 Jing/Gu 拿到 2027 真实训练日期后，还是要走下面「年度换季 Checklist」把占位内容换成正式内容。
 
 ---
 
@@ -90,8 +96,8 @@ open-house/duanwu 页面，是保留原年份的存档，不用改）。
 |----------|------|
 | STL Dragon Boat Club（Logo） | `index.html` |
 | News | `announcements.html` |
-| 2026 Club | `posts/season-2026.html` |
-| Membership Registration → | `https://forms.gle/tLAdZCFNJEY5kxLi6`（Google Form） |
+| 2027 Club | `posts/season-2027.html`（筹备中占位页） |
+| 2027 Season → | `posts/season-2027.html` |
 
 ### 自动提示条（"Next Training Session"）
 - 位置：Hero 图和快捷图标栏之间
@@ -101,19 +107,19 @@ open-house/duanwu 页面，是保留原年份的存档，不用改）。
 ### 快捷图标栏（5 格）
 | 图标 | 文字 | 链接 |
 |------|------|------|
-| 🏊 | Join the Club | `posts/season-2026.html` |
+| 🏊 | Join the Club | `posts/season-2027.html` |
 | 📢 | Announcements | `announcements.html` |
-| 📝 | Membership Registration | `https://forms.gle/tLAdZCFNJEY5kxLi6` |
-| 🚣 | Drop In ($20) | **⚠️ 待填入 Drop-In Form URL** |
+| 📝 | 2027 Registration | `posts/season-2027.html`（**2026-08-30 起改指向占位页，不再直连 Google Form**） |
+| 🚣 | 2027 Drop-In | `posts/season-2027.html`（同上） |
 | ✉️ | Contact Us | `mailto:stldragonboatclub@stlcls.org` |
 
-### About 文字
+### About 文字（2026-08-30 起用过去式，因为 8/15 节庆已经办完）
 ```
 The St. Louis Dragon Boat Club (STLDBC) brings together paddlers of all 
 backgrounds on the water every Saturday. No experience needed — just the 
 spirit to paddle.
 
-This summer, our members are proud to compete and volunteer at the 20th 
+This past summer, our members competed and volunteered at the 20th 
 Gateway Dragon Boat Festival on August 15 at Creve Coeur Lake — organized 
 by the St. Louis Dragon Boat Foundation (STLDBF).
 ```
@@ -126,17 +132,23 @@ by the St. Louis Dragon Boat Foundation (STLDBF).
 | Aug 15 | Festival Race Day |
 
 ### 近期公告卡片（Recent Announcements）
+- 2027 Season — Details Coming Soon → `posts/season-2027.html`（置顶，占位页）
 - Open House（5/16）— 已标记为 Past，灰色不可点
-- 2026 Season — Join the Crew → `posts/season-2026.html`
+- 2026 Season — Join the Crew → `posts/season-2026.html`（**2026-08-30 起也标记为 Past**，注册已关闭）
 
 ### 页脚 Festival Callout
 - 标题：20th Gateway Dragon Boat Festival
 - 日期地点：Creve Coeur Lake · Maryland Heights, MO · 6 AM – 4 PM
-- 按钮："Festival Website →" → `https://gatewaydragonboat.com`
+- 按钮："Festival Website →" → `https://gatewaydragonboat.com`；"Join Our Club Team" → `posts/season-2027.html`
 
 ---
 
-## 2026 赛季详情页 (`posts/season-2026.html`)
+## 2026 赛季详情页 (`posts/season-2026.html`) — ⚠️ 2026-08-30 起已关闭/归档
+
+顶部加了"已结束"提示条（链去 `season-2027.html`），Membership Registration / Drop In 按钮
+换成不可点的"Registration Closed for 2026"文字 + 一个"See 2027 Season →"按钮；Sign Waiver 按钮
+保留没关（免责声明常年可签）。下面这些小节描述的是**关闭前**的赛季内容，仅供以后复制到
+新赛季页时参考数字/文案，不代表现在网站上还能报名。
 
 ### 训练日历（10 次）
 | 日期 | 备注 |
@@ -174,16 +186,19 @@ by the St. Louis Dragon Boat Foundation (STLDBF).
 
 > **修改价格**：`posts/season-2026.html` → `.fees-grid` 区域
 
-### 主要按钮
+### 主要按钮（关闭前）
 | 按钮 | 链接 |
 |------|------|
-| Membership Registration → | `https://forms.gle/tLAdZCFNJEY5kxLi6` |
-| Drop In ($20) → | **⚠️ 待填入 Drop-In Form URL** |
-| Sign Waiver | `https://forms.gle/WrG4zwLNZ4AgkDPA8` |
+| Membership Registration → | `https://forms.gle/tLAdZCFNJEY5kxLi6`（**已关闭，见上方"2026-08-30 起已关闭"**） |
+| Drop In ($20) → | `https://forms.gle/FFkiSjefEo54VpdU6`（同上，已关闭） |
+| Sign Waiver | `https://forms.gle/WrG4zwLNZ4AgkDPA8`（仍在用，没关） |
 
 ### 地点
 - Simpson Lake, Blue Heron Shelter
-- 地址：**⚠️ 1234 Marshall Rd 为占位符，需更新为实际地址**
+- 地址：本页 `<address>` 块目前写的是 "1234 Marshall Rd, St. Louis, MO 63088"；
+  但 8/27 有一次自动发布把 captain session 页面的地址改成了
+  "1234 Marshall Rd, Valley Park, MO 63088"（城市不同）——**两边不一致，下次动这个页面时
+  找 Jing/Gu 确认哪个是真实地址，统一改掉，不要再当占位符忽略**
 - 地图链接：和地址一起更新
 
 ### Good to Know 卡片
@@ -204,9 +219,11 @@ by the St. Louis Dragon Boat Foundation (STLDBF).
 ### 现有卡片（最新在前）
 | 标签 | 标题 | 状态 |
 |------|------|------|
-| Open House (Past) | Free Trial Open House — May 16 | 已过期，灰色 |
+| Club Info | 2027 Season — Details Coming Soon | 置顶，占位页 |
+| Captain Training | Free On-Water Session for Festival Captains | ⚠️ 9/20 已取消改期 9/12，卡片文字待 Sheet 那边点发布后自动同步 |
+| Club Info | 2026 Season — Join the Crew | **2026-08-30 起标 Past**，注册已关闭 |
 | Club Info | Safety Guidelines 安全指南 | 常驻 |
-| Club Info | 2026 Season — Join the Crew | 常驻 |
+| Open House (Past) | Free Trial Open House — May 16 | 已过期，灰色 |
 
 > **新增公告**：在 `announcements.html` 的 `<div class="post-grid">` 开头插入新 `.post-card`，格式照现有卡片；同时在 `posts/` 下新建对应 HTML 文件；如需在主页"Recent Announcements"展示，也在 `index.html` 的 `.recent-grid` 区域更新。
 
@@ -214,9 +231,19 @@ by the St. Louis Dragon Boat Foundation (STLDBF).
 
 ## Open House 存档页 (`posts/open-house-2026-05-16.html`)
 
-- 顶部有"This event has ended"提示条，链回 `season-2026.html`
+- 顶部有"This event has ended"提示条，链去 `season-2027.html`（2026-08-30 起从 season-2026 改指过来）
 - 页面内容保留作参考，不再对外主推
 - 如举办新一轮 Open House，可复制此文件改日期
+
+---
+
+## 2027 赛季占位页 (`posts/season-2027.html`)
+
+- 2026-08-30 新建，纯"筹备中"占位内容，**没有真实训练日期/地址/价格**——不要照抄这页的数字当正式内容
+- 内容：一句话说明 2026 已结束、2027 还在筹备；三张"待定"卡片（日期/地点/价格）；
+  引导去 Announcements 或邮件联系，没有报名按钮
+- 拿到 2027 真实数据后，参照本文件最上面的「年度换季 Checklist」，把这页正文换成完整赛季页
+  （训练日历/两队时间/费用/地点/Good to Know，格式照抄旧版 `season-2026.html` 关闭前的版本）
 
 ---
 
@@ -232,11 +259,15 @@ by the St. Louis Dragon Boat Foundation (STLDBF).
 
 | 用途 | 链接 |
 |------|------|
-| 会员注册 Google Form | `https://forms.gle/tLAdZCFNJEY5kxLi6` |
-| 免责声明 Waiver | `https://forms.gle/WrG4zwLNZ4AgkDPA8` |
+| 会员注册 Google Form（**2026-08-30 起已从网站全部下线，2026 赛季关闭**） | `https://forms.gle/tLAdZCFNJEY5kxLi6` |
+| Drop-In Form（**同上，已下线**） | `https://forms.gle/FFkiSjefEo54VpdU6` |
+| 免责声明 Waiver（仍在用，没关） | `https://forms.gle/WrG4zwLNZ4AgkDPA8` |
 | Open House 报名（已过期） | `https://forms.gle/CXkVZdp7e4Khgyr68` |
-| Drop-In Form | **⚠️ 待填入** |
 | 节庆官网 | `https://gatewaydragonboat.com` |
 | Facebook 群组 | `https://www.facebook.com/groups/9592205354148705` |
 | 俱乐部邮箱 | stldragonboatclub@stlcls.org |
 | STLCLS 俱乐部页 | `https://www.stlcls.org/school/page/dragonboat` |
+
+> 上面两个表单的链接本身没删，只是网站上暂时不再放出口。2027 赛季重新开放注册时，
+> 大概率是复用同一个 forms.gle 链接（编辑表单里的日期/价格），照 [[website-season-rollover]]
+> 的 Step 3 走，然后把 `posts/season-2027.html` 上的占位内容换成真的按钮。

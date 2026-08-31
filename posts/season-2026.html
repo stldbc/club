@@ -230,6 +230,27 @@
 .nsc-date  { font-size: 15px; font-weight: 600; color: var(--gold); }
 .nsc-time  { font-size: 12px; color: rgba(245,240,232,0.52); }
 
+/* ── SEASON ENDED BANNER ── */
+.event-ended-bar {
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 13px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(245,240,232,0.5);
+  position: relative;
+  z-index: 50;
+}
+.event-ended-bar a { color: var(--gold); text-decoration: none; font-weight: 600; }
+.event-ended-bar a:hover { text-decoration: underline; }
+.btn-closed {
+  background: transparent;
+  color: rgba(245,240,232,0.4);
+  border: 1.5px solid var(--border);
+  cursor: default;
+  pointer-events: none;
+}
+
 /* ── CONNECT ── */
 .connect-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
 .connect-link {
@@ -255,6 +276,12 @@
   <a href="../announcements.html" class="back-link">← All Posts</a>
 </nav>
 
+<!-- SEASON ENDED NOTICE -->
+<div class="event-ended-bar">
+  The 2026 season has ended — registration and drop-in are closed. ·
+  <a href="season-2027.html">See the 2027 Season page →</a>
+</div>
+
 <!-- HERO -->
 <div class="hero">
   <div class="ripple"></div>
@@ -271,8 +298,8 @@
     </h1>
     <p class="tagline">Join the crew · Hit the water · Race the dragon</p>
     <div class="cta-group">
-      <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank">Membership Registration →</a>
-      <a href="https://forms.gle/FFkiSjefEo54VpdU6" class="btn btn-gold" target="_blank">Drop In ($20) →</a>
+      <span class="btn btn-closed">Registration Closed for 2026</span>
+      <a href="season-2027.html" class="btn btn-gold">See 2027 Season →</a>
       <a href="https://forms.gle/WrG4zwLNZ4AgkDPA8" class="btn btn-ghost"   target="_blank">Sign Waiver</a>
     </div>
   </div>
@@ -495,8 +522,8 @@
   </div>
 
   <div class="mt32" style="display:flex; gap:12px; flex-wrap:wrap;">
-    <a href="https://forms.gle/tLAdZCFNJEY5kxLi6" class="btn btn-primary" target="_blank" style="font-size:15px; padding:18px 44px;">Membership Registration →</a>
-    <a href="https://forms.gle/FFkiSjefEo54VpdU6" class="btn btn-gold" target="_blank" style="font-size:15px; padding:18px 44px;">Drop In ($20) →</a>
+    <span class="btn btn-closed" style="font-size:15px; padding:18px 44px;">Registration Closed for 2026</span>
+    <a href="season-2027.html" class="btn btn-gold" style="font-size:15px; padding:18px 44px;">See 2027 Season →</a>
   </div>
 </section>
 
