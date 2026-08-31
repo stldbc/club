@@ -78,6 +78,13 @@ button.submit:disabled{opacity:.5;cursor:not-allowed}
 .full-card .big{font-family:"Fraunces",serif;font-weight:650;font-size:22px;margin:0 0 6px}
 .full-card p{color:var(--ink2);font-size:14.5px;margin:0}
 .full-card a{color:var(--lake-ink);font-weight:600}
+.notebox{background:var(--gold-soft);border:1px solid var(--border);border-radius:12px;
+  padding:12px 14px;font-size:14px;line-height:1.5;color:var(--ink2);margin:0 0 18px}
+.cancelled-card{background:var(--crit-soft);border:1px solid var(--border);border-radius:16px;
+  padding:26px 22px;text-align:center}
+.cancelled-card .big{font-family:"Fraunces",serif;font-weight:650;font-size:22px;margin:0 0 6px;color:var(--crit)}
+.cancelled-card p{color:var(--ink2);font-size:14.5px;margin:0}
+.cancelled-card a{color:var(--lake-ink);font-weight:600}
 footer{margin-top:26px;font-size:12.5px;color:var(--mut);text-align:center}
 footer a{color:var(--ink2)}
 @media(max-width:480px){.essentials{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}}
@@ -90,6 +97,7 @@ footer a{color:var(--ink2)}
   <div class="ess"><div class="l">On the water</div><div class="v">10:00 – 11:00 AM</div></div>
   <div class="ess"><div class="l">Location</div><div class="v">Simpson Lake (1234 Marshall Rd, Valley Park, MO 63088)</div></div>
 </div>
+
 <p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the festival, the
 St. Louis Dragon Boat Club is hosting a free session just for you — <b>30 min warm-up, an hour on the
 water, 15 min recap</b>. Snacks and drinks provided. Open to the first
@@ -130,15 +138,29 @@ water, 15 min recap</b>. Snacks and drinks provided. Open to the first
     to be added to the waitlist in case of cancellations.</p>
 </div>
 
+<div class="cancelled-card" id="cancelledCard" style="display:none">
+  <div class="big">This session has been cancelled</div>
+  <p id="cancelledNote"></p>
+</div>
+
 <footer>Questions? <a href="mailto:stldragonboatclub@stlcls.org">stldragonboatclub@stlcls.org</a> ·
   Data: <span id="dataStamp">—</span></footer>
 </div>
 <script>
 const DATA_URL = "https://script.google.com/macros/s/AKfycbxuy_x4MZyhvC-zlCaB-uziV-7AYSZa1h5HIodYU9w0hHSKCRid-HPMkmrdN5cIYulubA/exec?event=captain-session-2026-09-20";
 const EVENT_ID = "captain-session-2026-09-20";
-const SNAPSHOT = {"generated": "preview", "capacity": 20, "count": 0, "remaining": 20, "full": false};
+const SNAPSHOT = {"generated": "preview", "capacity": 20, "count": 0, "remaining": 20, "full": false, "cancelled": true, "cancel_note": "Mark said the sponsor pushed the event to next year (8/30/2026)"};
 
 function paint(d){
+  document.getElementById("dataStamp").textContent = d.generated || "—";
+  if (d.cancelled) {
+    document.querySelector(".capbar-wrap").style.display = "none";
+    document.getElementById("signupForm").style.display = "none";
+    document.getElementById("fullCard").style.display = "none";
+    document.getElementById("cancelledNote").textContent = d.cancel_note || "Check back for updates, or email us with questions.";
+    document.getElementById("cancelledCard").style.display = "block";
+    return;
+  }
   const cap = d.capacity ?? 20, count = d.count ?? 0, remaining = Math.max(0, cap-count);
   document.getElementById("capFilled").textContent = count;
   document.getElementById("capTotal").textContent = cap;
@@ -147,7 +169,6 @@ function paint(d){
     ? "Full — see below to join the waitlist."
     : remaining <= 5 ? `Only ${remaining} spot${remaining===1?"":"s"} left — sign up soon!`
     : `${remaining} spots remaining.`;
-  document.getElementById("dataStamp").textContent = d.generated || "—";
   if (d.full) {
     document.getElementById("signupForm").style.display = "none";
     document.getElementById("fullCard").style.display = "block";
@@ -194,6 +215,8 @@ document.getElementById("signupForm").addEventListener("submit", async (ev) => {
       msg.textContent = "You're in! See you Sun, Sep 20 at 9:30 AM."; msg.className = "msg ok show";
       load();
     } else if (j.error === "full") {
+      load();
+    } else if (j.error === "cancelled") {
       load();
     } else if (j.error === "duplicate_email") {
       msg.textContent = "That email is already signed up."; msg.className = "msg err show";
