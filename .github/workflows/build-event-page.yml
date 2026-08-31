@@ -63,6 +63,7 @@ jobs:
           CAPACITY: ${{ github.event.client_payload.data.capacity }}
           CANCELLED: ${{ github.event.client_payload.data.cancelled }}
           CANCEL_NOTE: ${{ github.event.client_payload.data.cancel_note }}
+          CANCEL_SILENTLY: ${{ github.event.client_payload.data.cancel_silently }}
         run: python3 scripts/update_announcements.py
 
       - name: Commit and push

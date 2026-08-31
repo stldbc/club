@@ -3,18 +3,22 @@
 
 调用时机（见 .github/workflows/build-event-page.yml 的 "Add/update announcements" 步骤）：
   1. 这是一个全新的活动页面（git 里这个 html 文件是 untracked），或
-  2. 这次发布把活动标记成了取消（CANCELLED=true）——不管卡片存不存在都要同步"已取消"状态
+  2. 这次发布把活动标记成了取消（CANCELLED=true）——不管卡片存不存在都要同步
+
+取消有两种模式（CANCEL_SILENTLY 区分）：
+  - CANCEL_SILENTLY=false（默认，活动已经公开公布/有人报名过）：卡片保留，原地改成"已取消"样式；
+    如果这场活动从没插过卡片（比如一发布就被取消），直接插入一张已经是"已取消"样式的卡片
+  - CANCEL_SILENTLY=true（活动在真正公开公布之前就取消了）：announcements.html 上**不应该出现
+    这场活动**——如果卡片已经存在就直接删掉，不存在就什么都不做，不会留下"已取消"提示
+
 除此之外（比如只是改一个已有活动的人数/时间，没有取消），这个脚本根本不会被调用，
 announcements.html 不会被碰。
 
-幂等：
-  - 非取消场景：如果 announcements.html 里已经有这个页面文件名的卡片，直接跳过，不重复插入
-  - 取消场景：如果卡片已存在，原地替换成"已取消"版本；如果还不存在（比如活动一发布就立刻被取消），
-    直接插入一张已经是"已取消"样式的卡片
+幂等：上面每一种分支重复跑都不会产生额外变化（跳过/原地替换/删除后再跑还是找不到就跳过）。
 
 必需环境变量：EVENT_ID, LABEL, EVENT_DATE, ARRIVE_TIME, ON_WATER_TIME
 可选：LOCATION（默认 Simpson Lake）、CAPACITY（默认 20）、OUT_FILENAME（默认 EVENT_ID + ".html"）、
-     CANCELLED（"true"/"false"）、CANCEL_NOTE
+     CANCELLED（"true"/"false"）、CANCEL_NOTE、CANCEL_SILENTLY（"true"/"false"）
 """
 import os, re, sys
 
@@ -41,6 +45,7 @@ CAPACITY = env("CAPACITY", "20") or "20"
 OUT_FILENAME = env("OUT_FILENAME") or (EVENT_ID + ".html")
 CANCELLED = env("CANCELLED", "false").strip().lower() in ("true", "yes", "y", "1")
 CANCEL_NOTE = env("CANCEL_NOTE", "").strip()
+CANCEL_SILENTLY = env("CANCEL_SILENTLY", "false").strip().lower() in ("true", "yes", "y", "1")
 
 
 def build_card():
@@ -67,6 +72,22 @@ def build_card():
 
 html = open(ANNOUNCEMENTS, encoding="utf-8").read()
 href_marker = f'href="{OUT_FILENAME}"'
+
+if CANCELLED and CANCEL_SILENTLY:
+    if href_marker not in html:
+        print(f"skip: no announcement card exists for {OUT_FILENAME} to remove (cancel_silently)")
+        sys.exit(0)
+    pattern = re.compile(
+        r'\n?\s*<a class="post-card"[^>]*href="' + re.escape(OUT_FILENAME) + r'"[^>]*>.*?</a>\n?',
+        re.DOTALL,
+    )
+    new_html, count = pattern.subn("\n", html, count=1)
+    if count == 0:
+        print(f"could not locate existing card block for {OUT_FILENAME} to remove", file=sys.stderr)
+        sys.exit(1)
+    open(ANNOUNCEMENTS, "w", encoding="utf-8").write(new_html)
+    print(f"removed announcement card for {OUT_FILENAME} (cancelled before it was ever announced)")
+    sys.exit(0)
 
 if href_marker in html:
     if not CANCELLED:

@@ -220,7 +220,7 @@ by the St. Louis Dragon Boat Foundation (STLDBF).
 | 标签 | 标题 | 状态 |
 |------|------|------|
 | Club Info | 2027 Season — Details Coming Soon | 置顶，占位页 |
-| Captain Training | Free On-Water Session for Festival Captains | ⚠️ 9/20 已取消改期 9/12，卡片文字待 Sheet 那边点发布后自动同步 |
+| （无）| 9/20 队长体验课 | **2026-08-30 移除**——公布前就取消了（见下方"取消功能的两种模式"），改期 9/12 那场发布后会自动加回来 |
 | Club Info | 2026 Season — Join the Crew | **2026-08-30 起标 Past**，注册已关闭 |
 | Club Info | Safety Guidelines 安全指南 | 常驻 |
 | Open House (Past) | Free Trial Open House — May 16 | 已过期，灰色 |
