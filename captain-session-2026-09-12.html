@@ -78,8 +78,10 @@ button.submit:disabled{opacity:.5;cursor:not-allowed}
 .full-card .big{font-family:"Fraunces",serif;font-weight:650;font-size:22px;margin:0 0 6px}
 .full-card p{color:var(--ink2);font-size:14.5px;margin:0}
 .full-card a{color:var(--lake-ink);font-weight:600}
-.notebox{background:var(--gold-soft);border:1px solid var(--border);border-radius:12px;
-  padding:12px 14px;font-size:14px;line-height:1.5;color:var(--ink2);margin:0 0 18px}
+.back-nav{margin:0 0 18px;font-size:13px}
+.back-nav a{color:var(--lake-ink);text-decoration:none;font-weight:600}
+.back-nav a:hover{text-decoration:underline}
+.back-nav .sep{color:var(--mut);margin:0 8px}
 .cancelled-card{background:var(--crit-soft);border:1px solid var(--border);border-radius:16px;
   padding:26px 22px;text-align:center}
 .cancelled-card .big{font-family:"Fraunces",serif;font-weight:650;font-size:22px;margin:0 0 6px;color:var(--crit)}
@@ -89,6 +91,9 @@ footer{margin-top:26px;font-size:12.5px;color:var(--mut);text-align:center}
 footer a{color:var(--ink2)}
 @media(max-width:480px){.essentials{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
+<nav class="back-nav">
+  <a href="announcements.html">← Announcements</a><span class="sep">·</span><a href="index.html">Home</a>
+</nav>
 <p class="eyebrow">Gateway Dragon Boat Festival · Thank-You Session</p>
 <h1>On-water session for our festival captains 🐉</h1>
 <div class="essentials">
@@ -97,11 +102,7 @@ footer a{color:var(--ink2)}
   <div class="ess"><div class="l">On the water</div><div class="v">11:00 AM – 12:00 PM</div></div>
   <div class="ess"><div class="l">Location</div><div class="v">Simpson Lake (1234 Marshall Rd, Valley Park, MO 63088)</div></div>
 </div>
-
-<p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the festival, the
-St. Louis Dragon Boat Club is hosting a free session just for you — <b>30 min warm-up, an hour on the
-water, 15 min recap</b>. Snacks and drinks provided. Open to the first
-<b>20</b> sign-ups.</p>
+<p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the festival, the St. Louis Dragon Boat Club is hosting a free session just for you — 30 min warm-up, an hour on the water, 15 min recap. Snacks and drinks provided. Open to the first 20 sign-ups.</p>
 <div class="capbar-wrap">
   <div class="caprow"><span>Spots filled</span>
     <span class="capnum"><span class="fill" id="capFilled">0</span> / <span id="capTotal">20</span></span></div>
