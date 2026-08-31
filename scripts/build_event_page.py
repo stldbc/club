@@ -8,7 +8,11 @@
 
 必需环境变量：EVENT_ID, CAPACITY, LABEL, EVENT_DATE, ARRIVE_TIME, ON_WATER_TIME
 可选：LOCATION（默认 Simpson Lake）、APPS_SCRIPT_URL（默认用已部署的那个）、OUT_FILENAME（默认 EVENT_ID + ".html"）、
-     TSHIRT_SIZES（逗号分隔，比如 "S,M,L,XL,XXL,3XL,4XL,5XL"；留空/不填 = 这场没有 T 恤，表单不显示这一项）
+     TSHIRT_SIZES（逗号分隔，比如 "S,M,L,XL,XXL,3XL,4XL,5XL"；留空/不填 = 这场没有 T 恤，表单不显示这一项）、
+     NOTES（额外说明框，留空则页面上完全不显示这个框）、
+     CANCELLED（"true"/"false"，默认 false——取消状态主要靠 Apps Script doGet 实时下发，这里烘焙进
+     首屏快照只是为了离线预览时也能看到效果，线上是否显示取消卡片以 doGet 返回的 cancelled 为准）、
+     CANCEL_NOTE（取消时显示的说明文字，比如"已取消，改期到 9/12，见新报名页"）
 """
 import json, os, sys
 
@@ -36,10 +40,21 @@ APPS_SCRIPT_URL = env(
 )
 OUT_FILENAME = env("OUT_FILENAME") or (EVENT_ID + ".html")
 TSHIRT_SIZES = [s.strip() for s in env("TSHIRT_SIZES", "").split(",") if s.strip()]
+NOTES = env("NOTES", "").strip()
+CANCELLED = env("CANCELLED", "false").strip().lower() in ("true", "yes", "y", "1")
+CANCEL_NOTE = env("CANCEL_NOTE", "").strip()
 
 DATA_URL = APPS_SCRIPT_URL + "?event=" + EVENT_ID
 OUT = os.path.join(REPO_ROOT, OUT_FILENAME)
-SNAPSHOT = {"generated": "preview", "capacity": CAPACITY, "count": 0, "remaining": CAPACITY, "full": False}
+SNAPSHOT = {
+    "generated": "preview", "capacity": CAPACITY, "count": 0, "remaining": CAPACITY, "full": False,
+    "cancelled": CANCELLED, "cancel_note": CANCEL_NOTE
+}
+
+if NOTES:
+    NOTES_BOX_HTML = f'<div class="notebox">{NOTES}</div>'
+else:
+    NOTES_BOX_HTML = ""
 
 if TSHIRT_SIZES:
     TSHIRT_FIELD_HTML = (
@@ -134,6 +149,13 @@ button.submit:disabled{opacity:.5;cursor:not-allowed}
 .full-card .big{font-family:"Fraunces",serif;font-weight:650;font-size:22px;margin:0 0 6px}
 .full-card p{color:var(--ink2);font-size:14.5px;margin:0}
 .full-card a{color:var(--lake-ink);font-weight:600}
+.notebox{background:var(--gold-soft);border:1px solid var(--border);border-radius:12px;
+  padding:12px 14px;font-size:14px;line-height:1.5;color:var(--ink2);margin:0 0 18px}
+.cancelled-card{background:var(--crit-soft);border:1px solid var(--border);border-radius:16px;
+  padding:26px 22px;text-align:center}
+.cancelled-card .big{font-family:"Fraunces",serif;font-weight:650;font-size:22px;margin:0 0 6px;color:var(--crit)}
+.cancelled-card p{color:var(--ink2);font-size:14.5px;margin:0}
+.cancelled-card a{color:var(--lake-ink);font-weight:600}
 footer{margin-top:26px;font-size:12.5px;color:var(--mut);text-align:center}
 footer a{color:var(--ink2)}
 @media(max-width:480px){.essentials{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}}
@@ -146,6 +168,7 @@ footer a{color:var(--ink2)}
   <div class="ess"><div class="l">On the water</div><div class="v">__ON_WATER_TIME__</div></div>
   <div class="ess"><div class="l">Location</div><div class="v">__LOCATION__</div></div>
 </div>
+__NOTES_BOX__
 <p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the festival, the
 St. Louis Dragon Boat Club is hosting a free session just for you — <b>30 min warm-up, an hour on the
 water, 15 min recap</b>. __BLURB_SNACKS__ Open to the first
@@ -186,6 +209,11 @@ water, 15 min recap</b>. __BLURB_SNACKS__ Open to the first
     to be added to the waitlist in case of cancellations.</p>
 </div>
 
+<div class="cancelled-card" id="cancelledCard" style="display:none">
+  <div class="big">This session has been cancelled</div>
+  <p id="cancelledNote"></p>
+</div>
+
 <footer>Questions? <a href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a> ·
   Data: <span id="dataStamp">—</span></footer>
 </div>
@@ -195,6 +223,15 @@ const EVENT_ID = "__EVENT_ID__";
 const SNAPSHOT = __SNAPSHOT__;
 
 function paint(d){
+  document.getElementById("dataStamp").textContent = d.generated || "—";
+  if (d.cancelled) {
+    document.querySelector(".capbar-wrap").style.display = "none";
+    document.getElementById("signupForm").style.display = "none";
+    document.getElementById("fullCard").style.display = "none";
+    document.getElementById("cancelledNote").textContent = d.cancel_note || "Check back for updates, or email us with questions.";
+    document.getElementById("cancelledCard").style.display = "block";
+    return;
+  }
   const cap = d.capacity ?? 20, count = d.count ?? 0, remaining = Math.max(0, cap-count);
   document.getElementById("capFilled").textContent = count;
   document.getElementById("capTotal").textContent = cap;
@@ -203,7 +240,6 @@ function paint(d){
     ? "Full — see below to join the waitlist."
     : remaining <= 5 ? `Only ${remaining} spot${remaining===1?"":"s"} left — sign up soon!`
     : `${remaining} spots remaining.`;
-  document.getElementById("dataStamp").textContent = d.generated || "—";
   if (d.full) {
     document.getElementById("signupForm").style.display = "none";
     document.getElementById("fullCard").style.display = "block";
@@ -251,6 +287,8 @@ document.getElementById("signupForm").addEventListener("submit", async (ev) => {
       load();
     } else if (j.error === "full") {
       load();
+    } else if (j.error === "cancelled") {
+      load();
     } else if (j.error === "duplicate_email") {
       msg.textContent = "That email is already signed up."; msg.className = "msg err show";
     } else {
@@ -276,6 +314,7 @@ html = (PAGE
     .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
     .replace("__TSHIRT_FIELD__", TSHIRT_FIELD_HTML)
     .replace("__BLURB_SNACKS__", BLURB_SNACKS)
+    .replace("__NOTES_BOX__", NOTES_BOX_HTML)
     .replace("__SNAPSHOT__", json.dumps(SNAPSHOT)))
 open(OUT, "w", encoding="utf-8").write(html)
 print("written:", os.path.abspath(OUT))
