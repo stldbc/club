@@ -1,20 +1,16 @@
 #!/usr/bin/env python3
-"""给 announcements.html 自动插入/更新一张活动的公告卡片。
+"""同步一场活动的卡片到 announcements.html 和 index.html 的 Recent Announcements 区。
 
-调用时机（见 .github/workflows/build-event-page.yml 的 "Add/update announcements" 步骤）：
-  1. 这是一个全新的活动页面（git 里这个 html 文件是 untracked），或
-  2. 这次发布把活动标记成了取消（CANCELLED=true）——不管卡片存不存在都要同步
+每次点「发布页面」都会跑（见 .github/workflows/build-event-page.yml），不区分新活动/改已有活动
+——因为改已有活动（比如改错的 label、改时间）也应该让卡片文字跟着刷新，不能假装没发生。
 
-取消有两种模式（CANCEL_SILENTLY 区分）：
-  - CANCEL_SILENTLY=false（默认，活动已经公开公布/有人报名过）：卡片保留，原地改成"已取消"样式；
-    如果这场活动从没插过卡片（比如一发布就被取消），直接插入一张已经是"已取消"样式的卡片
-  - CANCEL_SILENTLY=true（活动在真正公开公布之前就取消了）：announcements.html 上**不应该出现
-    这场活动**——如果卡片已经存在就直接删掉，不存在就什么都不做，不会留下"已取消"提示
+每个目标文件独立判断，同一套逻辑：
+  - CANCELLED=true 且 CANCEL_SILENTLY=true（活动在真正公开公布之前就取消了）：
+    这场活动**不应该出现**——卡片存在就删掉，不存在就什么都不做，不留"已取消"提示
+  - 卡片已存在（不管是不是取消）：原地整块替换成最新内容（标题/日期/说明文字/取消状态都刷新）
+  - 卡片不存在：插入一张新卡片（取消了就直接是"已取消"样式）
 
-除此之外（比如只是改一个已有活动的人数/时间，没有取消），这个脚本根本不会被调用，
-announcements.html 不会被碰。
-
-幂等：上面每一种分支重复跑都不会产生额外变化（跳过/原地替换/删除后再跑还是找不到就跳过）。
+幂等：上面每一种分支重复跑结果都一样，不会越跑越多张卡片。
 
 必需环境变量：EVENT_ID, LABEL, EVENT_DATE, ARRIVE_TIME, ON_WATER_TIME
 可选：LOCATION（默认 Simpson Lake）、CAPACITY（默认 20）、OUT_FILENAME（默认 EVENT_ID + ".html"）、
@@ -24,7 +20,13 @@ import os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.join(HERE, "..")
-ANNOUNCEMENTS = os.path.join(REPO_ROOT, "announcements.html")
+
+# (文件路径, 卡片列表容器的开始标签) —— 两个文件都用同样的 .post-card 卡片结构，
+# 只是外层容器 class 名不同（announcements.html 用 post-grid，index.html 首页用 recent-grid）。
+TARGETS = [
+    (os.path.join(REPO_ROOT, "announcements.html"), '<div class="post-grid">'),
+    (os.path.join(REPO_ROOT, "index.html"), '<div class="recent-grid">'),
+]
 
 
 def env(name, default=None, required=False):
@@ -46,6 +48,11 @@ OUT_FILENAME = env("OUT_FILENAME") or (EVENT_ID + ".html")
 CANCELLED = env("CANCELLED", "false").strip().lower() in ("true", "yes", "y", "1")
 CANCEL_NOTE = env("CANCEL_NOTE", "").strip()
 CANCEL_SILENTLY = env("CANCEL_SILENTLY", "false").strip().lower() in ("true", "yes", "y", "1")
+
+CARD_BLOCK_RE = re.compile(
+    r'\n?\s*<a class="post-card"[^>]*href="' + re.escape(OUT_FILENAME) + r'"[^>]*>.*?</a>\n?',
+    re.DOTALL,
+)
 
 
 def build_card():
@@ -70,49 +77,41 @@ def build_card():
 """
 
 
-html = open(ANNOUNCEMENTS, encoding="utf-8").read()
-href_marker = f'href="{OUT_FILENAME}"'
+def sync_file(path, container_marker):
+    name = os.path.basename(path)
+    html = open(path, encoding="utf-8").read()
+    href_marker = f'href="{OUT_FILENAME}"'
 
-if CANCELLED and CANCEL_SILENTLY:
-    if href_marker not in html:
-        print(f"skip: no announcement card exists for {OUT_FILENAME} to remove (cancel_silently)")
-        sys.exit(0)
-    pattern = re.compile(
-        r'\n?\s*<a class="post-card"[^>]*href="' + re.escape(OUT_FILENAME) + r'"[^>]*>.*?</a>\n?',
-        re.DOTALL,
-    )
-    new_html, count = pattern.subn("\n", html, count=1)
-    if count == 0:
-        print(f"could not locate existing card block for {OUT_FILENAME} to remove", file=sys.stderr)
+    if CANCELLED and CANCEL_SILENTLY:
+        if href_marker not in html:
+            print(f"skip: {name} has no card for {OUT_FILENAME} to remove (cancel_silently)")
+            return
+        new_html, count = CARD_BLOCK_RE.subn("\n", html, count=1)
+        if count == 0:
+            print(f"could not locate existing card block for {OUT_FILENAME} in {name}", file=sys.stderr)
+            sys.exit(1)
+        open(path, "w", encoding="utf-8").write(new_html)
+        print(f"{name}: removed card for {OUT_FILENAME} (cancelled before it was ever announced)")
+        return
+
+    if href_marker in html:
+        new_html, count = CARD_BLOCK_RE.subn(build_card(), html, count=1)
+        if count == 0:
+            print(f"could not locate existing card block for {OUT_FILENAME} in {name}", file=sys.stderr)
+            sys.exit(1)
+        open(path, "w", encoding="utf-8").write(new_html)
+        print(f"{name}: updated card for {OUT_FILENAME}" + (" (cancelled)" if CANCELLED else ""))
+        return
+
+    idx = html.find(container_marker)
+    if idx == -1:
+        print(f"could not find {container_marker!r} in {name}", file=sys.stderr)
         sys.exit(1)
-    open(ANNOUNCEMENTS, "w", encoding="utf-8").write(new_html)
-    print(f"removed announcement card for {OUT_FILENAME} (cancelled before it was ever announced)")
-    sys.exit(0)
+    insert_at = idx + len(container_marker)
+    html = html[:insert_at] + build_card() + html[insert_at:]
+    open(path, "w", encoding="utf-8").write(html)
+    print(f"{name}: inserted card for {OUT_FILENAME}" + (" (cancelled)" if CANCELLED else ""))
 
-if href_marker in html:
-    if not CANCELLED:
-        print(f"skip: announcements.html already has a card for {OUT_FILENAME}")
-        sys.exit(0)
-    # Replace the existing <a class="post-card" href="OUT_FILENAME" ...> ... </a> block in place.
-    pattern = re.compile(
-        r'\n?\s*<a class="post-card"[^>]*href="' + re.escape(OUT_FILENAME) + r'"[^>]*>.*?</a>\n?',
-        re.DOTALL,
-    )
-    new_html, count = pattern.subn(build_card(), html, count=1)
-    if count == 0:
-        print(f"could not locate existing card block for {OUT_FILENAME} to update", file=sys.stderr)
-        sys.exit(1)
-    open(ANNOUNCEMENTS, "w", encoding="utf-8").write(new_html)
-    print(f"updated announcement card for {OUT_FILENAME} (cancelled)")
-    sys.exit(0)
 
-marker = '<div class="post-grid">'
-idx = html.find(marker)
-if idx == -1:
-    print('could not find <div class="post-grid"> in announcements.html', file=sys.stderr)
-    sys.exit(1)
-insert_at = idx + len(marker)
-html = html[:insert_at] + build_card() + html[insert_at:]
-
-open(ANNOUNCEMENTS, "w", encoding="utf-8").write(html)
-print(f"inserted announcement card for {OUT_FILENAME}" + (" (cancelled)" if CANCELLED else ""))
+for path, marker in TARGETS:
+    sync_file(path, marker)

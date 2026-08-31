@@ -38,21 +38,10 @@ jobs:
           APPS_SCRIPT_URL: ${{ github.event.client_payload.apps_script_url }}
         run: python3 scripts/build_event_page.py
 
-      # A brand-new event page (untracked in git) also gets announced on announcements.html.
-      # Publishing a change to an *existing* page (capacity/time tweak etc.) does not re-announce it
-      # UNLESS it's being marked cancelled — a cancellation always re-syncs the announcement card.
-      - name: Check if this is a new page
-        id: pagecheck
-        run: |
-          FILE="${{ github.event.client_payload.event_id }}.html"
-          if git status --porcelain -- "$FILE" | grep -q '^??'; then
-            echo "is_new=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_new=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Add/update announcements (new pages, or any cancellation)
-        if: steps.pagecheck.outputs.is_new == 'true' || github.event.client_payload.data.cancelled == 'true'
+      # Every publish (new event or a re-publish of an existing one, e.g. fixing a typo'd
+      # label) keeps the announcements.html + index.html cards in sync with the Sheet.
+      # It's idempotent: existing cards are updated in place, not duplicated.
+      - name: Sync announcement + homepage cards
         env:
           EVENT_ID: ${{ github.event.client_payload.event_id }}
           LABEL: ${{ github.event.client_payload.data.label }}

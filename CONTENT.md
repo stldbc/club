@@ -73,9 +73,10 @@ open-house/duanwu 页面，是保留原年份的存档，不用改）。
 之类的过渡文案，等 Step 2 的真实数据到位后再一次性替换成正式内容，避免出现一个短期内就要再改一次的假日期。
 
 ### 不用管的部分（已经自动化）
-- **Captain training 报名页 → announcements.html**：已自动化（见
+- **Captain training 报名页 → announcements.html + index.html 首页**：已自动化（见
   `Captain Session 2026/apps_script.gs` 顶部注释 + `.github/workflows/build-event-page.yml`）。
-  Sheet 里发布一场全新活动会自动加公告卡片，换季时不用管这块。
+  Sheet 里每次点「发布页面」都会同步这两个文件的卡片（新建就插入，已存在就原地刷新成最新
+  label/日期/取消状态），换季时不用管这块。
 
 ---
 
@@ -220,12 +221,16 @@ by the St. Louis Dragon Boat Foundation (STLDBF).
 | 标签 | 标题 | 状态 |
 |------|------|------|
 | Club Info | 2027 Season — Details Coming Soon | 置顶，占位页 |
-| （无）| 9/20 队长体验课 | **2026-08-30 移除**——公布前就取消了（见下方"取消功能的两种模式"），改期 9/12 那场发布后会自动加回来 |
+| （无）| 9/20 队长体验课 | **2026-08-30 移除**——公布前就取消了（见下方"取消功能的两种模式"）；改期后的 9/12 场次已经用同一套自动化重新加回 announcements.html **+ index.html 首页**（label 改错重新发布会原地刷新，不是新加一张） |
 | Club Info | 2026 Season — Join the Crew | **2026-08-30 起标 Past**，注册已关闭 |
 | Club Info | Safety Guidelines 安全指南 | 常驻 |
 | Open House (Past) | Free Trial Open House — May 16 | 已过期，灰色 |
 
-> **新增公告**：在 `announcements.html` 的 `<div class="post-grid">` 开头插入新 `.post-card`，格式照现有卡片；同时在 `posts/` 下新建对应 HTML 文件；如需在主页"Recent Announcements"展示，也在 `index.html` 的 `.recent-grid` 区域更新。
+> **新增公告**：Captain training 这类走 Sheet 发布系统的活动，两个文件都自动同步，不用手动改
+> （见上方"不用管的部分"）。其他类型的公告（比如新的 season 页、招募帖）还是手动加：在
+> `announcements.html` 的 `<div class="post-grid">` 开头插入新 `.post-card`，格式照现有卡片；
+> 同时在 `posts/` 下新建对应 HTML 文件；如需在主页"Recent Announcements"展示，也在
+> `index.html` 的 `.recent-grid` 区域手动加一份同样的卡片。
 
 ---
 
