@@ -9,7 +9,8 @@
 必需环境变量：EVENT_ID, CAPACITY, LABEL, EVENT_DATE, ARRIVE_TIME, ON_WATER_TIME
 可选：LOCATION（默认 Simpson Lake）、APPS_SCRIPT_URL（默认用已部署的那个）、OUT_FILENAME（默认 EVENT_ID + ".html"）、
      TSHIRT_SIZES（逗号分隔，比如 "S,M,L,XL,XXL,3XL,4XL,5XL"；留空/不填 = 这场没有 T 恤，表单不显示这一项）、
-     NOTES（额外说明框，留空则页面上完全不显示这个框）、
+     NOTES（这场活动的介绍文字，显示在时间地点下面——以前这段是写死在模板里的"As thanks for
+     captaining a boat..."，每场活动内容其实不一样，所以改成从这里传，留空就完全不显示这段介绍）、
      CANCELLED（"true"/"false"，默认 false——取消状态主要靠 Apps Script doGet 实时下发，这里烘焙进
      首屏快照只是为了离线预览时也能看到效果，线上是否显示取消卡片以 doGet 返回的 cancelled 为准）、
      CANCEL_NOTE（取消时显示的说明文字，比如"已取消，改期到 9/12，见新报名页"）
@@ -51,10 +52,7 @@ SNAPSHOT = {
     "cancelled": CANCELLED, "cancel_note": CANCEL_NOTE
 }
 
-if NOTES:
-    NOTES_BOX_HTML = f'<div class="notebox">{NOTES}</div>'
-else:
-    NOTES_BOX_HTML = ""
+NOTES_BLURB_HTML = f'<p class="blurb">{NOTES}</p>' if NOTES else ""
 
 if TSHIRT_SIZES:
     TSHIRT_FIELD_HTML = (
@@ -64,10 +62,8 @@ if TSHIRT_SIZES:
         + "".join(f"<option>{s}</option>" for s in TSHIRT_SIZES)
         + "\n    </select></div>"
     )
-    BLURB_SNACKS = "Snacks, drinks, and a few festival t-shirts while they last."
 else:
     TSHIRT_FIELD_HTML = ""
-    BLURB_SNACKS = "Snacks and drinks provided."
 
 PAGE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -149,8 +145,10 @@ button.submit:disabled{opacity:.5;cursor:not-allowed}
 .full-card .big{font-family:"Fraunces",serif;font-weight:650;font-size:22px;margin:0 0 6px}
 .full-card p{color:var(--ink2);font-size:14.5px;margin:0}
 .full-card a{color:var(--lake-ink);font-weight:600}
-.notebox{background:var(--gold-soft);border:1px solid var(--border);border-radius:12px;
-  padding:12px 14px;font-size:14px;line-height:1.5;color:var(--ink2);margin:0 0 18px}
+.back-nav{margin:0 0 18px;font-size:13px}
+.back-nav a{color:var(--lake-ink);text-decoration:none;font-weight:600}
+.back-nav a:hover{text-decoration:underline}
+.back-nav .sep{color:var(--mut);margin:0 8px}
 .cancelled-card{background:var(--crit-soft);border:1px solid var(--border);border-radius:16px;
   padding:26px 22px;text-align:center}
 .cancelled-card .big{font-family:"Fraunces",serif;font-weight:650;font-size:22px;margin:0 0 6px;color:var(--crit)}
@@ -160,6 +158,9 @@ footer{margin-top:26px;font-size:12.5px;color:var(--mut);text-align:center}
 footer a{color:var(--ink2)}
 @media(max-width:480px){.essentials{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
+<nav class="back-nav">
+  <a href="announcements.html">← Announcements</a><span class="sep">·</span><a href="index.html">Home</a>
+</nav>
 <p class="eyebrow">Gateway Dragon Boat Festival · Thank-You Session</p>
 <h1>On-water session for our festival captains 🐉</h1>
 <div class="essentials">
@@ -168,11 +169,7 @@ footer a{color:var(--ink2)}
   <div class="ess"><div class="l">On the water</div><div class="v">__ON_WATER_TIME__</div></div>
   <div class="ess"><div class="l">Location</div><div class="v">__LOCATION__</div></div>
 </div>
-__NOTES_BOX__
-<p class="blurb">As thanks for captaining a boat (or repping a sponsor team) at the festival, the
-St. Louis Dragon Boat Club is hosting a free session just for you — <b>30 min warm-up, an hour on the
-water, 15 min recap</b>. __BLURB_SNACKS__ Open to the first
-<b>__CAPACITY__</b> sign-ups.</p>
+__NOTES_BLURB__
 <div class="capbar-wrap">
   <div class="caprow"><span>Spots filled</span>
     <span class="capnum"><span class="fill" id="capFilled">0</span> / <span id="capTotal">__CAPACITY__</span></span></div>
@@ -313,8 +310,7 @@ html = (PAGE
     .replace("__WAIVER_URL__", WAIVER_URL)
     .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
     .replace("__TSHIRT_FIELD__", TSHIRT_FIELD_HTML)
-    .replace("__BLURB_SNACKS__", BLURB_SNACKS)
-    .replace("__NOTES_BOX__", NOTES_BOX_HTML)
+    .replace("__NOTES_BLURB__", NOTES_BLURB_HTML)
     .replace("__SNAPSHOT__", json.dumps(SNAPSHOT)))
 open(OUT, "w", encoding="utf-8").write(html)
 print("written:", os.path.abspath(OUT))
